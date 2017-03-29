@@ -1,0 +1,926 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{862247D6-CCEB-41DB-9BBC-57452985C0FF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DocSort_CPA</RootNamespace>
+    <AssemblyName>DocSort CPA</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>CA4EEA7EA3E834F153495CC6A2566A7522B29FB8</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>DocSort CPA_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AxInterop.AcroPDFLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Release\AxInterop.AcroPDFLib.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.2.1.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Release\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 11.0\Visual Studio Tools for Office\PIA\Office14\Microsoft.Office.Interop.Word.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\VBPowerPacks\v10.0\Microsoft.VisualBasic.PowerPacks.Vs.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Release\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Web, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TallComponents.PDF.Rasterizer, Version=3.0.105.0, Culture=neutral, PublicKeyToken=76bf2dedaa68ccb5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Release\TallComponents.PDF.Rasterizer.dll</HintPath>
+    </Reference>
+    <Reference Include="TreeViewMS">
+      <HintPath>..\..\..\..\Downloads\TreeViewMS\bin\Debug\TreeViewMS.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ControlPermission.cs" />
+    <Compile Include="ControlPermissionCollection.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AlertPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AlertPage.designer.cs">
+      <DependentUpon>AlertPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AutoSuggest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AutoSuggest.designer.cs">
+      <DependentUpon>AutoSuggest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AutoSuggest_Original.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AutoSuggest_Original.designer.cs">
+      <DependentUpon>AutoSuggest_Original.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CancelProcess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CancelProcess.designer.cs">
+      <DependentUpon>CancelProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ChangePassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ChangePassword.designer.cs">
+      <DependentUpon>ChangePassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CloseApplication.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CloseApplication.designer.cs">
+      <DependentUpon>CloseApplication.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ComingSoon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ComingSoon.designer.cs">
+      <DependentUpon>ComingSoon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ConfirmLicense.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ConfirmLicense.designer.cs">
+      <DependentUpon>ConfirmLicense.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DashBoardHome.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DashBoardHome.designer.cs">
+      <DependentUpon>DashBoardHome.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DeleteConfirmation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DeleteConfirmation.designer.cs">
+      <DependentUpon>DeleteConfirmation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Documents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Documents.designer.cs">
+      <DependentUpon>Documents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DuplicateNames.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DuplicateNames.designer.cs">
+      <DependentUpon>DuplicateNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EnterScanDocCount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EnterScanDocCount.designer.cs">
+      <DependentUpon>EnterScanDocCount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EnterText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EnterText.designer.cs">
+      <DependentUpon>EnterText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ErrorHandling.cs" />
+    <Compile Include="Forms\ErrorHandlingPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ErrorHandlingPopup.designer.cs">
+      <DependentUpon>ErrorHandlingPopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Feedback.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Feedback.designer.cs">
+      <DependentUpon>Feedback.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FeedbackSuccess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FeedbackSuccess.designer.cs">
+      <DependentUpon>FeedbackSuccess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileCabinetClass.cs" />
+    <Compile Include="Forms\Import.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Import.Designer.cs">
+      <DependentUpon>Import.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LockPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LockPage.designer.cs">
+      <DependentUpon>LockPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Log History.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Log History.designer.cs">
+      <DependentUpon>Log History.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MovedFileCount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MovedFileCount.designer.cs">
+      <DependentUpon>MovedFileCount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MoveFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MoveFiles.Designer.cs">
+      <DependentUpon>MoveFiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NewFileCabinet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewFileCabinet.designer.cs">
+      <DependentUpon>NewFileCabinet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NewFileCabinet1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewFileCabinet1.designer.cs">
+      <DependentUpon>NewFileCabinet1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NewMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewMenu.designer.cs">
+      <DependentUpon>NewMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NewRole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewRole.Designer.cs">
+      <DependentUpon>NewRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NewUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewUser.Designer.cs">
+      <DependentUpon>NewUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OpenFileCabinet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OpenFileCabinet.designer.cs">
+      <DependentUpon>OpenFileCabinet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SaveSuccess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SaveSuccess.Designer.cs">
+      <DependentUpon>SaveSuccess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchProcessing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchProcessing.designer.cs">
+      <DependentUpon>SearchProcessing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchString.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchString.designer.cs">
+      <DependentUpon>SearchString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ShowDocumentPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ShowDocumentPage.designer.cs">
+      <DependentUpon>ShowDocumentPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TagSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TagSearch.Designer.cs">
+      <DependentUpon>TagSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Useraccesspermissions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Useraccesspermissions.Designer.cs">
+      <DependentUpon>Useraccesspermissions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UsersEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UsersEntry.Designer.cs">
+      <DependentUpon>UsersEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WordFrequency.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ProgressBarEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataGridViewPrinter.cs" />
+    <Compile Include="Reports\DocumentsCountReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\DocumentsCountReport.designer.cs">
+      <DependentUpon>DocumentsCountReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DocumentsReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\DocumentsReport.designer.cs">
+      <DependentUpon>DocumentsReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DocumentStatusReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\DocumentStatusReport.designer.cs">
+      <DependentUpon>DocumentStatusReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\TotalDocumentsReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\TotalDocumentsReport.designer.cs">
+      <DependentUpon>TotalDocumentsReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StarRatingControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserAccessPermission.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserAccessPermission.designer.cs">
+      <DependentUpon>UserAccessPermission.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserAccessPermissionvalues.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AlertPage.resx">
+      <DependentUpon>AlertPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AutoSuggest.resx">
+      <DependentUpon>AutoSuggest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AutoSuggest_Original.resx">
+      <DependentUpon>AutoSuggest_Original.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CancelProcess.resx">
+      <DependentUpon>CancelProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ChangePassword.resx">
+      <DependentUpon>ChangePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CloseApplication.resx">
+      <DependentUpon>CloseApplication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ComingSoon.resx">
+      <DependentUpon>ComingSoon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ConfirmLicense.resx">
+      <DependentUpon>ConfirmLicense.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DashBoardHome.resx">
+      <DependentUpon>DashBoardHome.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DeleteConfirmation.resx">
+      <DependentUpon>DeleteConfirmation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Documents.resx">
+      <DependentUpon>Documents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DuplicateNames.resx">
+      <DependentUpon>DuplicateNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EnterScanDocCount.en.resx">
+      <DependentUpon>EnterScanDocCount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EnterScanDocCount.resx">
+      <DependentUpon>EnterScanDocCount.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EnterScanDocCount.yo-NG.resx">
+      <DependentUpon>EnterScanDocCount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EnterText.resx">
+      <DependentUpon>EnterText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ErrorHandlingPopup.resx">
+      <DependentUpon>ErrorHandlingPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Feedback.resx">
+      <DependentUpon>Feedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FeedbackSuccess.resx">
+      <DependentUpon>FeedbackSuccess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Import.resx">
+      <DependentUpon>Import.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LockPage.resx">
+      <DependentUpon>LockPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Log History.resx">
+      <DependentUpon>Log History.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MovedFileCount.resx">
+      <DependentUpon>MovedFileCount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MoveFiles.resx">
+      <DependentUpon>MoveFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewFileCabinet.resx">
+      <DependentUpon>NewFileCabinet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewFileCabinet1.resx">
+      <DependentUpon>NewFileCabinet1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewMenu.resx">
+      <DependentUpon>NewMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewRole.resx">
+      <DependentUpon>NewRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewUser.resx">
+      <DependentUpon>NewUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OpenFileCabinet.resx">
+      <DependentUpon>OpenFileCabinet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveSuccess.resx">
+      <DependentUpon>SaveSuccess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchProcessing.resx">
+      <DependentUpon>SearchProcessing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchString.resx">
+      <DependentUpon>SearchString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShowDocumentPage.resx">
+      <DependentUpon>ShowDocumentPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TagSearch.resx">
+      <DependentUpon>TagSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Useraccesspermissions.resx">
+      <DependentUpon>Useraccesspermissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UsersEntry.resx">
+      <DependentUpon>UsersEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\DocumentsCountReport.resx">
+      <DependentUpon>DocumentsCountReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\DocumentsReport.resx">
+      <DependentUpon>DocumentsReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\DocumentStatusReport.resx">
+      <DependentUpon>DocumentStatusReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\TotalDocumentsReport.resx">
+      <DependentUpon>TotalDocumentsReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StarRatingControl.resx">
+      <DependentUpon>StarRatingControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserAccessPermission.resx">
+      <DependentUpon>UserAccessPermission.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DocSort CPA_TemporaryKey.pfx" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AcroPDFLib">
+      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="MODI">
+      <Guid>{A5EDEDF4-2BBC-45F3-822B-E60C278A1A79}</Guid>
+      <VersionMajor>12</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj">
+      <Project>{3B64F44A-6C89-46F6-9DFB-1E90FF4CBC36}</Project>
+      <Name>Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{A4E407C6-6A9F-4677-86AE-6995BDAB7A41}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{C330D1DD-7F60-4279-9D0D-A33DE44D62E0}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Home_Click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Import_Click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewHome_edit1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Permissions_Click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Reports_Click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BackgroundImg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CloseIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CollapseAll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\copy16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cut16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dashboard_Click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DashboardIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DashboardIcon_Select.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ErrorIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exit5.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exit16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exitmdi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exitt3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExpandAll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Export.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FeedbackIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\File.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Folder16x16.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FolderIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FromFolderIcon1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\goto16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HomeIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HomeScreen_VD_CPA_03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HomeScreen_VD_CPA_29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Import.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\importfiles.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImportIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Income.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\informationicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\JPGIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo_v.2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logout_icon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LogoutPanel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Maximize_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MergeFiles.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\minimize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MinimizeIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewBackgroundSwift.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewBrowse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewBrowse1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewCabinet.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewCabinet.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewFolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewHome_Click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewImport.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewImport_Click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewPermissions.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewPermissions_Click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewReports.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewReports_Click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewStart.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewStart1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\page_setup.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pagesetup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PassWordIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paste32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PDFFileIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pdficon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pdf-reader-icon-%281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PersimmionIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PersimmionIconSelect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pointer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\prepare32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\print32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\printquick16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\process1.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProfilePic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Refresh_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh-button4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Rename.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RenameFiles.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\replace16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ReportsIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ReportsIcon_Select.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Reset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Restore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Restore_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Restrictions.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SearchIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\searchstring.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Selectall22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SendTo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SwiftLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ToFolderIcon1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TXTIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\undo16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\update.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\useraccess.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UserNameIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UserTypeIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Warning image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewDashboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewDashboard_Click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewHome.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewHome_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LogoutIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HelpIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Move.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
