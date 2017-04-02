@@ -1985,7 +1985,8 @@ namespace DocSort_CPA.Forms
                     catch (Exception ex)
                     {
                         //MessageBox.Show(ex.ToString());
-                        MessageBox.Show(ex.Message, "Error '" + FileName + "' is in use by another application");
+                        //MessageBox.Show(ex.Message, "Error '" + FileName + "' is in use by another application");
+                        MessageBox.Show(ex.Message, "Error '" + ex.InnerException + ". " + ex.Data);
                     }
                 }
 
