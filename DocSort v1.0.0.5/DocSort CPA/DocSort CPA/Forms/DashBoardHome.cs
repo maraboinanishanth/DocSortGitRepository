@@ -2592,6 +2592,93 @@ namespace DocSort_CPA.Forms
 
         }
 
+        void treeView1_NodeMouseClick(object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
+        {
+            //TreevViewNodeMouseClick();
+        }
+
+        private void TreevViewNodeMouseClick()
+        {
+            foreach (TreeNode node in treeView1.Nodes)
+            {
+                // if (!node.BackColor.IsEmpty &&  node.BackColor == Color.LightGray)
+                node.BackColor = Color.White;
+                if (node.Parent != null)
+                {
+                    node.Parent.BackColor = Color.White;
+                }
+
+                UnSelectParentsOfSubNodes(node);
+
+
+                UnSelectParents(node);
+            }
+
+            SelectParents(treeView1.SelectedNode);
+        }
+
+        private void UnSelectParentsOfSubNodes(TreeNode node)
+        {
+            if (node.Nodes.Count == 0)
+                return;
+            if (node.Nodes.Count > 0)
+            {
+                foreach (TreeNode childNode in node.Nodes)
+                {
+                    UnSelectParents(childNode);
+                    UnSelectParentsOfSubNodes(childNode);
+                }
+            }
+        }
+
+        
+
+        void treeView1_BeforeSelect(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)
+        {
+            //UnSelectParents(treeView1.SelectedNode);
+            //foreach (TreeNode node in treeView1.Nodes)
+            //{
+            //    if (node.BackColor == Color.LightGray)
+            //        node.BackColor = Color.White;
+            //}
+        }
+
+        private void SelectParents(TreeNode node)
+        {
+            if (node == null) return;
+            var parent = node.Parent;
+
+            if (parent == null)
+                return;
+
+            //if (!isSelected && HasSelectedNode(parent))
+            //    parent.BackColor = Color.White;
+            //    return;
+
+            parent.BackColor = Color.LightGray;
+            node.BackColor = Color.LightGray;
+            SelectParents(parent);
+        }
+
+        private void UnSelectParents(TreeNode node)
+        {
+            if (node == null) return;
+            var parent = node.Parent;
+
+            if (parent == null)
+                return;
+
+
+            parent.BackColor = Color.White;
+            node.BackColor = Color.White;
+            UnSelectParents(parent);
+        }
+
+        private bool HasSelectedNode(TreeNode node)
+        {
+            return node.Nodes.Cast<TreeNode>().Any(n => n.IsSelected);
+        }
+
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (treeView1.SelectedNode.ImageKey == "LockerIcon.png" || treeView1.SelectedNode.ImageKey == "FolderIcon.png")
@@ -2659,6 +2746,7 @@ namespace DocSort_CPA.Forms
 
                 }
             }
+            TreevViewNodeMouseClick();
         }
 
         static String BytesToString(long byteCount)

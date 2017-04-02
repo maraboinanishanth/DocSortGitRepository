@@ -239,6 +239,8 @@ namespace DocSort_CPA.Forms
             this.treeView1.TabIndex = 4;
             this.treeView1.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.treeView_DrawNode);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.treeView1.NodeMouseClick +=new System.Windows.Forms.TreeNodeMouseClickEventHandler(treeView1_NodeMouseClick);
+            this.treeView1.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(treeView1_BeforeSelect);
             // 
             // imageList1
             // 
@@ -678,6 +680,8 @@ namespace DocSort_CPA.Forms
             this.PerformLayout();
 
         }
+
+        
 
         #endregion
 
