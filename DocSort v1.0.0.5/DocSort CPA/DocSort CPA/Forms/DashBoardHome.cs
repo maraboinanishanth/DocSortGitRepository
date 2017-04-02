@@ -578,7 +578,7 @@ namespace DocSort_CPA.Forms
 
             if (m_sFileCabinetDocFile == null)
             {
-                m_sFileCabinetDocFile = m_sConfigFile + "\\" + strRootNode.ToUpper();
+                m_sFileCabinetDocFile = m_sConfigFile + "\\" + treeView1.SelectedNode.Text.ToUpper();
                 if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
                     System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
             }
