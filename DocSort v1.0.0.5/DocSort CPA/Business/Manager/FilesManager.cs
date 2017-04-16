@@ -105,6 +105,34 @@ namespace Business.Manager
             return result;
         }
 
+        public NandanaResult UpdateFileDetailsFileID(int FileID, string File_Path)
+        {
+            NandanaResult result;
+            NandanaDataSet resultDS;
+
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new NandanaDBRequest.Parameter("@FileID", FileID));
+            paramArray.Add(new NandanaDBRequest.Parameter("@Filepath", File_Path));
+
+            try
+            {
+                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
+                NandanaDBRequest request = new NandanaDBRequest("sp_UpdateFileDetailsFileID", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from UpdateFileDetails sp.", m_oSession, e));
+            }
+            result = new NandanaResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from UpdateFileDetails sp.", m_oSession));
+            }
+            return result;
+        }
+
         public NandanaResult GetFileDetails()
         {
             NandanaResult result;

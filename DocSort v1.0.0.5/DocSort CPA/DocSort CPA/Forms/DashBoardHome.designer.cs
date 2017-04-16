@@ -31,8 +31,8 @@ namespace DocSort_CPA.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DashBoardHome));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.FileContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PrintToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.CutFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -221,8 +221,8 @@ namespace DocSort_CPA.Forms
             // 
             // treeView1
             // 
-            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeView1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.treeView1.ForeColor = System.Drawing.SystemColors.GrayText;
@@ -238,7 +238,9 @@ namespace DocSort_CPA.Forms
             this.treeView1.Size = new System.Drawing.Size(255, 545);
             this.treeView1.TabIndex = 4;
             this.treeView1.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.treeView_DrawNode);
+            this.treeView1.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeSelect);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             // 
             // imageList1
             // 
@@ -330,7 +332,7 @@ namespace DocSort_CPA.Forms
             // 
             // ImportFilesToolStripMenuItem
             // 
-            this.ImportFilesToolStripMenuItem.Image = global::DocSort_CPA.Properties.Resources.File;
+            this.ImportFilesToolStripMenuItem.Image = global::DocSort_CPA.Properties.Resources.FromFolderIcon1;
             this.ImportFilesToolStripMenuItem.Name = "ImportFilesToolStripMenuItem";
             this.ImportFilesToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.ImportFilesToolStripMenuItem.Text = "Import Files";
@@ -341,7 +343,6 @@ namespace DocSort_CPA.Forms
             this.ImportFoldersToolStripMenuItem.Name = "ImportFoldersToolStripMenuItem";
             this.ImportFoldersToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.ImportFoldersToolStripMenuItem.Text = "Import Folders";
-            this.ImportFoldersToolStripMenuItem.Visible = false;
             this.ImportFoldersToolStripMenuItem.Click += new System.EventHandler(this.ImportFoldersToolStripMenuItem_Click);
             // 
             // ImportFlatFileToolStripMenuItem
@@ -472,16 +473,16 @@ namespace DocSort_CPA.Forms
             // 
             this.ImportFilesToolStripMenuItem1.Image = global::DocSort_CPA.Properties.Resources.File;
             this.ImportFilesToolStripMenuItem1.Name = "ImportFilesToolStripMenuItem1";
-            this.ImportFilesToolStripMenuItem1.Size = new System.Drawing.Size(151, 22);
+            this.ImportFilesToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.ImportFilesToolStripMenuItem1.Text = "Import Files";
             this.ImportFilesToolStripMenuItem1.Click += new System.EventHandler(this.ImportFilesToolStripMenuItem1_Click);
             // 
             // ImportFoldersToolStripMenuItem1
             // 
+            this.ImportFoldersToolStripMenuItem1.Image = global::DocSort_CPA.Properties.Resources.Folder16x16;
             this.ImportFoldersToolStripMenuItem1.Name = "ImportFoldersToolStripMenuItem1";
-            this.ImportFoldersToolStripMenuItem1.Size = new System.Drawing.Size(151, 22);
+            this.ImportFoldersToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.ImportFoldersToolStripMenuItem1.Text = "Import Folders";
-            this.ImportFoldersToolStripMenuItem1.Visible = false;
             this.ImportFoldersToolStripMenuItem1.Click += new System.EventHandler(this.ImportFoldersToolStripMenuItem1_Click);
             // 
             // SendtoToolStripMenuItem1
@@ -516,27 +517,27 @@ namespace DocSort_CPA.Forms
             // dgvDocuments
             // 
             this.dgvDocuments.AllowUserToAddRows = false;
-            this.dgvDocuments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvDocuments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvDocuments.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dgvDocuments.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle23.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle23.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle23.ForeColor = System.Drawing.Color.Red;
-            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDocuments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDocuments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvDocuments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle24.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle24.ForeColor = System.Drawing.Color.LightSeaGreen;
-            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.ControlLightLight;
-            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.Color.LightSeaGreen;
-            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDocuments.DefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.LightSeaGreen;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.ControlLightLight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.LightSeaGreen;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDocuments.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvDocuments.EnableHeadersVisualStyles = false;
             this.dgvDocuments.GridColor = System.Drawing.SystemColors.Menu;
             this.dgvDocuments.Location = new System.Drawing.Point(7, 6);
@@ -606,8 +607,8 @@ namespace DocSort_CPA.Forms
             // 
             // webBrowser1
             // 
-            this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.webBrowser1.Location = new System.Drawing.Point(5, 8);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
@@ -678,6 +679,8 @@ namespace DocSort_CPA.Forms
             this.PerformLayout();
 
         }
+
+        
 
         #endregion
 

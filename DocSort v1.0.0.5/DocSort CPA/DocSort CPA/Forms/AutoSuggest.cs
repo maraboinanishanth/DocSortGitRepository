@@ -489,6 +489,11 @@ namespace DocSort_CPA.Forms
                                 {
                                     imgdata += finfo.Name.Split('.')[0].ToUpper();
                                 }
+                                string ingWords = @"\w+ING\b";
+                                string edWords = @"\w+ED\b";
+                                
+                                imgdata = Regex.Replace(imgdata, ingWords, string.Empty);
+                                imgdata = Regex.Replace(imgdata, edWords, string.Empty);
                                 if (imgdata != "")
                                 {
                                     string SearchText = string.Empty;
