@@ -1656,7 +1656,8 @@ namespace DocSort_CPA.Forms
             int UnReadCount = 0;
             int UnMatchCount = 0;
             int count = 0;
-            for (int i = 0; i < 1; i++)
+            //for (int i = 0; i < 1; i++)//nishanth commented this to check why we are taking only first page of pdf files. Sent email to satish also.
+            for (int i = 0; i < document.Pages.Count(); i++)
             {
                 m_sImages = null;
                 Page page = document.Pages[i];
@@ -1986,7 +1987,10 @@ namespace DocSort_CPA.Forms
                     {
                         //MessageBox.Show(ex.ToString());
                         //MessageBox.Show(ex.Message, "Error '" + FileName + "' is in use by another application");
-                        MessageBox.Show(ex.Message, "Error '" + ex.InnerException + ". " + ex.Data);
+                        
+                        
+                        //MessageBox.Show(ex.Message, "Error '" + ex.InnerException + ". " + ex.Data);
+                        //Need to LOG errors or email errors to docsort team.
                     }
                 }
 
