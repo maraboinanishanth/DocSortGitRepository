@@ -44,9 +44,9 @@ namespace DocSort_CPA.Forms
 
         FileCabinetManager objFileCabinetManager = new FileCabinetManager();
         FolderManager objFolderManager = new FolderManager();
-        FilesManager objFilesManager = new FilesManager();  
+        FilesManager objFilesManager = new FilesManager();
 
-
+        object backupTreeViewObject;
 
         private void DashBoardHome_Load(object sender, EventArgs e)
         {
@@ -115,8 +115,9 @@ namespace DocSort_CPA.Forms
                 }
                 //treeView1.Sort();
             }
-
         }
+
+       
 
         public void GetPermissiondetails(int FormID)
         {
@@ -511,8 +512,10 @@ namespace DocSort_CPA.Forms
             TextBox tb = (TextBox)sender;
             if (tb.Text == "Search")
             {
+                this.txtSearch.TextChanged -= new System.EventHandler(this.txtSearch_TextChanged);
                 tb.Text = "";
                 tb.ForeColor = System.Drawing.ColorTranslator.FromHtml("#444444");
+                this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             }
         }
 
@@ -521,9 +524,10 @@ namespace DocSort_CPA.Forms
             TextBox tb = (TextBox)sender;
             if (tb.Text == "")
             {
+                this.txtSearch.TextChanged -= new System.EventHandler(this.txtSearch_TextChanged);
                 tb.Text = "Search";
                 tb.ForeColor = Color.Gray;
-
+                this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             }
         }
 
@@ -1244,6 +1248,293 @@ namespace DocSort_CPA.Forms
             }
         }
 
+        private void SaveImportingFolder(string folderName, string Path) // THis is implemented by nishanth for folder import
+        {
+            string TempNodeText = string.Empty;
+            //EnterText frm = new EnterText();
+            //treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
+            treeView1.HideSelection = false;
+
+            //frm.CurrentFolderName = treeView1.SelectedNode.Text.ToUpper();
+            //frm.FileCabinetID = treeView1.SelectedNode.Name;
+            //frm.ShowDialog();
+            TempNodeText = folderName;
+            //if (folderName != null)
+            //{
+            //    TempNodeText = frm.FolderName.ToUpper();
+            //}
+            //else
+            //{
+            //    TempNodeText = frm.FolderName;
+            //}
+            //frm.Dispose();
+            if ((TempNodeText != null))
+            {
+
+                m_sConfigFile = null;
+                m_sFileCabinetDocFile = null;
+                m_sImportedFolderDocFile = null;
+
+                if (m_sConfigFile == null)
+                {
+                    m_sConfigFile = ConfigurationManager.AppSettings["TreeviewFilepath"].ToString();
+                    if (!System.IO.Directory.Exists(m_sConfigFile))
+                        System.IO.Directory.CreateDirectory(m_sConfigFile);
+                }
+
+                if (m_sFileCabinetDocFile == null)
+                {
+                    m_sFileCabinetDocFile = m_sConfigFile + "\\" + treeView1.SelectedNode.Text.ToUpper();
+                    if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
+                        System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
+                }
+
+                if (m_sImportedFolderDocFile == null)
+                {
+                    m_sImportedFolderDocFile = m_sFileCabinetDocFile + "\\" + TempNodeText.ToUpper();
+                    if (!System.IO.Directory.Exists(m_sImportedFolderDocFile))
+                        System.IO.Directory.CreateDirectory(m_sImportedFolderDocFile);
+                }
+
+                //FolderManager objFolderManager = new FolderManager();
+
+                TreeNode newNode = new TreeNode();
+                newNode.Text = TempNodeText;
+
+                //We need to properly get filecabinetid
+                string fileCabinetID = treeView1.SelectedNode.Parent.Name == string.Empty ? treeView1.SelectedNode.Name : treeView1.SelectedNode.Parent.Name;
+
+                //* inserting Folder details in Folder table *//
+
+                NandanaResult objInsertFolderdetails = objFolderManager.InsertFolderDetails(fileCabinetID, TempNodeText.ToUpper(), treeView1.SelectedNode.Name, "True");
+                if (objInsertFolderdetails.resultDS != null && objInsertFolderdetails.resultDS.Tables[0].Rows.Count > 0)
+                {
+                    DataRow dr = objInsertFolderdetails.resultDS.Tables[0].Rows[0];
+                    FolderID = dr["FolderId"].ToString();
+                }
+
+                //* End  *//
+                if (string.IsNullOrEmpty(FolderID))
+                { 
+                 MessageBox.Show("FolderID is Empty !!");
+                }
+                newNode.Name = FolderID;
+
+                newNode.ContextMenuStrip = FolderContextMenu;
+                newNode.ImageKey = "FolderIcon.png";
+                newNode.SelectedImageKey = "FolderIcon.png";
+
+                //newNode.ImageKey = "Folder.jpg";
+                //newNode.SelectedImageKey = "Folder.jpg";
+
+                
+
+
+                SaveImportingFolderFiles(treeView1, Path, FolderID, treeView1.SelectedNode.Parent.Name, newNode);
+
+                
+                var rootDirectoryInfo = new DirectoryInfo(Path);
+                foreach (var file in rootDirectoryInfo.GetFiles())
+                {
+                    ListFiles1(treeView1, file.FullName, newNode, FolderID, fileCabinetID);
+                }
+                if (newNode.Name != string.Empty)
+                {
+                    treeView1.SelectedNode.Nodes.Add(newNode);
+                }
+
+                
+            }
+        }
+
+        private void SaveImportingFolderFiles(TreeView treeView, string path, string FolderID, string fileCabinetId, TreeNode newNode)
+        {
+            m_sConfigFile = null;
+            m_sFileCabinetDocFile = null;
+            m_sImportedFolderDocFile = null;
+
+            if (m_sConfigFile == null)
+            {
+                m_sConfigFile = ConfigurationManager.AppSettings["TreeviewFilepath"].ToString();
+                if (!System.IO.Directory.Exists(m_sConfigFile))
+                    System.IO.Directory.CreateDirectory(m_sConfigFile);
+            }
+
+            if (m_sFileCabinetDocFile == null)
+            {
+                m_sFileCabinetDocFile = m_sConfigFile + "\\" + treeView1.SelectedNode.Text.ToUpper();
+                if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
+                    System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
+            }
+
+            //FolderManager objFolderManager = new FolderManager();
+            //FilesManager objFilesManager = new FilesManager();
+
+            var rootDirectoryInfo = new DirectoryInfo(path);
+
+            var directoryNode = new TreeNode(rootDirectoryInfo.Name);
+            directoryNode.Name = FolderID;
+
+            newNode.Name = FolderID;
+
+            if (m_sImportedFolderDocFile == null)
+            {
+                m_sImportedFolderDocFile = m_sFileCabinetDocFile + "\\" + rootDirectoryInfo.Name.ToUpper();
+                if (!System.IO.Directory.Exists(m_sImportedFolderDocFile))
+                    System.IO.Directory.CreateDirectory(m_sImportedFolderDocFile);
+            }
+
+            //* inserting Folder details in Folder table *//
+
+            //NandanaResult objinsertintofolder = objFolderManager.InsertFolderDetails(strRootNodeID, rootDirectoryInfo.Name.ToUpper(), "0", "True");
+            //if (objinsertintofolder.resultDS != null && objinsertintofolder.resultDS.Tables[0].Rows.Count > 0)
+            //{
+            //    DataRow dr = objinsertintofolder.resultDS.Tables[0].Rows[0];
+            //    FolderID = dr["FolderId"].ToString();
+            //}
+
+            //* End  *//
+
+            foreach (var file in rootDirectoryInfo.GetFiles())
+            {
+                System.IO.File.Copy(path + "\\" + file.Name, m_sImportedFolderDocFile + "\\" + file.Name, true);
+
+                //* inserting files details in Files table *//
+
+                NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(FolderID), Convert.ToInt32(fileCabinetId), file.Name, m_sImportedFolderDocFile + "\\" + file.Name, "True");
+
+                //* End  *//
+
+                //directoryNode.Nodes.Add(new TreeNode(file.Name));
+                
+                
+                //newNode.Nodes.Add(new TreeNode(file.Name));
+            }
+
+            foreach (TreeNode ChildNode in directoryNode.Nodes)
+            {
+                //ChildNode.ContextMenuStrip = FileContextMenu;
+                
+                
+                
+                
+                //ChildNode.ImageKey = "File.png";
+                //ChildNode.SelectedImageKey = "File.png";
+
+            }
+
+           // treeView.SelectedNode.Nodes.Add(directoryNode);
+           // directoryNode.ContextMenuStrip = FolderContextMenu;
+            //directoryNode.ImageKey = "FolderIcon.png";
+            //directoryNode.SelectedImageKey = "FolderIcon.png";
+
+            //treeView.SelectedNode.Expand();
+        }
+
+        private void ListFiles1(TreeView treeView, string path, TreeNode newNode1, string FolderID, string fileCabinetID)
+        {
+            m_sConfigFile = null;
+            m_sFileCabinetDocFile = null;
+            m_sImportedFolderDocFile = null;
+
+            if (m_sConfigFile == null)
+            {
+                m_sConfigFile = ConfigurationManager.AppSettings["TreeviewFilepath"].ToString();
+                if (!System.IO.Directory.Exists(m_sConfigFile))
+                    System.IO.Directory.CreateDirectory(m_sConfigFile);
+            }
+
+            if (m_sFileCabinetDocFile == null)
+            {
+                m_sFileCabinetDocFile = m_sConfigFile + "\\" + treeView1.SelectedNode.Text.ToUpper();
+                if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
+                    System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
+            }
+
+            //FilesManager objFilesManager = new FilesManager();
+            var rootFileInfo = new FileInfo(path);
+
+            TreeNode newNode = new TreeNode();
+            newNode.Text = rootFileInfo.Name;
+
+
+            //treeView.SelectedNode.Nodes.Add((rootFileInfo.Name));
+
+            System.IO.File.Copy(path, m_sFileCabinetDocFile + "\\" + rootFileInfo.Name, true);
+
+
+            // inserting files into documentslist table //
+
+            MoveMyFilesManager objMoveMyFilesManager = new MoveMyFilesManager();
+            NandanaResult insertdocumentdetails = objMoveMyFilesManager.InsertDocumentlistDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), rootFileInfo.Name, "Manual");
+            if (insertdocumentdetails.resultDS != null && insertdocumentdetails.resultDS.Tables[0].Rows.Count > 0)
+            {
+                DataRow dr = insertdocumentdetails.resultDS.Tables[0].Rows[0];
+                DocumentID = dr["DocumentId"].ToString();
+            }
+
+            // End
+
+            //* inserting files details in Files table *//
+
+            NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(FolderID), Convert.ToInt32(fileCabinetID), rootFileInfo.Name, m_sFileCabinetDocFile + "\\" + rootFileInfo.Name, "True");
+            if (objinsertfilesdetails.resultDS != null && objinsertfilesdetails.resultDS.Tables[0].Rows.Count > 0)
+            {
+                DataRow dr = objinsertfilesdetails.resultDS.Tables[0].Rows[0];
+                FileID = dr["FileId"].ToString();
+            }
+
+            //* End  *//
+
+
+            newNode.Name = FileID;
+            newNode.ContextMenuStrip = FileContextMenu;
+            string[] FileType = rootFileInfo.Name.ToString().Split('.');
+
+            string value = FileType[1].ToString().ToUpper();
+            // ... Switch on the string.
+            switch (value)
+            {
+                case "PDF":
+                    newNode.ImageKey = "PDFIcon.png";
+                    newNode.SelectedImageKey = "PDFIcon.png";
+                    break;
+                case "JPG":
+                    newNode.ImageKey = "JPGIcon.png";
+                    newNode.SelectedImageKey = "JPGIcon.png";
+                    break;
+                case "PNG":
+                    newNode.ImageKey = "JPGIcon.png";
+                    newNode.SelectedImageKey = "JPGIcon.png";
+                    break;
+                case "BMP":
+                    newNode.ImageKey = "JPGIcon.png";
+                    newNode.SelectedImageKey = "JPGIcon.png";
+                    break;
+                case "GIF":
+                    newNode.ImageKey = "JPGIcon.png";
+                    newNode.SelectedImageKey = "JPGIcon.png";
+                    break;
+                case "TIF":
+                    newNode.ImageKey = "JPGIcon.png";
+                    newNode.SelectedImageKey = "JPGIcon.png";
+                    break;
+                case "TIFF":
+                    newNode.ImageKey = "JPGIcon.png";
+                    newNode.SelectedImageKey = "JPGIcon.png";
+                    break;
+                default:
+                    newNode.ImageKey = "TXTIcon.png";
+                    newNode.SelectedImageKey = "TXTIcon.png";
+                    break;
+            }
+
+            ///treeView.SelectedNode.Nodes.Remove 
+            newNode1.Nodes.Add(newNode);
+
+           // treeView.SelectedNode.Expand();
+        }
+
         private void NewFolderToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             string TempNodeText = string.Empty;
@@ -1629,6 +1920,8 @@ namespace DocSort_CPA.Forms
                 TempNodeText = frm.FolderName;
             }
             frm.Dispose();
+            string originalName = string.Empty;
+            originalName = treeView1.SelectedNode.Text;
             TreeNode SelectedNode = treeView1.SelectedNode;
             if ((TempNodeText != null))
             {
@@ -1636,6 +1929,59 @@ namespace DocSort_CPA.Forms
 
                 NandanaResult updateFolderName = objFolderManager.UpdateFolderNameDetails(treeView1.SelectedNode.Name,TempNodeText.ToUpper());
             }
+            string folderID = string.Empty;
+            string fileCabinetID = string.Empty;
+            string fileCabinetName = string.Empty;
+            string filePath = string.Empty;
+            string fileName = string.Empty;
+            string fileID = string.Empty;
+            if (DtFiles != null)
+            {
+                if (DtFiles.Rows.Count > 0)
+                {
+                    if (treeView1.SelectedNode.Parent.ImageKey == "LockerIcon.png")//Nishanth Needs to understand if this IF condition is for folders rename and the below ELSE is for FILE RENAME
+                    {
+                        DataRow[] drResult = DtFiles.Select("Folder_ID = '" + treeView1.SelectedNode.Name + "'" + "and" + " FileCabinet_ID = '" + treeView1.SelectedNode.Parent.Name + "'" + "and" + " IsDelete = '" + "True" + "'");
+                        DirectoryInfo dinfo = Directory.GetParent(Path.GetDirectoryName(drResult[0]["File_Path"].ToString()));
+                        Directory.SetCurrentDirectory(dinfo.FullName);
+                        if (drResult.Count() != 0 && Directory.Exists(originalName))//Nishanth Folder Name Change
+                        {
+                            Directory.Move(originalName, TempNodeText);
+                            foreach (DataRow dataRow in drResult)
+                            {
+                                filePath = dataRow["File_Path"].ToString();
+                                fileName = dataRow["File_Name"].ToString();
+                                fileID = dataRow["File_ID"].ToString();
+                                folderID = treeView1.SelectedNode.Name;
+                                fileCabinetID = treeView1.SelectedNode.Parent.Name;
+                                fileCabinetName = treeView1.SelectedNode.Parent.Text;
+                                
+                                filePath = Directory.GetCurrentDirectory() + "\\" + TempNodeText + "\\" + fileName;
+                                objFilesManager.UpdateFileDetailsFileID(Convert.ToInt32(fileID), filePath);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        DataRow[] drResult = DtFiles.Select("Folder_ID = '" + treeView1.SelectedNode.Name + "'" + "and" + " FileCabinet_ID = '" + treeView1.SelectedNode.Parent.Parent.Name + "'" + "and" + " IsDelete = '" + "True" + "'");
+                        if (drResult.Count() != 0)
+                        {
+                            filePath = drResult[0]["File_Path"].ToString();
+                            fileName = drResult[0]["File_Name"].ToString();
+                            fileID = drResult[0]["File_ID"].ToString();
+                        }
+                        folderID = treeView1.SelectedNode.Name;
+                        fileCabinetID = treeView1.SelectedNode.Parent.Parent.Name;
+                        fileCabinetName = treeView1.SelectedNode.Parent.Parent.Text;
+                    }
+                }
+
+                
+            }
+
+            
+            //Directory.Move();
+
 
             //RenameToolStripTextBox.Text = treeView1.SelectedNode.Text;
             //treeView1.SelectedNode.Text = "abc";--
@@ -1686,10 +2032,11 @@ namespace DocSort_CPA.Forms
                 }
             }
         }
-
+        static System.Collections.Specialized.StringCollection log = new System.Collections.Specialized.StringCollection();
         private void ImportFoldersToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             string Path = string.Empty;
+            string FolderID;
             treeView1.HideSelection = false;
             FolderBrowserDialog fd = new FolderBrowserDialog();
             fd.Description = "Select a folder which has files";
@@ -1698,12 +2045,89 @@ namespace DocSort_CPA.Forms
             if (dr == DialogResult.OK)
             {
                 Path = fd.SelectedPath;
+               
 
-                ListDirectory(treeView1, Path);
+                object sender1 = new object();//Nishanth Import Folder task changes start
+                EventArgs e1 = new EventArgs();
+                //NewFolderToolStripMenuItem_Click(sender, e);//Nishanth Import Folder task changes end
+
+                string folderName = Path.Split('\\')[Path.Split('\\').Count() - 1];
+
+                var rootDirectoryInfo = new DirectoryInfo(Path);
+                WalkDirectoryTree(rootDirectoryInfo, treeView1.SelectedNode.Parent.Name, treeView1.SelectedNode.Name);// FOr folder import this is working just awesome. Need to proceed with this. Please note that below mentioned approach is commented.
+
+                //LoadTreeview(treeView1.SelectedNode.Name, treeView1.SelectedNode.Text);
+                //SaveImportingFolder(folderName, Path);// After Building WalkTreeDirectory. This method is obsolete. Need to remove Nishanth.
+
+                treeView1.Nodes.Clear();
+                DashBoardHome_Load(sender, e);//Loading entire tree view is very bad. Need to figure out smart way . to just refresh added nodes. NISHANTH.
             }
             else
             {
                 Path = "";
+            }
+        }
+
+        private void WalkDirectoryTree(System.IO.DirectoryInfo root,string fileCabinetID, string parentFolderID)
+        {
+            System.IO.FileInfo[] files = null;
+            System.IO.DirectoryInfo[] subDirs = null;
+            string FolderID = string.Empty;
+
+            // First, process all the files directly under this folder
+            try
+            {
+                files = root.GetFiles("*.*");
+                //string fileCabinetID = treeView1.SelectedNode.Parent.Name;
+                string folderName = root.Name;
+                //string FolderID;
+                //string parentFolderID = treeView1.SelectedNode.Name; //Selected folder will be the parent of the folder which we are importing.
+
+                NandanaResult objinsertintofolder = objFolderManager.InsertFolderDetails(fileCabinetID, folderName, parentFolderID, "True");
+                if (objinsertintofolder.resultDS != null && objinsertintofolder.resultDS.Tables[0].Rows.Count > 0)
+                {
+                    DataRow dr = objinsertintofolder.resultDS.Tables[0].Rows[0];
+                    FolderID = dr["FolderId"].ToString();
+                    foreach (FileInfo f in files)
+                    {
+                        NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(FolderID), Convert.ToInt32(fileCabinetID), f.Name,f.FullName, "True");
+                    }
+                }
+            }
+            // This is thrown if even one of the files requires permissions greater
+            // than the application provides.
+            catch (UnauthorizedAccessException e)
+            {
+                // This code just writes out the message and continues to recurse.
+                // You may decide to do something different here. For example, you
+                // can try to elevate your privileges and access the file again.
+                log.Add(e.Message);
+            }
+
+            catch (System.IO.DirectoryNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            if (files != null)
+            {
+                foreach (System.IO.FileInfo fi in files)
+                {
+                    // In this example, we only access the existing FileInfo object. If we
+                    // want to open, delete or modify the file, then
+                    // a try-catch block is required here to handle the case
+                    // where the file has been deleted since the call to TraverseTree().
+                    //Console.WriteLine(fi.FullName);
+                }
+
+                // Now find all the subdirectories under this directory.
+                subDirs = root.GetDirectories();
+
+                foreach (System.IO.DirectoryInfo dirInfo in subDirs)
+                {
+                    // Resursive call for each subdirectory.
+                    WalkDirectoryTree(dirInfo, fileCabinetID, FolderID);
+                }
             }
         }
 
@@ -1963,8 +2387,6 @@ namespace DocSort_CPA.Forms
                 {
                     frm.CurrentFolderName = treeView1.SelectedNode.Parent.Text;
                     frm.FileCabinetID = treeView1.SelectedNode.Parent.Parent.Name;
-
-
                 }
                 else
                 {
@@ -2928,7 +3350,11 @@ namespace DocSort_CPA.Forms
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (txtSearch.Text != "" && txtSearch.Text != "Search" && txtSearch.Text.Length >= 3)
+            if (txtSearch.Text.Length < 2)
+            {
+                return; //Nishanth. There is no need to do anything for less than two charachters
+            }
+            if (txtSearch.Text != "" && txtSearch.Text != "Search" && txtSearch.Text.Length > 2)
             {
             //if (txtSearch.Text != "" && txtSearch.Text != "Search")
             //{
@@ -2936,11 +3362,15 @@ namespace DocSort_CPA.Forms
                 {
                     DataTable getFolderNames = new DataTable();
 
+                    //DtFolders.Table
+
+                    string searchCriteria = "Folder_Name like '%" + txtSearch.Text.ToUpper() + "%'" + "and" + " ParentFolderID = '" + 0 + "'" + "and" + " IsDelete = '" + "True" + "'";
+
                     if (DtFolders != null)
                     {
                         if (DtFolders.Rows.Count > 0)
                         {
-                            DataRow[] drResult = DtFolders.Select("Folder_Name like '%" + txtSearch.Text.ToUpper() + "%'" + "and" + " ParentFolderID = '" + 0 + "'" + "and" + " IsDelete = '" + "True" + "'");
+                            DataRow[] drResult = DtFolders.Select(searchCriteria);
                             if (drResult.Count() != 0)
                             {
                                 getFolderNames = drResult.CopyToDataTable();
@@ -2949,7 +3379,7 @@ namespace DocSort_CPA.Forms
                     }
 
                     treeView1.Nodes.Clear();
-                    if (getFolderNames.HasErrors != null && getFolderNames.Rows.Count > 0)
+                    if (!getFolderNames.HasErrors  && getFolderNames.Rows.Count > 0)
                     {
                         DataView view = new DataView(getFolderNames);
                         DataTable distinctCabinets = new DataTable();
@@ -2972,7 +3402,7 @@ namespace DocSort_CPA.Forms
                                     dtfilecabinets = drResult.CopyToDataTable();
                                 }
                             }
-                            if (dtfilecabinets.HasErrors != null && dtfilecabinets.Rows.Count > 0)
+                            if (!dtfilecabinets.HasErrors && dtfilecabinets.Rows.Count > 0)
                             {
                                 DataRow drCabinet = dtfilecabinets.Rows[0];
 
@@ -2983,15 +3413,13 @@ namespace DocSort_CPA.Forms
                                 Root.ImageKey = "LockerIcon.png";
                                 Root.SelectedImageKey = "LockerIcon.png";
 
-
-
                                 DataTable dtFindNodes = new DataTable();
                                 DataRow[] drSameCabinetIDRows = getFolderNames.Select("FileCabinet_ID = '" + dr["FileCabinet_ID"].ToString() + "'");
                                 if (drSameCabinetIDRows.Count() != 0)
                                 {
 
                                     dtFindNodes = drSameCabinetIDRows.CopyToDataTable();
-                                    if (dtFindNodes.HasErrors != null && dtFindNodes.Rows.Count > 0)
+                                    if(!dtFindNodes.HasErrors && dtFindNodes.Rows.Count > 0)
                                     {
                                         foreach (DataRow drFinalNodes in dtFindNodes.Rows)
                                         {
@@ -3000,24 +3428,48 @@ namespace DocSort_CPA.Forms
                                     }
                                 }
                             }
-
                             treeView1.Nodes.Add(Root);
                             Root.Expand();
-                          
                         }
-
-
                     }
                 }
                 catch (Exception x)
                 {
-                    MessageBox.Show(x.Message, "Error While retriving data from Folder xml");
+                    MessageBox.Show(x.Message, "Please try again !! If the problem is persisting, please contact the DocSort Support.");
                 }
             }
             else
             {
                 treeView1.Nodes.Clear();
-                DashBoardHome_Load(sender, e);
+
+                // DashBoardHome_Load(sender, e);//Nishanth  Search Optimi commented .Need to double confirm why he commented.
+
+                //The below if and else code is added by Nishanth for search optim
+                if (strRootNode != null)
+                {
+                    LoadTreeview(strRootNodeID, strRootNode.ToUpper());
+                }
+                else
+                {
+                    LoadTreeview("1", "ROOT");
+
+                    // sorting table by removing ROOT default cabinet outside
+
+                    DataRow[] drResult = DtCabinets.Select("FileCabinet_ID <> '" + 1 + "'" + "and" + " IsDelete = '" + "True" + "'");
+                    if (drResult.Count() != 0)
+                    {
+                        DataTable dtfilecabinets = drResult.CopyToDataTable();
+
+                        DataView dv = dtfilecabinets.DefaultView;
+                        dv.Sort = "FileCabinet_Name asc";
+                        DataTable sortedDT = dv.ToTable();
+
+                        foreach (DataRow dr in sortedDT.Rows)
+                        {
+                            LoadTreeview(dr["FileCabinet_ID"].ToString(), dr["FileCabinet_Name"].ToString().ToUpper());
+                        }
+                    }
+                }
             }
         }
 
