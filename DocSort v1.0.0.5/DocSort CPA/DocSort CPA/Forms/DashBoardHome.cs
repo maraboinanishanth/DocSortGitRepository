@@ -1087,25 +1087,7 @@ namespace DocSort_CPA.Forms
             treeView1.SelectedNode.Remove();
         }
 
-        private void ImportFoldersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string Path = string.Empty;
-            treeView1.HideSelection = false;
-            FolderBrowserDialog fd = new FolderBrowserDialog();
-            fd.Description = "Select a folder which has files";
-            fd.ShowNewFolderButton = true;
-            DialogResult dr = fd.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                Path = fd.SelectedPath;
-
-                ListDirectory(treeView1, Path);
-            }
-            else
-            {
-                Path = "";
-            }
-        }
+        
 
         string FileArray = string.Empty;
         string FilePathArray = string.Empty;
@@ -2032,7 +2014,45 @@ namespace DocSort_CPA.Forms
                 }
             }
         }
+
         static System.Collections.Specialized.StringCollection log = new System.Collections.Specialized.StringCollection();
+
+        private void ImportFoldersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string Path = string.Empty;
+            treeView1.HideSelection = false;
+            FolderBrowserDialog fd = new FolderBrowserDialog();
+            fd.Description = "Select a folder which has files";
+            fd.ShowNewFolderButton = true;
+            DialogResult dr = fd.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                Path = fd.SelectedPath;
+
+                //ListDirectory(treeView1, Path);//Initial code. Nishanth Commented it
+
+                string folderName = Path.Split('\\')[Path.Split('\\').Count() - 1];
+
+                var rootDirectoryInfo = new DirectoryInfo(Path);
+                if (treeView1.SelectedNode.Text == "ROOT")
+                {
+                    WalkDirectoryTree(rootDirectoryInfo, treeView1.SelectedNode.Name,"0");// FOr folder import this is working just awesome. Need to proceed with this. Please note that below mentioned approach is commented.
+                }
+                else {
+
+                    WalkDirectoryTree(rootDirectoryInfo, treeView1.SelectedNode.Name, "0");
+                }
+                //LoadTreeview(treeView1.SelectedNode.Name, treeView1.SelectedNode.Text);
+                //SaveImportingFolder(folderName, Path);// After Building WalkTreeDirectory. This method is obsolete. Need to remove Nishanth.
+
+                treeView1.Nodes.Clear();
+                DashBoardHome_Load(sender, e);
+            }
+            else
+            {
+                Path = "";
+            }
+        }
         private void ImportFoldersToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             string Path = string.Empty;
