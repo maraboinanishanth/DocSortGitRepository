@@ -197,7 +197,7 @@ namespace Business.Manager
             try
             {
                 NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetRoles", CommandType.Text, m_oTransaction, paramArray);
+                NandanaDBRequest request = new NandanaDBRequest("sp_GetRoles", CommandType.StoredProcedure, m_oTransaction, paramArray);//Issue fixed by Nishanth//Getting error onclick of last tab.Fixed.
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)

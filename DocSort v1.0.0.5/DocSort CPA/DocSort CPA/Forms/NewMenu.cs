@@ -2239,8 +2239,8 @@ namespace DocSort_CPA.Forms
         private void NewMenu_MouseMove(object sender, MouseEventArgs e)
         {
             if (onFullScreen | maximized) { return; }
-
-            if (this.Width <= minimumWidth) { this.Width = (minimumWidth + 5); on_MinimumSize = true; }
+            if (WindowState == FormWindowState.Minimized)
+                if (this.Width <= minimumWidth) { this.Width = (minimumWidth + 5); on_MinimumSize = true; }
             if (this.Height <= minimumHeight) { this.Height = (minimumHeight + 5); on_MinimumSize = true; }
             if (on_MinimumSize) { stopResizer(); } else { startResizer(); }
 

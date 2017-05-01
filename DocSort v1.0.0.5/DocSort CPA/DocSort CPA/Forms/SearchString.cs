@@ -26,6 +26,7 @@ using DocSort_CPA.Reports;
 using System.Diagnostics;
 using Business.Manager;
 using Common;
+using System.Threading.Tasks;
 
 namespace DocSort_CPA.Forms
 {
@@ -672,10 +673,112 @@ namespace DocSort_CPA.Forms
                         }
                         else
                         {
+                            //Stopwatch sw1 = new Stopwatch();
+                            //TimeSpan time1 = new TimeSpan();
+                            //sw1.Start();
+                            //Parallel.ForEach(path, new ParallelOptions { MaxDegreeOfParallelism = 2 }, (currentPath) =>
+                            //{
+
+                            //    //MaxDegreeOfParallelism = Convert.ToInt32(Math.Ceiling((Environment.ProcessorCount * 0.75) * 1.0))
+                            //    // The more computational work you do here, the greater 
+                            //    // the speedup compared to a sequential foreach loop.
+                            //    String filename = System.IO.Path.GetFileName(currentPath);
+
+                            //    if (Dttemp.Rows.Count == 50)
+                            //    {
+                            //        CreateFolders();
+                            //        UpdateScannedConfigValues(ScannedReadCountConfigValue, LockDocCountConfigValue, IsExpiredConfigValue);
+                            //        Dttemp.Clear();
+                            //    }
+                            //    if (ScannedReadCountConfigValue > 0)
+                            //    {
+                            //        if (ScannedReadCountConfigValue == ((TotalGivenDocCount * 10) / 100) || ScannedReadCountConfigValue == ((TotalGivenDocCount * 20) / 100) || ScannedReadCountConfigValue == ((TotalGivenDocCount * 30) / 100))
+                            //        {
+                            //            AlertPage objAlertpage = new AlertPage();
+                            //            objAlertpage.ScannedCount = Convert.ToString(ScannedReadCountConfigValue);
+                            //            objAlertpage.ShowDialog();
+
+                            //        }
+                            //        ScannedReadCountConfigValue = ScannedReadCountConfigValue - 1;
+                            //        LockDocCountConfigValue = LockDocCountConfigValue + 1;
+                            //        //Stopwatch sw = new Stopwatch();
+                            //        //TimeSpan time = new TimeSpan();
+                            //        //sw.Start(); // To initialize
+                            //        MoveMyFiles(currentPath);
+                            //        //j = getProgressValue();
+                            //        //int timecount = filecount - j;
+                            //        // Report progress.
+                            //        //string progressStatus = "Processing " + j + "/" + filecount + "";
+                            //        //sw.Stop();
+                            //        //int secs = sw.Elapsed.Seconds * timecount;
+                            //        //time = TimeSpan.FromSeconds(secs);
+                            //        //string progressStatus = "Reading Files and File Count is (" + j + ")";
+                            //        //((BackgroundWorker)se).ReportProgress(j, progressStatus);
+                            //        //UpdateStatus("" + System.IO.Path.GetFileName(currentPath) + "", time);
+
+                            //        if (cancel == true)
+                            //        {
+                            //            Thread.CurrentThread.Abort();//Look into this nishanth. This gets called when the user clicks cancel
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+
+                            //        CreateFolders();
+                            //        IsExpiredConfigValue = 1;
+                            //        UpdateScannedConfigValues(ScannedReadCountConfigValue, LockDocCountConfigValue, IsExpiredConfigValue);
+
+                            //        ConfirmLicense objConfirmLicense = new ConfirmLicense();
+                            //        objConfirmLicense.IsExpired = IsExpiredConfigValue.ToString();
+                            //        objConfirmLicense.ShowDialog();
+                            //        if (objConfirmLicense.ConfigID != null)
+                            //        {
+                            //            //if Licensed Key
+                            //            objConfirmLicense.Hide();
+                            //            Dttemp.Clear();
+
+                            //            ScannedReadCountConfigValue = Convert.ToInt32(this.Decrypt(objConfirmLicense.ScannedReadCountConfigValue).ToString());
+                            //            LockDocCountConfigValue = Convert.ToInt32(this.Decrypt(objConfirmLicense.LockDocCountConfigValue).ToString());
+                            //            IsExpiredConfigValue = 0;
+                            //            UpdateScannedConfigValues(ScannedReadCountConfigValue, LockDocCountConfigValue, IsExpiredConfigValue);
+                            //            Stopwatch sw = new Stopwatch();
+                            //            TimeSpan time = new TimeSpan();
+                            //            sw.Start(); // To initialize
+                            //            MoveMyFiles(currentPath);
+                            //            int timecount = filecount - j;
+                            //            j = getProgressValue();
+                            //            // Report progress.
+                            //            string progressStatus = "Processing " + j + "/" + filecount + "";
+                            //            sw.Stop();
+                            //            int secs = sw.Elapsed.Seconds * timecount;
+                            //            time = TimeSpan.FromSeconds(secs);
+                            //            //string progressStatus = "Reading Files and File Count is (" + j + ")";
+                            //            ((BackgroundWorker)se).ReportProgress(j, progressStatus);
+                            //            UpdateStatus("" + System.IO.Path.GetFileName(currentPath) + "", time);
+
+                            //            if (cancel == true)
+                            //            {
+                            //                //break;
+                            //                Thread.CurrentThread.Abort();//Look into this nishanth. This gets called when the user clicks cancel
+                            //            }
+                            //        }
+                            //    }
+
+                            //    // Peek behind the scenes to see how work is parallelized.
+                            //    // But be aware: Thread contention for the Console slows down parallel loops!!!
+
+                            //    //  Console.WriteLine("Processing {0} on thread {1}", filename, Thread.CurrentThread.ManagedThreadId);
+                            //    //close lambda expression and method invocation
+                            //});
+                            //sw1.Stop();
+                            //int secs1 = sw1.Elapsed.Seconds ;
+                            //time1 = TimeSpan.FromSeconds(secs1);
+
                             //Process that takes a long time
                             //Formula to calculate Progress Percentage 
                             //This is how I calculated for my program. Divide 100 by number of loops you have
-                            for (int i = j; i < filecount; i++)
+                            //Nishanth Commented the below lines of code. the below for each is the actual for which is currently working as of april/13/2017
+                            for (int i = 0; i < filecount; i++)//Removed j and set 0 in that place Nishanth
                             {
                                 if (Dttemp.Rows.Count == 50)
                                 {

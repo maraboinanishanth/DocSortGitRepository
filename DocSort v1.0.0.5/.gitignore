@@ -1,0 +1,31 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/DocSort CPA/.nuget/NuGet.exe
+/.vs/DocSort v1.0.0.5/v15/.suo
+/DocSort CPA/.vs/DocSort CPA-SQL-Version1.0.0/v15/.suo
+/DocSort CPA/Business/bin/Debug/Business.dll
+/DocSort CPA/Business/bin/Debug
+*.dll
+*.cache
+*.pdb
+*.cache
+/DocSort CPA/Business/obj/Debug
+/DocSort CPA/Business/obj/Release
+/DocSort CPA/Business/obj/Debug
+/DocSort CPA/Business/obj/Release
+/DocSort CPA/DocSort CPA/bin/Debug/app.publish
+/DocSort CPA/DocSort CPA/bin/Release
+/DocSort CPA/DocSort CPA/bin/Debug/app.publish
+/DocSort CPA/DocSort CPA/bin/Release
+/DocSort CPA/DocSort CPA/obj/x86/Debug/DocSort CPA.exe
+/DocSort CPA/DocSortWeb/App_Data
+/DocSort CPA/DocSortWeb/App_Data
+/DocSort CPA/Common/obj/Release
+/DocSort CPA/DataAccess/obj/Release
+/DocSort CPA/DocSort CPA/obj/x86/Release
+/DocSort CPA/DocSort CPA-SQL-Version1.0.0.suo
+/DocSort CPA/DocSort CPA/DocSort CPA.csproj.user
+/DocSort CPA/DocSort CPA/DocSort CPA.csproj.user
+/DocSort CPA/DocSort CPA/DocSort CPA.csproj.user

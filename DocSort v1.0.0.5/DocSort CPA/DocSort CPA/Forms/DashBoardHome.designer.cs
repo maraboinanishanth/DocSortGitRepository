@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using System.Windows.Forms;
+
 namespace DocSort_CPA.Forms
 {
     partial class DashBoardHome
@@ -241,6 +244,8 @@ namespace DocSort_CPA.Forms
             this.treeView1.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeSelect);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
+            this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeExpand);
+            // 
             // 
             // imageList1
             // 
@@ -680,7 +685,11 @@ namespace DocSort_CPA.Forms
 
         }
 
-        
+
+       
+ 
+
+
 
         #endregion
 
