@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{3B64F44A-6C89-46F6-9DFB-1E90FF4CBC36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{A4E407C6-6A9F-4677-86AE-6995BDAB7A41}"
@@ -15,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A0CC1B
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseScripts", "DatabaseScripts\DatabaseScripts.csproj", "{8D258E8E-127F-4CBD-9FD0-7B430C44B437}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +139,36 @@ Global
 		{862247D6-CCEB-41DB-9BBC-57452985C0FF}.SingleImage|Mixed Platforms.Build.0 = Release|x86
 		{862247D6-CCEB-41DB-9BBC-57452985C0FF}.SingleImage|x86.ActiveCfg = Release|x86
 		{862247D6-CCEB-41DB-9BBC-57452985C0FF}.SingleImage|x86.Build.0 = Release|x86
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.CD_ROM|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.CD_ROM|Mixed Platforms.Build.0 = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.CD_ROM|x86.ActiveCfg = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.CD_ROM|x86.Build.0 = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Debug|x86.Build.0 = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.DVD-5|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.DVD-5|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.DVD-5|x86.ActiveCfg = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.DVD-5|x86.Build.0 = Debug|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Release|x86.ActiveCfg = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.Release|x86.Build.0 = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.SingleImage|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.SingleImage|Mixed Platforms.Build.0 = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.SingleImage|x86.ActiveCfg = Release|Any CPU
+		{8D258E8E-127F-4CBD-9FD0-7B430C44B437}.SingleImage|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,12 @@
+DELIMITER $$
+
+USE `cpa-mysql`$$
+
+DROP PROCEDURE IF EXISTS `sp_Users`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_Users`(IN UserName VARCHAR(50),IN Pwd VARCHAR(45))
+BEGIN
+SELECT * FROM tbl_users AS U INNER JOIN tbl_roles AS R ON U.Role_ID = R.Role_ID WHERE User_Name=UserName AND PASSWORD=Pwd AND STATUS=TRUE;
+END$$
+
+DELIMITER ;
