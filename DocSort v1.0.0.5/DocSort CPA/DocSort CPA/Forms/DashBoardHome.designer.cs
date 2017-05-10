@@ -348,6 +348,7 @@ namespace DocSort_CPA.Forms
             this.ImportFoldersToolStripMenuItem.Name = "ImportFoldersToolStripMenuItem";
             this.ImportFoldersToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.ImportFoldersToolStripMenuItem.Text = "Import Folders";
+            this.ImportFoldersToolStripMenuItem.Visible = true;
             this.ImportFoldersToolStripMenuItem.Click += new System.EventHandler(this.ImportFoldersToolStripMenuItem_Click);
             // 
             // ImportFlatFileToolStripMenuItem
@@ -488,6 +489,8 @@ namespace DocSort_CPA.Forms
             this.ImportFoldersToolStripMenuItem1.Name = "ImportFoldersToolStripMenuItem1";
             this.ImportFoldersToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.ImportFoldersToolStripMenuItem1.Text = "Import Folders";
+            this.ImportFoldersToolStripMenuItem1.Visible = true;
+
             this.ImportFoldersToolStripMenuItem1.Click += new System.EventHandler(this.ImportFoldersToolStripMenuItem1_Click);
             // 
             // SendtoToolStripMenuItem1
