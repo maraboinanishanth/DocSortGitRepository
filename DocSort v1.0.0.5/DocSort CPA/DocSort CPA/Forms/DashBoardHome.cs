@@ -46,7 +46,6 @@ namespace DocSort_CPA.Forms
         FolderManager objFolderManager = new FolderManager();
         FilesManager objFilesManager = new FilesManager();
 
-        object backupTreeViewObject;
         NandanaResult dsUniversalCabinetsFoldersFiles;
         DataView universalDataView = new DataView();
         private void DashBoardHome_Load(object sender, EventArgs e)
@@ -54,18 +53,12 @@ namespace DocSort_CPA.Forms
             // Checking Useraccesspermissions based on Role
             GetPermissiondetails(2);
 
-
-            // End
-
-            //txtSearch.ForeColor = System.Drawing.ColorTranslator.FromHtml("#444444");
             treeView1.ForeColor = System.Drawing.ColorTranslator.FromHtml("#444444");
             int Devicewidth = UserAccessPermissionvalues.DeviceWidth;
             int Deviceheight = UserAccessPermissionvalues.DeviceHeight;
-            this.Location = new Point(((Devicewidth-3) - this.ClientSize.Width) / 2, 139);
+            this.Location = new Point(((Devicewidth - 3) - this.ClientSize.Width) / 2, 139);
 
             this.ControlBox = false;
-            //this.Location = new Point(5, 173);
-            //this.WindowState = FormWindowState.Maximized;
 
             txtSearch.GotFocus += new EventHandler(this.UserTextGotFocus);
             txtSearch.LostFocus += new EventHandler(this.UserTextLostFocus);
@@ -76,54 +69,41 @@ namespace DocSort_CPA.Forms
 
             DataTable dtfilecabinets = new DataTable();
 
-            //GetFileCabinets(); Actual code commented by nishanth
+            //if (strRootNode != null)
+            //{
+            //    //LoadTreeview(strRootNodeID, strRootNode.ToUpper());
+            //}
+            //else
+            //{
+                //LoadTreeview("1", "ROOT");
 
-            //GetFolders();Actual code commented by nishanth
-
-            //GetFiles();Actual code commented by nishanth
-
-            if (strRootNode != null)
-            {
-                //strRootNode = newfilecabinet.FileCabinetName;
-                //strRootNodeID = newfilecabinet.FileCabinetID;
-
-                LoadTreeview(strRootNodeID, strRootNode.ToUpper());
-            }
-            else
-            {
-                LoadTreeview("1", "ROOT");
-
-                // sorting table by removing ROOT default cabinet outside
-
-                //DataRow[] drResult = DtCabinets.Select("FileCabinet_ID <> '" + 1 + "'" + "and" + " IsDelete = '" + "True" + "'");
-                //if (drResult.Count() != 0)//If condition commented by nishanth
-                //{
-                //dtfilecabinets = drResult.CopyToDataTable();//commented by nishanth
-
-                //DataView dv = dtfilecabinets.DefaultView;//commented by nishanth
-                //dv.Sort = "FileCabinet_Name asc";//commented by nishanth
-                //DataTable sortedDT = dv.ToTable();//commented by nishanth
+                //TreeNode rootTreeNode = treeView1.Nodes.Add("1", "ROOT");
+                //rootTreeNode.ContextMenuStrip = RootNodeContextMenu;
+                //rootTreeNode.ImageKey = "LockerIcon.png";
+                //rootTreeNode.SelectedImageKey = "LockerIcon.png";
+                //rootTreeNode.Nodes.Add("TempKey", "TempNode");
 
                 dsUniversalCabinetsFoldersFiles = objFilesManager.GetCabinetsFolderAndFiles();
-                    
-                    universalDataView = dsUniversalCabinetsFoldersFiles.ResultTable.Select().CopyToDataTable().DefaultView;
-                    DataTable sortedDT1 = universalDataView.ToTable();
 
-                    DataTable dtFirstFourColumns = universalDataView.ToTable("FirstFourColumns", true, "FileCabinetID", "FileCabinetName","FolderID","FolderName");
-                    DataTable dtFirstColum = universalDataView.ToTable("FirstFourColumns", true, "FileCabinetID");
+                universalDataView = dsUniversalCabinetsFoldersFiles.ResultTable.Select().CopyToDataTable().DefaultView;
+                //DataTable sortedDT1 = universalDataView.ToTable();
 
+                DataTable dtFirstFourColumns = universalDataView.ToTable("FirstFourColumns", true, "FileCabinetID", "FileCabinetName", "FolderID", "FolderName");
+                //DataTable dtFirstColum = universalDataView.ToTable("FirstFourColumns", true, "FileCabinetID");
+
+                if (dtFirstFourColumns.Rows.Count > 0)
+                {
                     var list = dtFirstFourColumns.Rows.OfType<DataRow>().Select(dr => dr.Field<Int32>("FileCabinetID")).ToList().Distinct();
-                   
+
                     try
                     {
                         foreach (Int32 fileCabinetID in list)
                         {
                             TreeNode treeNode = new TreeNode();
-                            
 
                             treeNode.Name = fileCabinetID.ToString();
                             treeNode.Text = dtFirstFourColumns.Select("FileCabinetID = " + treeNode.Name).ElementAt(1).ItemArray[1].ToString().ToUpper();
-                           
+
                             DataView dv2 = dtFirstFourColumns.DefaultView;
                             treeView1.ImageList = imageList1;
 
@@ -131,41 +111,15 @@ namespace DocSort_CPA.Forms
                             treeNode.ImageKey = "LockerIcon.png";
                             treeNode.SelectedImageKey = "LockerIcon.png";
 
-                            TreeNode treeNodeTemp = treeNode.Nodes.Add("TempKey","TempNode");
+                            TreeNode treeNodeTemp = treeNode.Nodes.Add("TempKey", "TempNode");
                             treeView1.Nodes.Add(treeNode);
-                            //treeNodeTemp.EnsureVisible();
-
-                            //DataRow[] datarows = dv2.ToTable("dtFirstThreeColumns", true,"FileCabinetID", "FolderID", "FolderName").Select("FileCabinetID = " + treeNode.Name);
-                            ////DataRow[] datarows = dtFirstTwoColumns.Select("FileCabinetID = " + treeNode.Name);
-                            ////Dictionary<string, string> folderIDName = new Dictionary<string, string>();
-
-                            ////IEnumerable<DataRow> enumDR = dtFirstTwoColumns.Select("FileCabinetID = " + treeNode.Name).Distinct(); 
-                            //foreach (DataRow dr1 in datarows)
-                            //{
-                            //    if (dr1["FolderID"] != null && dr1["FolderID"].ToString() != string.Empty)
-                            //    {
-                            //        TreeNode treeNode10 = new TreeNode();
-                            //        treeNode10.Name = dr1["FolderID"].ToString();
-                            //        treeNode10.Text = dr1["FolderName"].ToString();
-                            //        treeNode.Nodes.Add(treeNode10);
-
-                            //    }
-                            //}
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         string s = "";
                     }
-
-                    //Nishanth Code comment start
-                    //foreach (DataRow dr in sortedDT.Rows)
-                    //{
-                    //    LoadTreeview(dr["FileCabinet_ID"].ToString(), dr["FileCabinet_Name"].ToString().ToUpper());
-                    //}
-                    //Nishanth Code comment end
                 //}
-                //treeView1.Sort();
             }
         }
 
@@ -1310,7 +1264,25 @@ namespace DocSort_CPA.Forms
             treeView1.SelectedNode.Remove();
         }
 
-        
+        private void ImportFoldersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string Path = string.Empty;
+            treeView1.HideSelection = false;
+            FolderBrowserDialog fd = new FolderBrowserDialog();
+            fd.Description = "Select a folder which has files";
+            fd.ShowNewFolderButton = true;
+            DialogResult dr = fd.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                Path = fd.SelectedPath;
+
+                ListDirectory(treeView1, Path);
+            }
+            else
+            {
+                Path = "";
+            }
+        }
 
         string FileArray = string.Empty;
         string FilePathArray = string.Empty;
@@ -2237,45 +2209,7 @@ namespace DocSort_CPA.Forms
                 }
             }
         }
-
         static System.Collections.Specialized.StringCollection log = new System.Collections.Specialized.StringCollection();
-
-        private void ImportFoldersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string Path = string.Empty;
-            treeView1.HideSelection = false;
-            FolderBrowserDialog fd = new FolderBrowserDialog();
-            fd.Description = "Select a folder which has files";
-            fd.ShowNewFolderButton = true;
-            DialogResult dr = fd.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                Path = fd.SelectedPath;
-
-                //ListDirectory(treeView1, Path);//Initial code. Nishanth Commented it
-
-                string folderName = Path.Split('\\')[Path.Split('\\').Count() - 1];
-
-                var rootDirectoryInfo = new DirectoryInfo(Path);
-                if (treeView1.SelectedNode.Text == "ROOT")
-                {
-                    WalkDirectoryTree(rootDirectoryInfo, treeView1.SelectedNode.Name,"0");// FOr folder import this is working just awesome. Need to proceed with this. Please note that below mentioned approach is commented.
-                }
-                else {
-
-                    WalkDirectoryTree(rootDirectoryInfo, treeView1.SelectedNode.Name, "0");
-                }
-                //LoadTreeview(treeView1.SelectedNode.Name, treeView1.SelectedNode.Text);
-                //SaveImportingFolder(folderName, Path);// After Building WalkTreeDirectory. This method is obsolete. Need to remove Nishanth.
-
-                treeView1.Nodes.Clear();
-                DashBoardHome_Load(sender, e);
-            }
-            else
-            {
-                Path = "";
-            }
-        }
         private void ImportFoldersToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             string Path = string.Empty;
@@ -3717,129 +3651,127 @@ namespace DocSort_CPA.Forms
                 }
             }
 
-            return;
-
-            if (txtSearch.Text.Length < 2)
-            {
-                return; //Nishanth. There is no need to do anything for less than two charachters
-            }
-            if (txtSearch.Text != "" && txtSearch.Text != "Search" && txtSearch.Text.Length > 2)
-            {
-            //if (txtSearch.Text != "" && txtSearch.Text != "Search")
+            //if (txtSearch.Text.Length < 2)
             //{
-                try
-                {
-                    DataTable getFolderNames = new DataTable();
+            //    return; //Nishanth. There is no need to do anything for less than two charachters
+            //}
+            //if (txtSearch.Text != "" && txtSearch.Text != "Search" && txtSearch.Text.Length > 2)
+            //{
+            ////if (txtSearch.Text != "" && txtSearch.Text != "Search")
+            ////{
+            //    try
+            //    {
+            //        DataTable getFolderNames = new DataTable();
 
-                    //DtFolders.Table
+            //        //DtFolders.Table
 
-                    string searchCriteria = "Folder_Name like '%" + txtSearch.Text.ToUpper() + "%'" + "and" + " ParentFolderID = '" + 0 + "'" + "and" + " IsDelete = '" + "True" + "'";
+            //        string searchCriteria = "Folder_Name like '%" + txtSearch.Text.ToUpper() + "%'" + "and" + " ParentFolderID = '" + 0 + "'" + "and" + " IsDelete = '" + "True" + "'";
 
-                    if (DtFolders != null)
-                    {
-                        if (DtFolders.Rows.Count > 0)
-                        {
-                            DataRow[] drResult = DtFolders.Select(searchCriteria);
-                            if (drResult.Count() != 0)
-                            {
-                                getFolderNames = drResult.CopyToDataTable();
-                            }
-                        }
-                    }
+            //        if (DtFolders != null)
+            //        {
+            //            if (DtFolders.Rows.Count > 0)
+            //            {
+            //                DataRow[] drResult = DtFolders.Select(searchCriteria);
+            //                if (drResult.Count() != 0)
+            //                {
+            //                    getFolderNames = drResult.CopyToDataTable();
+            //                }
+            //            }
+            //        }
 
-                    treeView1.Nodes.Clear();
-                    if (!getFolderNames.HasErrors  && getFolderNames.Rows.Count > 0)
-                    {
-                        DataView view = new DataView(getFolderNames);
-                        DataTable distinctCabinets = new DataTable();
-                        distinctCabinets = view.ToTable(true, "FileCabinet_ID");
+            //        treeView1.Nodes.Clear();
+            //        if (!getFolderNames.HasErrors  && getFolderNames.Rows.Count > 0)
+            //        {
+            //            DataView view = new DataView(getFolderNames);
+            //            DataTable distinctCabinets = new DataTable();
+            //            distinctCabinets = view.ToTable(true, "FileCabinet_ID");
 
-                        foreach (DataRow dr in distinctCabinets.Rows)
-                        {
-                            TreeNode Root = new TreeNode();
+            //            foreach (DataRow dr in distinctCabinets.Rows)
+            //            {
+            //                TreeNode Root = new TreeNode();
 
-                            DataTable dtfilecabinets = new DataTable();
+            //                DataTable dtfilecabinets = new DataTable();
 
-                            NandanaResult objgetfilecabinets = objFileCabinetManager.GetFileCabinets();
+            //                NandanaResult objgetfilecabinets = objFileCabinetManager.GetFileCabinets();
 
 
-                            if (objgetfilecabinets.resultDS!=null && objgetfilecabinets.resultDS.Tables[0].Rows.Count > 0)
-                            {
-                                DataRow[] drResult = objgetfilecabinets.resultDS.Tables[0].Select("FileCabinet_ID = '" + dr["FileCabinet_ID"].ToString() + "'");
-                                if (drResult.Count() != 0)
-                                {
-                                    dtfilecabinets = drResult.CopyToDataTable();
-                                }
-                            }
-                            if (!dtfilecabinets.HasErrors && dtfilecabinets.Rows.Count > 0)
-                            {
-                                DataRow drCabinet = dtfilecabinets.Rows[0];
+            //                if (objgetfilecabinets.resultDS!=null && objgetfilecabinets.resultDS.Tables[0].Rows.Count > 0)
+            //                {
+            //                    DataRow[] drResult = objgetfilecabinets.resultDS.Tables[0].Select("FileCabinet_ID = '" + dr["FileCabinet_ID"].ToString() + "'");
+            //                    if (drResult.Count() != 0)
+            //                    {
+            //                        dtfilecabinets = drResult.CopyToDataTable();
+            //                    }
+            //                }
+            //                if (!dtfilecabinets.HasErrors && dtfilecabinets.Rows.Count > 0)
+            //                {
+            //                    DataRow drCabinet = dtfilecabinets.Rows[0];
 
-                                Root = new TreeNode(drCabinet["FileCabinet_Name"].ToString().ToUpper());
+            //                    Root = new TreeNode(drCabinet["FileCabinet_Name"].ToString().ToUpper());
 
-                                Root.Name = dr["FileCabinet_ID"].ToString();
-                                Root.ContextMenuStrip = RootNodeContextMenu;
-                                Root.ImageKey = "LockerIcon.png";
-                                Root.SelectedImageKey = "LockerIcon.png";
+            //                    Root.Name = dr["FileCabinet_ID"].ToString();
+            //                    Root.ContextMenuStrip = RootNodeContextMenu;
+            //                    Root.ImageKey = "LockerIcon.png";
+            //                    Root.SelectedImageKey = "LockerIcon.png";
 
-                                DataTable dtFindNodes = new DataTable();
-                                DataRow[] drSameCabinetIDRows = getFolderNames.Select("FileCabinet_ID = '" + dr["FileCabinet_ID"].ToString() + "'");
-                                if (drSameCabinetIDRows.Count() != 0)
-                                {
+            //                    DataTable dtFindNodes = new DataTable();
+            //                    DataRow[] drSameCabinetIDRows = getFolderNames.Select("FileCabinet_ID = '" + dr["FileCabinet_ID"].ToString() + "'");
+            //                    if (drSameCabinetIDRows.Count() != 0)
+            //                    {
 
-                                    dtFindNodes = drSameCabinetIDRows.CopyToDataTable();
-                                    if(!dtFindNodes.HasErrors && dtFindNodes.Rows.Count > 0)
-                                    {
-                                        foreach (DataRow drFinalNodes in dtFindNodes.Rows)
-                                        {
-                                            GetFilecabinetAndMainFolderNames(Root, drFinalNodes["FileCabinet_ID"].ToString(), drFinalNodes["Folder_ID"].ToString(), drFinalNodes["Folder_Name"].ToString(), drFinalNodes["ParentFolderID"].ToString());
-                                        }
-                                    }
-                                }
-                            }
-                            treeView1.Nodes.Add(Root);
-                            Root.Expand();
-                        }
-                    }
-                }
-                catch (Exception x)
-                {
-                    MessageBox.Show(x.Message, "Please try again !! If the problem is persisting, please contact the DocSort Support.");
-                }
-            }
-            else
-            {
-                treeView1.Nodes.Clear();
+            //                        dtFindNodes = drSameCabinetIDRows.CopyToDataTable();
+            //                        if(!dtFindNodes.HasErrors && dtFindNodes.Rows.Count > 0)
+            //                        {
+            //                            foreach (DataRow drFinalNodes in dtFindNodes.Rows)
+            //                            {
+            //                                GetFilecabinetAndMainFolderNames(Root, drFinalNodes["FileCabinet_ID"].ToString(), drFinalNodes["Folder_ID"].ToString(), drFinalNodes["Folder_Name"].ToString(), drFinalNodes["ParentFolderID"].ToString());
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //                treeView1.Nodes.Add(Root);
+            //                Root.Expand();
+            //            }
+            //        }
+            //    }
+            //    catch (Exception x)
+            //    {
+            //        MessageBox.Show(x.Message, "Please try again !! If the problem is persisting, please contact the DocSort Support.");
+            //    }
+            //}
+            //else
+            //{
+            //    treeView1.Nodes.Clear();
 
-                // DashBoardHome_Load(sender, e);//Nishanth  Search Optimi commented .Need to double confirm why he commented.
+            //    // DashBoardHome_Load(sender, e);//Nishanth  Search Optimi commented .Need to double confirm why he commented.
 
-                //The below if and else code is added by Nishanth for search optim
-                if (strRootNode != null)
-                {
-                    LoadTreeview(strRootNodeID, strRootNode.ToUpper());
-                }
-                else
-                {
-                    LoadTreeview("1", "ROOT");
+            //    //The below if and else code is added by Nishanth for search optim
+            //    if (strRootNode != null)
+            //    {
+            //        LoadTreeview(strRootNodeID, strRootNode.ToUpper());
+            //    }
+            //    else
+            //    {
+            //        LoadTreeview("1", "ROOT");
 
-                    // sorting table by removing ROOT default cabinet outside
+            //        // sorting table by removing ROOT default cabinet outside
 
-                    DataRow[] drResult = DtCabinets.Select("FileCabinet_ID <> '" + 1 + "'" + "and" + " IsDelete = '" + "True" + "'");
-                    if (drResult.Count() != 0)
-                    {
-                        DataTable dtfilecabinets = drResult.CopyToDataTable();
+            //        DataRow[] drResult = DtCabinets.Select("FileCabinet_ID <> '" + 1 + "'" + "and" + " IsDelete = '" + "True" + "'");
+            //        if (drResult.Count() != 0)
+            //        {
+            //            DataTable dtfilecabinets = drResult.CopyToDataTable();
 
-                        DataView dv = dtfilecabinets.DefaultView;
-                        dv.Sort = "FileCabinet_Name asc";
-                        DataTable sortedDT = dv.ToTable();
+            //            DataView dv = dtfilecabinets.DefaultView;
+            //            dv.Sort = "FileCabinet_Name asc";
+            //            DataTable sortedDT = dv.ToTable();
 
-                        foreach (DataRow dr in sortedDT.Rows)
-                        {
-                            LoadTreeview(dr["FileCabinet_ID"].ToString(), dr["FileCabinet_Name"].ToString().ToUpper());
-                        }
-                    }
-                }
-            }
+            //            foreach (DataRow dr in sortedDT.Rows)
+            //            {
+            //                LoadTreeview(dr["FileCabinet_ID"].ToString(), dr["FileCabinet_Name"].ToString().ToUpper());
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         public void GetFilecabinetAndMainFolderNames(TreeNode Root, string CabinetID, string FolderID, string FolderName, string ParentFolderID)
