@@ -110,7 +110,7 @@ namespace DocSort_CPA.Forms
             txtTypeOfSearchString.Text = "";
             txtCategoryValue.Text = "";
 
-            btnMove.Visible = true;
+            //btnMove.Visible = true;
 
             
         }
@@ -1111,7 +1111,7 @@ namespace DocSort_CPA.Forms
                         lnkNewCabinet.Enabled = true;
                         chbUnmatchfiles.Enabled = true;
 
-                        lblFileName.Visible = false;
+                        //lblFileName.Visible = false;
                         lblRemainingTime.Visible = false;
                     };
 
@@ -4865,6 +4865,8 @@ namespace DocSort_CPA.Forms
             progressBarTag.Visible = false;
             // btnBack.Enabled = true;
             //btnFinish.Enabled = true;
+
+
             btnMove.Enabled = false;
 
             NewMenu mf = (NewMenu)this.MdiParent;

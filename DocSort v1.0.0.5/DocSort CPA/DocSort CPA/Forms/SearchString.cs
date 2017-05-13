@@ -1786,27 +1786,33 @@ namespace DocSort_CPA.Forms
                         bitmap.Save(m_sImages + "\\" + FileName.Split('.')[0] + "-" + i + ".jpg", getImageFormat());
                     try
                     {
-                        //OCR Operations ... 
-                        MODI.Document md = new MODI.Document();
-                        md.Create(Convert.ToString(m_sImages + "\\" + FileName.Split('.')[0] + "-" + i + ".jpg"));
-                        md.OCR(MODI.MiLANGUAGES.miLANG_ENGLISH, true, true);
-                        MODI.Image image = (MODI.Image)md.Images[0];
-
-                        string imgdata = image.Layout.Text.ToUpper();
-
-                        //DrBeharaFirstTimeCustomFileOrganizing value should always be N, only for Dr Behara and that too for the first time custom organizing we ned as Y.
-                        String drBeharaFirstTimeCustomFileOrganizing = ConfigurationManager.AppSettings["DrBeharaFirstTimeCustomFileOrganizing"].ToString();
-                        if (drBeharaFirstTimeCustomFileOrganizing == "Y")//this needs to go to the Config. ANd shoud only work for first time for beharas. and shud never work for other clients.
+                        String byPassMODIandConsiderOnlyFileNames = ConfigurationManager.AppSettings["ByPassMODIandConsiderOnlyFileNames"].ToString();
+                        string imgdata = string.Empty;//= image.Layout.Text.ToUpper();
+                        if (byPassMODIandConsiderOnlyFileNames == "Y")
                         {
-                            //imgdata += FileName.Split('.')[0].ToUpper();
-                            imgdata = imgdata.Insert(0, FileName.Split('.')[0].ToUpper() + " "); //this is to make sure the file name is picked up first.
+                            imgdata = FileName.Split('.')[0].ToUpper();
                         }
+                        else
+                        { 
+                            //OCR Operations ... 
+                            MODI.Document md = new MODI.Document();
+                            md.Create(Convert.ToString(m_sImages + "\\" + FileName.Split('.')[0] + "-" + i + ".jpg"));
+                            md.OCR(MODI.MiLANGUAGES.miLANG_ENGLISH, true, true);
+                            MODI.Image image = (MODI.Image)md.Images[0];
+                            imgdata = image.Layout.Text.ToUpper();
+
+                            //DrBeharaFirstTimeCustomFileOrganizing value should always be N, only for Dr Behara and that too for the first time custom organizing we ned as Y.
+                            String drBeharaFirstTimeCustomFileOrganizing = ConfigurationManager.AppSettings["DrBeharaFirstTimeCustomFileOrganizing"].ToString();
+                            if (drBeharaFirstTimeCustomFileOrganizing == "Y")//this needs to go to the Config. ANd shoud only work for first time for beharas. and shud never work for other clients.
+                            {
+                                imgdata = imgdata.Insert(0, FileName.Split('.')[0].ToUpper() + " "); //this is to make sure the file name is picked up first.
+                            }
+                        }
+                        
                         if (imgdata != "")
                         {
                             string SearchText = string.Empty;
                             string TypeOfDoc = string.Empty;
-
-                            //string[] SearchValues = SearchValue.Split(',');
 
                             Searchcount = 0;
                             compareposition = 0;

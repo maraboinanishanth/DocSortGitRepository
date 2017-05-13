@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1297E6EA-F466-4A3A-91F1-DD62EE0B3F1F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataBase_Scripts</RootNamespace>
+    <AssemblyName>DataBase Scripts</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="StoredProcedures\sp_DeleteFileDetails`.sql" />
+    <Content Include="StoredProcedures\sp_GetCabinetsFolderAndFiles.sql" />
+    <Content Include="StoredProcedures\sp_GetLogHistoryDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_AdminChangePassword`.sql" />
+    <Content Include="StoredProcedures\`sp_CheckDuplicateUser`.sql" />
+    <Content Include="StoredProcedures\`sp_DeleteFileCabinetDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_DeleteFolderDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_DeleteUserDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_GetAllConfigValues`.sql" />
+    <Content Include="StoredProcedures\`sp_GetAllForms`.sql" />
+    <Content Include="StoredProcedures\`sp_GetDocumentCountReportUsingDate`.sql" />
+    <Content Include="StoredProcedures\`sp_GetDocumentStatusReportUsingDate`.sql" />
+    <Content Include="StoredProcedures\`sp_GetFileCabinets`.sql" />
+    <Content Include="StoredProcedures\`sp_GetFileDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_GetFolderDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_GetKeywordDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_GetLogHistoryDetailsGO`.sql" />
+    <Content Include="StoredProcedures\`sp_GetMenuNamesByFormID`.sql" />
+    <Content Include="StoredProcedures\`sp_GetNumberOfDocumentCountDetailsUsingDate`.sql" />
+    <Content Include="StoredProcedures\`sp_GetNumberOfMatchedDocumentCountUsingDate`.sql" />
+    <Content Include="StoredProcedures\`sp_GetRoles`.sql" />
+    <Content Include="StoredProcedures\`sp_GetUserDetailsUsingUserID`.sql" />
+    <Content Include="StoredProcedures\`sp_GetUserPermissions`.sql" />
+    <Content Include="StoredProcedures\`sp_GetUsersBasedonRole`.sql" />
+    <Content Include="StoredProcedures\`sp_GetUsers`.sql" />
+    <Content Include="StoredProcedures\`sp_InsertDocumentlistDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_InsertFileCabinetDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_InsertFileDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_InsertFolderDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_InsertKeywordDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_InsertLogHistoryDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_InsertRoleValues`.sql" />
+    <Content Include="StoredProcedures\`sp_InsertScannedDocumentResults`.sql" />
+    <Content Include="StoredProcedures\`sp_InsertUpdateUserAccessPermissions`.sql" />
+    <Content Include="StoredProcedures\`sp_InsertUserValues`.sql" />
+    <Content Include="StoredProcedures\`sp_ShowScannedDocuments`.sql" />
+    <Content Include="StoredProcedures\`sp_UpdateAdminPassword`.sql" />
+    <Content Include="StoredProcedures\`sp_UpdateConfigValues`.sql" />
+    <Content Include="StoredProcedures\`sp_UpdateFileDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_UpdateFileNameDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_UpdateFolderCabinet`.sql" />
+    <Content Include="StoredProcedures\`sp_UpdateFolderNameDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_UpdateUserDetails`.sql" />
+    <Content Include="StoredProcedures\`sp_Users`.sql" />
+    <Content Include="Tables\orders.sql" />
+    <Content Include="Tables\products.sql" />
+    <Content Include="Tables\tbl_config.sql" />
+    <Content Include="Tables\tbl_country.sql" />
+    <Content Include="Tables\tbl_documentlist.sql" />
+    <Content Include="Tables\tbl_filecabinet.sql" />
+    <Content Include="Tables\tbl_files.sql" />
+    <Content Include="Tables\tbl_folder.sql" />
+    <Content Include="Tables\tbl_forms.sql" />
+    <Content Include="Tables\tbl_inserting.sql" />
+    <Content Include="Tables\tbl_ketwords.sql" />
+    <Content Include="Tables\tbl_loghistory.sql" />
+    <Content Include="Tables\tbl_menus.sql" />
+    <Content Include="Tables\tbl_roles.sql" />
+    <Content Include="Tables\tbl_scanneddocumentresults.sql" />
+    <Content Include="Tables\tbl_useraccesspermission.sql" />
+    <Content Include="Tables\tbl_users.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
