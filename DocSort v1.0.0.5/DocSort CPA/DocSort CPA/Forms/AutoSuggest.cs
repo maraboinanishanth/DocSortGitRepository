@@ -333,7 +333,7 @@ namespace DocSort_CPA.Forms
                      //lblFileName.Visible = false;
                      //lblStatus.Visible = false;
                      //lblRemainingTime.Visible = false;
-                     lblStatus.Text = "";
+                     //lblStatus.Visible = false;
                      lblAutoSuggestFileName.Visible = false;
                      lblAutoSuggestRemainingTime.Visible = false;
                      progressBarTag.Visible = false;
@@ -760,7 +760,8 @@ namespace DocSort_CPA.Forms
                     lnkNewCabinet.Enabled = false;
                     chbUnmatchfiles.Enabled = false;
 
-                    btnMove.Visible = false;
+                    //btnMove.Visible = false;
+                    btnMove.Enabled = false;//Nishanth Commented above line and wrote this.
                     btnClear.Enabled = false;
                     btnCancel.Visible = true;
                             //btnCancel.Location = new Point(254, 96);
@@ -1089,10 +1090,8 @@ namespace DocSort_CPA.Forms
                         //Display smth or update status when progress is completed
                                 //lblStatus.Location = new Point(368, 32);
                         lblStatus.Text = "Your Process has been completed";
-                        btnMove.Location = new Point(254, 55);
-                        lblFileName.Visible = false;
-                        progressBarTag.Visible = false;
-                        lblRemainingTime.Visible = false;
+                        //btnMove.Location = new Point(254, 55);
+                        
                         //btnBack.Enabled = true;
                         //btnFinish.Enabled = true;
 
@@ -1113,6 +1112,12 @@ namespace DocSort_CPA.Forms
 
                         //lblFileName.Visible = false;
                         lblRemainingTime.Visible = false;
+
+
+                        lblAutoSuggestFileName.Visible = false;
+                        lblAutoSuggestRemainingTime.Visible = false;
+                        progressBarTag.Visible = false;
+                        btnMove.Enabled = true;
                     };
 
                     worker.RunWorkerAsync();
