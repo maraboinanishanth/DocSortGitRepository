@@ -173,7 +173,33 @@ namespace Business.Manager
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetFileDetails sp.", m_oSession, e));
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetCabinetsFolderAndFiles sp.", m_oSession, e));
+            }
+
+            result = new NandanaResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetCabinetsFolderAndFiles sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public NandanaResult GetCabinetsAndFolders()
+        {
+            NandanaResult result;
+            NandanaDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+
+            try
+            {
+                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
+                NandanaDBRequest request = new NandanaDBRequest("sp_GetCabinetsAndFolders", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from sp_GetCabinetsAndFolders sp.", m_oSession, e));
             }
 
             result = new NandanaResult();
@@ -185,6 +211,135 @@ namespace Business.Manager
             return result;
         }
 
+        public NandanaResult GetCabinetsFolderAndFilesByParentFolderID(string Parent_ID)
+        {
+            NandanaResult result;
+            NandanaDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new NandanaDBRequest.Parameter("@InputParentFolderID", Parent_ID));
+            try
+            {
+                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
+                NandanaDBRequest request = new NandanaDBRequest("sp_GetCabinetsFolderAndFilesByParentFolderID", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from sp_GetCabinetsFolderAndFilesByParentFolderID sp.", m_oSession, e));
+            }
+
+            result = new NandanaResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from sp_GetCabinetsFolderAndFilesByParentFolderID sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public NandanaResult GetCabinetsFolderAndFilesByFolderID(string InputFolderID)
+        {
+            NandanaResult result;
+            NandanaDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new NandanaDBRequest.Parameter("@InputFolderID", InputFolderID));
+            try
+            {
+                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
+                NandanaDBRequest request = new NandanaDBRequest("sp_GetCabinetsFolderAndFilesByFolderID", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from sp_GetCabinetsFolderAndFilesByFolderID sp.", m_oSession, e));
+            }
+
+            result = new NandanaResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from sp_GetCabinetsFolderAndFilesByFolderID sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public NandanaResult GetCabinetsFolderAndFilesByFileCabinetID(string InputFileCabinetID)
+        {
+            NandanaResult result;
+            NandanaDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new NandanaDBRequest.Parameter("@InputFileCabinetID", InputFileCabinetID));
+            try
+            {
+                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
+                NandanaDBRequest request = new NandanaDBRequest("sp_GetCabinetsFolderAndFilesByFileCabinetID", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from sp_GetCabinetsFolderAndFilesByFileCabinetID sp.", m_oSession, e));
+            }
+
+            result = new NandanaResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from sp_GetCabinetsFolderAndFilesByFileCabinetID sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public NandanaResult GetFilesByFolderID(string InputFolderID)
+        {
+            NandanaResult result;
+            NandanaDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new NandanaDBRequest.Parameter("@InputFolderID", InputFolderID));
+            try
+            {
+                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
+                NandanaDBRequest request = new NandanaDBRequest("sp_GetFilesByFolderID", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from sp_GetFilesByFolderID sp.", m_oSession, e));
+            }
+
+            result = new NandanaResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from sp_GetFilesByFolderID sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public NandanaResult DynamicSearchResults(string InputSearchText)
+        {
+            NandanaResult result;
+            NandanaDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new NandanaDBRequest.Parameter("@InputSearchText", InputSearchText));
+            try
+            {
+                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
+                NandanaDBRequest request = new NandanaDBRequest("sp_DynamicSearchResults", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from sp_DynamicSearchResults sp.", m_oSession, e));
+            }
+
+            result = new NandanaResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from sp_DynamicSearchResults sp.", m_oSession));
+            }
+            return result;
+        }
 
         public NandanaResult GetFilesUsingFileCabinetAndFolderID(string Folder_ID, string FileCabinet_ID)
         {
