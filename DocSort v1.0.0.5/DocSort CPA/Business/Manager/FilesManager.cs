@@ -315,6 +315,32 @@ namespace Business.Manager
             return result;
         }
 
+        public NandanaResult GetCountOfAllRows()
+        {
+            NandanaResult result;
+            NandanaDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            //paramArray.Add(new NandanaDBRequest.Parameter("@InputFolderID", InputFolderID));
+            try
+            {
+                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
+                NandanaDBRequest request = new NandanaDBRequest("sp_GetCountOfAllRows", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from sp_GetCountOfAllRows sp.", m_oSession, e));
+            }
+
+            result = new NandanaResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from sp_GetCountOfAllRows sp.", m_oSession));
+            }
+            return result;
+        }
+
         public NandanaResult DynamicSearchResults(string InputSearchText)
         {
             NandanaResult result;
@@ -337,6 +363,32 @@ namespace Business.Manager
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
                 return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from sp_DynamicSearchResults sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public NandanaResult GetProcessedDocumentsCount(Int32 fileCabinetId)
+        {
+            NandanaResult result;
+            NandanaDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new NandanaDBRequest.Parameter("@fileCabinetId", fileCabinetId));
+            try
+            {
+                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
+                NandanaDBRequest request = new NandanaDBRequest("sp_GetProcessedDocumentsCount", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from sp_GetProcessedDocumentsCount sp.", m_oSession, e));
+            }
+
+            result = new NandanaResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from sp_GetProcessedDocumentsCount sp.", m_oSession));
             }
             return result;
         }

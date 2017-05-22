@@ -40,7 +40,8 @@ namespace DocSort_CPA.Forms
         DataTable Dttemp = new DataTable();
 
         FileCabinetClass FileCabinetClass = new FileCabinetClass();
-        
+        FilesManager objFilesManager = new FilesManager(); 
+
         int j = 0;
         private static string m_sDocFile;
         private static string m_sDocFolderFile;
@@ -778,7 +779,7 @@ namespace DocSort_CPA.Forms
                             //Formula to calculate Progress Percentage 
                             //This is how I calculated for my program. Divide 100 by number of loops you have
                             //Nishanth Commented the below lines of code. the below for each is the actual for which is currently working as of april/13/2017
-                            for (int i = 0; i < filecount; i++)//Removed j and set 0 in that place Nishanth
+                            for (int i = j; i < filecount; i++)//Removed j and set 0 in that place Nishanth
                             {
                                 if (Dttemp.Rows.Count == 50)
                                 {
@@ -1469,10 +1470,19 @@ namespace DocSort_CPA.Forms
         }
         public void ReadTextFile(string path, string FileName, string DocumentID)
         {
-            string readContents;
-            using (StreamReader streamReader = new StreamReader(path, Encoding.UTF8))
+            //string readContents;
+            string readContents = string.Empty;
+            String byPassMODIandConsiderOnlyFileNames = ConfigurationManager.AppSettings["ByPassMODIandConsiderOnlyFileNames"].ToString();
+            if (byPassMODIandConsiderOnlyFileNames == "Y")
             {
-                readContents = streamReader.ReadToEnd().ToUpper();
+                readContents = FileName.Split('.')[0].ToUpper();
+            }
+            else
+            {
+                using (StreamReader streamReader = new StreamReader(path, Encoding.UTF8))
+                {
+                    readContents = streamReader.ReadToEnd().ToUpper();
+                }
             }
 
             if (readContents != "")
@@ -2266,290 +2276,577 @@ namespace DocSort_CPA.Forms
                 compareposition = 0;
                 comparesearchstringvalue = string.Empty;
 
-                for (int k = 0; k < SearchValues.Length; k++)
+                String byPassMODIandConsiderOnlyFileNames = ConfigurationManager.AppSettings["ByPassMODIandConsiderOnlyFileNames"].ToString();
+                string considerOnlyFileName = string.Empty;
+                if (byPassMODIandConsiderOnlyFileNames == "Y")
                 {
-                    #region Take least positioned Matched string
-                    if (SearchValues[k].ToString() != "")
+                    considerOnlyFileName = FileName.Split('.')[0].ToUpper();
+                    if (considerOnlyFileName != "")
                     {
-                        #region Comparing strings with MiDocSearchClass
+                         SearchText = string.Empty;
+                         TypeOfDoc = string.Empty;
 
-                        modiSearch.Initialize(modiDoc, SearchValues[k].ToString(), ref num, ref word, ref start, ref back, false, false, false, false);
-                        modiSearch.Search(null, ref modiTextSel);
+                        Searchcount = 0;
+                        compareposition = 0;
+                        comparesearchstringvalue = string.Empty;
 
-                        if (modiTextSel != null)
+                        for (int k = 0; k < SearchValues.Length; k++)
                         {
-                            if (modiTextSel.Words.Count > 0)
+                            if (SearchValues[k].ToString() != "")
                             {
-                                string Values = GetLeastPositionedTestWithIMiSelectableItem(modiTextSel, Searchcount, compareposition, comparesearchstringvalue, k);
+                                if (considerOnlyFileName.Contains(SearchValues[k].ToString().ToUpper()))
+                                {
+                                    string Values = GetLeastPositionedTextWithIndexPosition(considerOnlyFileName, SearchValues[k].ToString().ToUpper(), Searchcount, compareposition, comparesearchstringvalue, k);
 
-                                string[] Valueposition = Values.Split(',');
-                                Searchcount = Convert.ToInt32(Valueposition[0]);
-                                compareposition = Convert.ToInt32(Valueposition[1]);
-                                comparesearchstringvalue = Valueposition[2].ToString();
+                                    string[] Valueposition = Values.Split(',');
+                                    Searchcount = Convert.ToInt32(Valueposition[0]);
+                                    compareposition = Convert.ToInt32(Valueposition[1]);
+                                    comparesearchstringvalue = Valueposition[2].ToString();
+                                }
                             }
                         }
-
-                        #endregion
-                    }
-                    #endregion
-                }
-                if (Searchcount != 0)
-                {
-                    string[] searchtextvalue = comparesearchstringvalue.Split('-');
-
-                    SearchText = SearchValues[Convert.ToInt32(searchtextvalue[1])].ToString();
-                    SearchText = Regex.Replace(SearchText, @"[\/:*?<>|'.@#%^&$!~\r\n]+", "");
-
-                    if (SearchText != "")
-                    {
-                        if (CategoryValue != "")
+                        if (Searchcount != 0)
                         {
-                            #region Take Least positioned Category Value
+                            string[] searchtextvalue = comparesearchstringvalue.Split('-');
 
-                            int count = 0;
-                            compareposition = 0;
-                            comparesearchstringvalue = string.Empty;
+                            SearchText = SearchValues[Convert.ToInt32(searchtextvalue[1])].ToString();
+                            SearchText = Regex.Replace(SearchText, @"[\/:*?<>|'.@#%^&$!~\r\n]+", "");
 
-                            for (int k = 0; k < CategoryValues.Length; k++)
+                            if (SearchText != "")
                             {
-                                if (CategoryValues[k].ToString() != "")
+                                // Checking any one of the Category Value is present in contened Data or not
+                                if (CategoryValue != "")
                                 {
-                                    #region Comparing Substrings with MiDocSearchClass
+                                    //string GivenTotalYears = GetSubfolderStrings();
 
-                                    modiSearch.Initialize(modiDoc, CategoryValues[k].ToString(), ref num, ref word, ref start, ref back, false, false, false, false);
-                                    modiSearch.Search(null, ref modiTextSel);
+                                    //string[] CategoryValues = GivenTotalYears.Split(',');
+                                    int count = 0;
+                                    compareposition = 0;
+                                    comparesearchstringvalue = string.Empty;
 
-                                    if (modiTextSel != null)
+                                    for (int k = 0; k < CategoryValues.Length; k++)
                                     {
-                                        if (modiTextSel.Words.Count > 0)
+                                        if (CategoryValues[k].ToString() != "")
                                         {
+                                            if (considerOnlyFileName.Contains(CategoryValues[k].ToString().ToUpper()))
+                                            {
+                                                string Values = GetLeastPositionedTextWithIndexPosition(considerOnlyFileName, CategoryValues[k].ToString().ToUpper(), count, compareposition, comparesearchstringvalue, k);
 
-                                            string Values = GetLeastPositionedTestWithIMiSelectableItem(modiTextSel, count, compareposition, comparesearchstringvalue, k);
-
-                                            string[] Valueposition = Values.Split(',');
-                                            count = Convert.ToInt32(Valueposition[0]);
-                                            compareposition = Convert.ToInt32(Valueposition[1]);
-                                            comparesearchstringvalue = Valueposition[2].ToString();
+                                                string[] Valueposition = Values.Split(',');
+                                                count = Convert.ToInt32(Valueposition[0]);
+                                                compareposition = Convert.ToInt32(Valueposition[1]);
+                                                comparesearchstringvalue = Valueposition[2].ToString();
+                                            }
                                         }
                                     }
 
-                                    #endregion
-                                }
-                            }
-                            if (count == 0) // move the files miscellaneous if category also included 
-                            {
-                                FileCount = FileCount + 1;
-                                TypeOfDoc = "Other";
+                                    //if (i == document.Pages.Count - 1)
+                                    //{
+                                    if (count == 0)
+                                    {
+                                        FileCount = FileCount + 1;
+                                        TypeOfDoc = "Other";
+                                    }
+                                    else
+                                    {
+                                        string[] Yearsearchtextvalue = comparesearchstringvalue.Split('-');
+                                        TypeOfDoc = CategoryValues[Convert.ToInt32(Yearsearchtextvalue[1])].ToString();
+                                        FileCount = FileCount + 1;
+                                    }
 
-                            }
-                            else
-                            {
-                                FileCount = FileCount + 1;
-                                string[] Yearsearchtextvalue = comparesearchstringvalue.Split('-');
-                                TypeOfDoc = CategoryValues[Convert.ToInt32(Yearsearchtextvalue[1])].ToString();
 
-                            }
+                                    // Saving in FileCabinet
+                                    FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
+                                    // End
 
-                            // Saving in FileCabinet
-                            FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
-                            // End
 
-                            // Stroring values in Temp table
+                                    // Stroring values in Temp table
 
-                            StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
+                                    StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
 
-                            // End
+                                    // End
 
-                            #endregion
-                        }
-                        else // move the files to main folder if category is not defined
-                        {
-                            FileCount = FileCount + 1;
-
-                            // Saving in FileCabinet
-                            FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
-                            // End
-
-                            // Stroring values in Temp table
-
-                            StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
-
-                            // End
-                        }
-                    }
-                }
-
-                else // Verify with partial  searchkeywords 
-                {
-                    MODI.Image image = (MODI.Image)modiDoc.Images[0];
-                    string imgdata = image.Layout.Text.ToUpper();
-
-                    int UnMatchedSearchcount = 0;
-                    compareposition = 0;
-                    comparesearchstringvalue = string.Empty;
-
-                    for (int i = 0; i < SearchValues.Length; i++)
-                    {
-                        if (SearchValues[i].ToString() != "")
-                        {
-                            //int size = Math.Max(SearchValues[i].Length < 6 ? SearchValues[i].Length : SearchValues[i].Length / 2 + 1, 5);
-
-                            int size = SearchValues[i].Length < 6 ? SearchValues[i].Length : Math.Max(SearchValues[i].Length / 2 + 1, 5);
-                            //for (int j = 0; j < (SearchValues[i].Length - 4) + 1; j++)
-                            //{
-                            if (imgdata.Contains(SearchValues[i].Substring(0, size).ToString().ToUpper()))
-                            {
-                                UnMatchedSearchcount += 1;
-
-                                int position = imgdata.IndexOf(SearchValues[i].Substring(0, size).ToString().ToUpper());
-
-                                int nextposition = position;
-
-                                if (UnMatchedSearchcount == 1)
-                                {
-                                    compareposition = position;
-
-                                    comparesearchstringvalue = compareposition + "-" + i;
-
-                                    //j = (SearchValues[i].Length - 3);
+                                    //i = document.Pages.Count - 1;
                                 }
                                 else
                                 {
-                                    int result = Math.Min(compareposition, nextposition);
-                                    if (result == compareposition)
+                                    FileCount = FileCount + 1;
+
+                                    // Saving in FileCabinet
+                                    FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
+                                    // End
+
+
+                                    // Stroring values in Temp table
+
+                                    StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
+
+                                    // End
+
+                                    //i = document.Pages.Count - 1;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int UnMatchedSearchcount = 0;
+                            int UnMatchedcompareposition = 0;
+                            string UnMatchedcomparesearchstringvalue = string.Empty;
+                            for (int k = 0; k < SearchValues.Length; k++)
+                            {
+                                if (SearchValues[k].ToString() != "")
+                                {
+                                    //int size = Math.Max(SearchValues[k].Length < 6 ? SearchValues[k].Length : SearchValues[k].Length / 2 + 1, 5);
+
+                                    int size = SearchValues[k].Length < 6 ? SearchValues[k].Length : Math.Max(SearchValues[k].Length / 2 + 1, 5);
+
+                                    //for (int j = 0; j < (SearchValues[k].Length - 4) + 1; j++)
+                                    //{
+                                    if (considerOnlyFileName.Contains(SearchValues[k].Substring(0, size).ToString().ToUpper()))
                                     {
-                                        compareposition = result;
-                                        comparesearchstringvalue = comparesearchstringvalue;
+                                        UnMatchedSearchcount += 1;
+
+                                        int position = considerOnlyFileName.IndexOf(SearchValues[k].Substring(0, size).ToString().ToUpper());
+
+                                        int nextposition = position;
+
+                                        if (UnMatchedSearchcount == 1)
+                                        {
+                                            UnMatchedcompareposition = position;
+
+                                            UnMatchedcomparesearchstringvalue = UnMatchedcompareposition + "-" + k;
+
+                                            //j = (SearchValues[i].Length - 3);
+                                        }
+                                        else
+                                        {
+                                            int result = Math.Min(UnMatchedcompareposition, nextposition);
+                                            if (result == UnMatchedcompareposition)
+                                            {
+                                                UnMatchedcompareposition = result;
+                                                UnMatchedcomparesearchstringvalue = UnMatchedcomparesearchstringvalue;
+                                            }
+                                            else if (result == nextposition)
+                                            {
+                                                UnMatchedcompareposition = result;
+                                                UnMatchedcomparesearchstringvalue = UnMatchedcompareposition + "-" + k;
+                                            }
+
+                                            //j = (SearchValues[k].Length - 3);
+                                        }
                                     }
-                                    else if (result == nextposition)
+                                    //}
+                                }
+                            }
+                            if (UnMatchedSearchcount != 0)
+                            {
+                                string[] searchtextvalue = UnMatchedcomparesearchstringvalue.Split('-');
+
+                                SearchText = SearchValues[Convert.ToInt32(searchtextvalue[1])].ToString();
+                                SearchText = Regex.Replace(SearchText, @"[\/:*?<>|'.@#%^&$!~\r\n]+", "");
+
+                                // Checking any one of the Category Value is present in contened Data or not
+                                if (CategoryValue != "")
+                                {
+                                    //string GivenTotalYears = GetSubfolderStrings();
+
+                                    //string[] CategoryValues = GivenTotalYears.Split(',');
+
+                                    int count = 0;
+                                    compareposition = 0;
+                                    comparesearchstringvalue = string.Empty;
+
+                                    for (int k = 0; k < CategoryValues.Length; k++)
                                     {
-                                        compareposition = result;
-                                        comparesearchstringvalue = compareposition + "-" + i;
+                                        if (CategoryValues[k].ToString() != "")
+                                        {
+                                            if (considerOnlyFileName.Contains(CategoryValues[k].ToString().ToUpper()))
+                                            {
+                                                string Values = GetLeastPositionedTextWithIndexPosition(considerOnlyFileName, CategoryValues[k].ToString().ToUpper(), count, compareposition, comparesearchstringvalue, k);
+
+                                                string[] Valueposition = Values.Split(',');
+                                                count = Convert.ToInt32(Valueposition[0]);
+                                                compareposition = Convert.ToInt32(Valueposition[1]);
+                                                comparesearchstringvalue = Valueposition[2].ToString();
+                                            }
+                                        }
                                     }
 
-                                    //j = (SearchValues[i].Length - 3);
+                                    //if (i == document.Pages.Count - 1)
+                                    //{
+                                    if (count == 0)
+                                    {
+                                        FileCount = FileCount + 1;
+                                        TypeOfDoc = "Other";
+                                    }
+                                    else
+                                    {
+                                        FileCount = FileCount + 1;
+                                        string[] Yearsearchtextvalue = comparesearchstringvalue.Split('-');
+                                        TypeOfDoc = CategoryValues[Convert.ToInt32(Yearsearchtextvalue[1])].ToString();
+                                    }
+
+                                    // Saving in FileCabinet
+                                    FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
+                                    // End
+
+
+                                    // Stroring values in Temp table
+
+                                    StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
+
+                                    // End
+
+                                    //i = document.Pages.Count - 1;
+                                }
+                                else
+                                {
+                                    FileCount = FileCount + 1;
+
+                                    // Saving in FileCabinet
+                                    FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
+                                    // End
+
+                                    // Stroring values in Temp table
+
+                                    StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
+
+                                    // End
+
+                                    //i = document.Pages.Count - 1;
+                                }
+
+
+                                // End
+                            }
+                            else
+                            {
+
+                                if (chbUnmatchfiles.Checked == true)
+                                {
+                                    UnMatchFileCount = UnMatchFileCount + 1;
+
+                                    if (m_sDocUnMatchFile == null)
+                                    {
+                                        m_sDocUnMatchFile = DestinationFolder + "\\" + "Mismatched";
+                                        if (!System.IO.Directory.Exists(m_sDocUnMatchFile))
+                                            System.IO.Directory.CreateDirectory(m_sDocUnMatchFile);
+                                    }
+                                    //System.IO.File.Move(path, m_sDocUnMatchFile + "\\" + FileName);
+                                    System.IO.File.Copy(path, m_sDocUnMatchFile + "\\" + FileName, true);
+
+                                    //Inserting unmatched files into Keywords and ScanDocResults tables
+                                    UpdateKeyWordsXML("Mismatched", "", "", "");
+
+                                    updateScannedDocXML(KeywordID.Trim(), DocumentID.Trim(), m_sDocUnMatchFile + "\\" + FileName, "Mismatched");
+                                    //End
+
+                                    StoreFilesInUnMatchedFolderofFileCabinet(path, FileName);
                                 }
 
                             }
-                            // }
                         }
                     }
+                }
+                else {
+                    for (int k = 0; k < SearchValues.Length; k++)
+                    {
+                        #region Take least positioned Matched string
+                        if (SearchValues[k].ToString() != "")
+                        {
+                            #region Comparing strings with MiDocSearchClass
 
-                    if (UnMatchedSearchcount != 0)
+                            modiSearch.Initialize(modiDoc, SearchValues[k].ToString(), ref num, ref word, ref start, ref back, false, false, false, false);
+                            modiSearch.Search(null, ref modiTextSel);
+
+                            if (modiTextSel != null)
+                            {
+                                if (modiTextSel.Words.Count > 0)
+                                {
+                                    string Values = string.Empty;
+
+
+                                    if (considerOnlyFileName != string.Empty)
+                                    {
+                                        Values = GetLeastPositionedTextWithIndexPosition(considerOnlyFileName, SearchValues[k].ToString().ToUpper(), Searchcount, compareposition, comparesearchstringvalue, k);
+                                    }
+                                    else
+                                    {
+                                        Values = GetLeastPositionedTestWithIMiSelectableItem(modiTextSel, Searchcount, compareposition, comparesearchstringvalue, k);
+                                    }
+
+                                    string[] Valueposition = Values.Split(',');
+                                    Searchcount = Convert.ToInt32(Valueposition[0]);
+                                    compareposition = Convert.ToInt32(Valueposition[1]);
+                                    comparesearchstringvalue = Valueposition[2].ToString();
+                                }
+                            }
+
+                            #endregion
+                        }
+                        #endregion
+                    }
+                    if (Searchcount != 0)
                     {
                         string[] searchtextvalue = comparesearchstringvalue.Split('-');
 
                         SearchText = SearchValues[Convert.ToInt32(searchtextvalue[1])].ToString();
                         SearchText = Regex.Replace(SearchText, @"[\/:*?<>|'.@#%^&$!~\r\n]+", "");
 
-                        if (CategoryValue != "")
+                        if (SearchText != "")
                         {
-                            int Categorycount = 0;
-                            compareposition = 0;
-                            comparesearchstringvalue = string.Empty;
-
-                            for (int i = 0; i < CategoryValues.Length; i++)
+                            if (CategoryValue != "")
                             {
-                                if (CategoryValues[i].ToString() != "")
+                                #region Take Least positioned Category Value
+
+                                int count = 0;
+                                compareposition = 0;
+                                comparesearchstringvalue = string.Empty;
+
+                                for (int k = 0; k < CategoryValues.Length; k++)
                                 {
-                                    if (imgdata.Contains(CategoryValues[i].ToString().ToUpper()))
+                                    if (CategoryValues[k].ToString() != "")
                                     {
-                                        string Values = GetLeastPositionedTextWithIndexPosition(imgdata, CategoryValues[i].ToString().ToUpper(), Categorycount, compareposition, comparesearchstringvalue, i);
+                                        #region Comparing Substrings with MiDocSearchClass
 
-                                        string[] Valueposition = Values.Split(',');
-                                        Categorycount = Convert.ToInt32(Valueposition[0]);
-                                        compareposition = Convert.ToInt32(Valueposition[1]);
-                                        comparesearchstringvalue = Valueposition[2].ToString();
+                                        modiSearch.Initialize(modiDoc, CategoryValues[k].ToString(), ref num, ref word, ref start, ref back, false, false, false, false);
+                                        modiSearch.Search(null, ref modiTextSel);
+
+                                        if (modiTextSel != null)
+                                        {
+                                            if (modiTextSel.Words.Count > 0)
+                                            {
+
+                                                string Values = GetLeastPositionedTestWithIMiSelectableItem(modiTextSel, count, compareposition, comparesearchstringvalue, k);
+
+                                                string[] Valueposition = Values.Split(',');
+                                                count = Convert.ToInt32(Valueposition[0]);
+                                                compareposition = Convert.ToInt32(Valueposition[1]);
+                                                comparesearchstringvalue = Valueposition[2].ToString();
+                                            }
+                                        }
+
+                                        #endregion
                                     }
-
-                                    //#region Comparing Substrings with MiDocSearchClass
-
-                                    //modiSearch.Initialize(modiDoc, CategoryValues[i].ToString(), ref num, ref word, ref start, ref back, false, false, false, false);
-                                    //modiSearch.Search(null, ref modiTextSel);
-
-                                    //if (modiTextSel != null)
-                                    //{
-                                    //    if (modiTextSel.Words.Count > 0)
-                                    //    {
-
-                                    //        string Values = GetLeastPositionedTestWithIMiSelectableItem(modiTextSel, Categorycount, compareposition, comparesearchstringvalue, i);
-
-                                    //        string[] Valueposition = Values.Split(',');
-                                    //        Categorycount = Convert.ToInt32(Valueposition[0]);
-                                    //        compareposition = Convert.ToInt32(Valueposition[1]);
-                                    //        comparesearchstringvalue = Valueposition[2].ToString();
-                                    //    }
-                                    //}
-
-                                    //#endregion
                                 }
-                            }
+                                if (count == 0) // move the files miscellaneous if category also included 
+                                {
+                                    FileCount = FileCount + 1;
+                                    TypeOfDoc = "Other";
 
-                            if (Categorycount == 0)
+                                }
+                                else
+                                {
+                                    FileCount = FileCount + 1;
+                                    string[] Yearsearchtextvalue = comparesearchstringvalue.Split('-');
+                                    TypeOfDoc = CategoryValues[Convert.ToInt32(Yearsearchtextvalue[1])].ToString();
+
+                                }
+
+                                // Saving in FileCabinet
+                                FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
+                                // End
+
+                                // Stroring values in Temp table
+
+                                StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
+
+                                // End
+
+                                #endregion
+                            }
+                            else // move the files to main folder if category is not defined
                             {
                                 FileCount = FileCount + 1;
 
-                                TypeOfDoc = "Other";
+                                // Saving in FileCabinet
+                                FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
+                                // End
+
+                                // Stroring values in Temp table
+
+                                StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
+
+                                // End
+                            }
+                        }
+                    }
+
+                    else // Verify with partial  searchkeywords 
+                    {
+                        MODI.Image image = (MODI.Image)modiDoc.Images[0];
+                        string imgdata = image.Layout.Text.ToUpper();
+
+                        int UnMatchedSearchcount = 0;
+                        compareposition = 0;
+                        comparesearchstringvalue = string.Empty;
+
+                        for (int i = 0; i < SearchValues.Length; i++)
+                        {
+                            if (SearchValues[i].ToString() != "")
+                            {
+                                //int size = Math.Max(SearchValues[i].Length < 6 ? SearchValues[i].Length : SearchValues[i].Length / 2 + 1, 5);
+
+                                int size = SearchValues[i].Length < 6 ? SearchValues[i].Length : Math.Max(SearchValues[i].Length / 2 + 1, 5);
+                                //for (int j = 0; j < (SearchValues[i].Length - 4) + 1; j++)
+                                //{
+                                if (imgdata.Contains(SearchValues[i].Substring(0, size).ToString().ToUpper()))
+                                {
+                                    UnMatchedSearchcount += 1;
+
+                                    int position = imgdata.IndexOf(SearchValues[i].Substring(0, size).ToString().ToUpper());
+
+                                    int nextposition = position;
+
+                                    if (UnMatchedSearchcount == 1)
+                                    {
+                                        compareposition = position;
+
+                                        comparesearchstringvalue = compareposition + "-" + i;
+
+                                        //j = (SearchValues[i].Length - 3);
+                                    }
+                                    else
+                                    {
+                                        int result = Math.Min(compareposition, nextposition);
+                                        if (result == compareposition)
+                                        {
+                                            compareposition = result;
+                                            comparesearchstringvalue = comparesearchstringvalue;
+                                        }
+                                        else if (result == nextposition)
+                                        {
+                                            compareposition = result;
+                                            comparesearchstringvalue = compareposition + "-" + i;
+                                        }
+
+                                        //j = (SearchValues[i].Length - 3);
+                                    }
+
+                                }
+                                // }
+                            }
+                        }
+
+                        if (UnMatchedSearchcount != 0)
+                        {
+                            string[] searchtextvalue = comparesearchstringvalue.Split('-');
+
+                            SearchText = SearchValues[Convert.ToInt32(searchtextvalue[1])].ToString();
+                            SearchText = Regex.Replace(SearchText, @"[\/:*?<>|'.@#%^&$!~\r\n]+", "");
+
+                            if (CategoryValue != "")
+                            {
+                                int Categorycount = 0;
+                                compareposition = 0;
+                                comparesearchstringvalue = string.Empty;
+
+                                for (int i = 0; i < CategoryValues.Length; i++)
+                                {
+                                    if (CategoryValues[i].ToString() != "")
+                                    {
+                                        if (imgdata.Contains(CategoryValues[i].ToString().ToUpper()))
+                                        {
+                                            string Values = GetLeastPositionedTextWithIndexPosition(imgdata, CategoryValues[i].ToString().ToUpper(), Categorycount, compareposition, comparesearchstringvalue, i);
+
+                                            string[] Valueposition = Values.Split(',');
+                                            Categorycount = Convert.ToInt32(Valueposition[0]);
+                                            compareposition = Convert.ToInt32(Valueposition[1]);
+                                            comparesearchstringvalue = Valueposition[2].ToString();
+                                        }
+
+                                        //#region Comparing Substrings with MiDocSearchClass
+
+                                        //modiSearch.Initialize(modiDoc, CategoryValues[i].ToString(), ref num, ref word, ref start, ref back, false, false, false, false);
+                                        //modiSearch.Search(null, ref modiTextSel);
+
+                                        //if (modiTextSel != null)
+                                        //{
+                                        //    if (modiTextSel.Words.Count > 0)
+                                        //    {
+
+                                        //        string Values = GetLeastPositionedTestWithIMiSelectableItem(modiTextSel, Categorycount, compareposition, comparesearchstringvalue, i);
+
+                                        //        string[] Valueposition = Values.Split(',');
+                                        //        Categorycount = Convert.ToInt32(Valueposition[0]);
+                                        //        compareposition = Convert.ToInt32(Valueposition[1]);
+                                        //        comparesearchstringvalue = Valueposition[2].ToString();
+                                        //    }
+                                        //}
+
+                                        //#endregion
+                                    }
+                                }
+
+                                if (Categorycount == 0)
+                                {
+                                    FileCount = FileCount + 1;
+
+                                    TypeOfDoc = "Other";
+                                }
+                                else
+                                {
+                                    FileCount = FileCount + 1;
+
+                                    string[] Yearsearchtextvalue = comparesearchstringvalue.Split('-');
+                                    TypeOfDoc = CategoryValues[Convert.ToInt32(Yearsearchtextvalue[1])].ToString();
+                                }
+
+                                // Saving in FileCabinet
+                                FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
+                                // End
+
+                                // Stroring values in Temp table
+
+                                StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
+
+                                // End
                             }
                             else
                             {
                                 FileCount = FileCount + 1;
 
-                                string[] Yearsearchtextvalue = comparesearchstringvalue.Split('-');
-                                TypeOfDoc = CategoryValues[Convert.ToInt32(Yearsearchtextvalue[1])].ToString();
+                                // Saving in FileCabinet
+                                FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
+                                // End
+
+                                // Stroring values in Temp table
+
+                                StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
+
+                                // End
+
                             }
-
-                            // Saving in FileCabinet
-                            FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
-                            // End
-
-                            // Stroring values in Temp table
-
-                            StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
-
-                            // End
                         }
                         else
                         {
-                            FileCount = FileCount + 1;
-
-                            // Saving in FileCabinet
-                            FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
-                            // End
-
-                            // Stroring values in Temp table
-
-                            StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
-
-                            // End
-
-                        }
-                    }
-                    else
-                    {
-                        if (chbUnmatchfiles.Checked == true)
-                        {
-                            UnMatchFileCount = UnMatchFileCount + 1;
-
-                            if (m_sDocUnMatchFile == null)
+                            if (chbUnmatchfiles.Checked == true)
                             {
-                                m_sDocUnMatchFile = DestinationFolder + "\\" + "Mismatched";
-                                if (!System.IO.Directory.Exists(m_sDocUnMatchFile))
-                                    System.IO.Directory.CreateDirectory(m_sDocUnMatchFile);
+                                UnMatchFileCount = UnMatchFileCount + 1;
+
+                                if (m_sDocUnMatchFile == null)
+                                {
+                                    m_sDocUnMatchFile = DestinationFolder + "\\" + "Mismatched";
+                                    if (!System.IO.Directory.Exists(m_sDocUnMatchFile))
+                                        System.IO.Directory.CreateDirectory(m_sDocUnMatchFile);
+                                }
+                                //System.IO.File.Move(path, m_sDocUnMatchFile + "\\" + FileName);
+                                System.IO.File.Copy(path, m_sDocUnMatchFile + "\\" + FileName, true);
+
+                                //Inserting unmatched files into Keywords and ScanDocResults tables
+                                UpdateKeyWordsXML("Mismatched", "", "", "");
+
+                                updateScannedDocXML(KeywordID.Trim(), DocumentID.Trim(), m_sDocUnMatchFile + "\\" + FileName, "Mismatched");
+                                //End
+
+                                StoreFilesInUnMatchedFolderofFileCabinet(path, FileName);
                             }
-                            //System.IO.File.Move(path, m_sDocUnMatchFile + "\\" + FileName);
-                            System.IO.File.Copy(path, m_sDocUnMatchFile + "\\" + FileName, true);
-
-                            //Inserting unmatched files into Keywords and ScanDocResults tables
-                            UpdateKeyWordsXML("Mismatched", "", "", "");
-
-                            updateScannedDocXML(KeywordID.Trim(), DocumentID.Trim(), m_sDocUnMatchFile + "\\" + FileName, "Mismatched");
-                            //End
-
-                            StoreFilesInUnMatchedFolderofFileCabinet(path, FileName);
                         }
                     }
                 }
+
+
+              
                 // End
 
             }
@@ -2587,7 +2884,15 @@ namespace DocSort_CPA.Forms
                     ref missing, ref missing, ref missing, ref missing,
                     ref missing, ref missing, ref missing);
 
-            string extractedText = doc.Content.Text.ToUpper();
+            string extractedText = string.Empty;
+            String byPassMODIandConsiderOnlyFileNames = ConfigurationManager.AppSettings["ByPassMODIandConsiderOnlyFileNames"].ToString();
+            if (byPassMODIandConsiderOnlyFileNames == "Y")
+            {
+                extractedText = FileName.Split('.')[0].ToUpper();
+            }
+            else {
+                extractedText = doc.Content.Text.ToUpper();
+            }
 
             doc.Close();
 
@@ -2918,7 +3223,12 @@ namespace DocSort_CPA.Forms
             if (cancel == false)
             {
                 MovedFileCount objMovefilecount = new MovedFileCount();
-                objMovefilecount.Filecount = FileCount.ToString();
+
+                NandanaResult dsProcessedDocumentsCount = objFilesManager.GetProcessedDocumentsCount(Convert.ToInt32(FileCabinetID));
+                string totalNumberOfFiles = dsProcessedDocumentsCount.ResultRow.ItemArray[0].ToString();
+
+                //int filescount = Directory.GetFiles(SourceFolder, "*.*", SearchOption.TopDirectoryOnly).Length;
+                objMovefilecount.Filecount = totalNumberOfFiles; //FileCount.ToString();
                 objMovefilecount.source = SourceFolder;
                 objMovefilecount.destination = DestinationFolder;
                 objMovefilecount.ShowDialog();

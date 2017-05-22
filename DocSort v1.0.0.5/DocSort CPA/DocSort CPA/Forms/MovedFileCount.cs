@@ -41,6 +41,7 @@ namespace DocSort_CPA.Forms
             //label3.ForeColor = System.Drawing.ColorTranslator.FromHtml("#444444");
             if (Filecount != "" && source != "" && destination != "")
             {
+               
                 lblCount.Text = Filecount + " documents have been processed successfully!";
                 lblCount.Location = new Point(this.ClientSize.Width / 2 - lblCount.Size.Width / 2, 53);
                 //lblSource.Text = source;

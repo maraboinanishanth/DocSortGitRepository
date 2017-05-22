@@ -99,6 +99,7 @@ namespace DocSort_CPA.Forms
 
                             TreeNode treeNodeTemp = treeNode.Nodes.Add("TempKey", "");
                             treeView1.Nodes.Add(treeNode);
+                           
                         }
                     }
                     catch (Exception ex)
@@ -116,6 +117,13 @@ namespace DocSort_CPA.Forms
             nodeSelected = e.Node;
             nodeSelected.Nodes.Clear();
             GetImmediateChildren(e.Node);
+            if (e.Node.Nodes.Count > 0)
+            {
+                e.Node.ToolTipText = e.Node.Nodes.Count.ToString() + " Folders/Files.";
+            }
+            else {
+                e.Node.ToolTipText = "Empty Folder.";
+            }
         }
 
         private void GetImmediateChildren(TreeNode node)
@@ -469,6 +477,7 @@ namespace DocSort_CPA.Forms
         private int GetMainFolderCabinetID(string FolderName)
         {
             DataTable DtMainFolders = new DataTable();
+            GetFolders();
             int FolderID = 0;
             try
             {
@@ -507,7 +516,7 @@ namespace DocSort_CPA.Forms
             try
             {
                 DataTable DtMainFolders = new DataTable();
-
+                GetFolders();
                 if (DtFolders != null)
                 {
                     if (DtFolders.Rows.Count > 0)
@@ -547,7 +556,7 @@ namespace DocSort_CPA.Forms
             try
             {
                 DataTable DtSubFolders = new DataTable();
-
+                GetFolders();
                 if (DtFolders != null)
                 {
                     if (DtFolders.Rows.Count > 0)
@@ -778,9 +787,9 @@ namespace DocSort_CPA.Forms
                 DataRow dr = objinsertintofolder.resultDS.Tables[0].Rows[0];
                 FolderID = dr["FolderId"].ToString();
             }
-            
-            //* End  *//
 
+            //* End  *//
+           
             foreach (var file in rootDirectoryInfo.GetFiles())
             {
                 System.IO.File.Copy(path + "\\" + file.Name, m_sImportedFolderDocFile + "\\" + file.Name, true);
@@ -990,7 +999,7 @@ namespace DocSort_CPA.Forms
             FileCount = 0;
 
             DataTable getSubFolderNames = new DataTable();
-
+            GetFolders();
             if (treeView1.SelectedNode.Parent.ImageKey == "LockerIcon.png")
             {
                 DataRow[] drResult = DtFolders.Select("FileCabinet_ID = '" + treeView1.SelectedNode.Parent.Name + "'" + "and" + " ParentFolderID = '" + FolderID + "'" + "and" + " IsDelete = '" + "True" + "'");
@@ -1283,8 +1292,6 @@ namespace DocSort_CPA.Forms
                     System.IO.Directory.CreateDirectory(m_sImportedFolderDocFile);
             }
 
-
-
             string Path = string.Empty;
             string FolderID;
             treeView1.HideSelection = false;
@@ -1296,43 +1303,27 @@ namespace DocSort_CPA.Forms
             {
                 Path = fd.SelectedPath;
 
-
                 object sender1 = new object();//Nishanth Import Folder task changes start
                 EventArgs e1 = new EventArgs();
-                //NewFolderToolStripMenuItem_Click(sender, e);//Nishanth Import Folder task changes end
 
                 string folderName = Path.Split('\\')[Path.Split('\\').Count() - 1];
-
-                
-
-                //if (m_sImportedFolderDocFile == null)
+                //if (!System.IO.Directory.Exists(m_sFileCabinetDocFile + "\\" + folderName))
                 //{
-                    //m_sImportedFolderDocFile = m_sFileCabinetDocFile + "\\";// + TempNodeText.ToUpper();
-                    if (!System.IO.Directory.Exists(m_sFileCabinetDocFile + "\\" + folderName))
-                    {
-                    // Directory.Move(Path, m_sFileCabinetDocFile + "\\" + folderName);
+                string sourceDirectory = Path;
+                string targetDirectory = m_sFileCabinetDocFile + "\\" + folderName;
 
-                        string sourceDirectory = Path;
-                        string targetDirectory = m_sFileCabinetDocFile + "\\" + folderName;
+                Copy(sourceDirectory, targetDirectory);
 
-                        Copy(sourceDirectory, targetDirectory);
+                Path = m_sFileCabinetDocFile + "\\" + folderName;
 
+                var rootDirectoryInfo = new DirectoryInfo(Path);
+                WalkDirectoryTree(rootDirectoryInfo, treeView1.SelectedNode.Name, "0");
 
-                        Path = m_sFileCabinetDocFile + "\\" + folderName;
-
-                        var rootDirectoryInfo = new DirectoryInfo(Path);
-                        WalkDirectoryTree(rootDirectoryInfo, treeView1.SelectedNode.Name, "0");
-
-
-                    dsUniversalCabinetsFoldersFiles = objFilesManager.GetCabinetsFolderAndFiles();
-                    treeView1.SelectedNode.Expand();
-                    //treeView1.Nodes.Clear();
-                    //DashBoardHome_Load(sender, e);//Loading entire tree view is very bad. Need to figure out smart way . to just refresh added nodes. NISHANTH.
-                    //treeNode.Expand();
-                }
-                    // System.IO.Directory.CreateDirectory(m_sImportedFolderDocFile);
-               // }
-               
+                //dsUniversalCabinetsFoldersFiles = objFilesManager.GetCabinetsFolderAndFiles();
+                treeView1.SelectedNode.Nodes.Add("TempKey", "");
+                treeView1.SelectedNode.Collapse();
+                treeView1.SelectedNode.Expand();
+                treeView1.SelectedNode.Nodes.RemoveByKey("TempKey");
             }
             else
             {
@@ -1352,7 +1343,7 @@ namespace DocSort_CPA.Forms
         public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
         {
             Directory.CreateDirectory(target.FullName);
-
+           
             // Copy each file into the new directory.
             foreach (FileInfo fi in source.GetFiles())
             {
@@ -1595,7 +1586,7 @@ namespace DocSort_CPA.Forms
 
                 SaveImportingFolderFiles(treeView1, Path, FolderID, treeView1.SelectedNode.Parent.Name, newNode);
 
-                
+              
                 var rootDirectoryInfo = new DirectoryInfo(Path);
                 foreach (var file in rootDirectoryInfo.GetFiles())
                 {
@@ -1950,7 +1941,7 @@ namespace DocSort_CPA.Forms
         public void CheckCreateFolder(string FolderID, string m_sFileCabinetDocFile, string TempNodeText, string ArraysFolderID)
         {
             DataTable getSubFolderNames = new DataTable();
-
+            GetFolders(); //nishanth you need to remove this immediately or as soon as possible and see that this functinality uses current structure.
             if (treeView1.SelectedNode.Parent.ImageKey == "LockerIcon.png")
             {
                 DataRow[] drResult = DtFolders.Select("FileCabinet_ID = '" + treeView1.SelectedNode.Parent.Name + "'" + "and" + " ParentFolderID = '" + FolderID + "'" + "and" + " IsDelete = '" + "True" + "'");
@@ -2085,7 +2076,7 @@ namespace DocSort_CPA.Forms
         {
             DataTable objgetsubfolders = new DataTable();
             DataTable objgetFiles = new DataTable();
-
+            GetFolders();//Nishanth remove this as soon as posisble and make sure it works as per new structure
 
             if (DtFolders.Rows.Count > 0)
             {
@@ -2337,12 +2328,7 @@ namespace DocSort_CPA.Forms
 
                 object sender1 = new object();//Nishanth Import Folder task changes start
                 EventArgs e1 = new EventArgs();
-                //NewFolderToolStripMenuItem_Click(sender, e);//Nishanth Import Folder task changes end
-
                 string folderName = Path.Split('\\')[Path.Split('\\').Count() - 1];
-
-                //if (!System.IO.Directory.Exists(m_sFileCabinetDocFile + "\\" + folderName))
-                //    System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile + "\\" + folderName);
 
                 string sourceDirectory = Path;
                 string targetDirectory = m_sFileCabinetDocFile + "\\" + folderName;
@@ -2355,12 +2341,13 @@ namespace DocSort_CPA.Forms
                 {
                     node = node.Parent;
                 }
-                WalkDirectoryTree(rootDirectoryInfo, node.Name, treeView1.SelectedNode.Name);// FOr folder import this is working just awesome. Need to proceed with this. Please note that below mentioned approach is commented.
+                WalkDirectoryTree(rootDirectoryInfo, node.Name, treeView1.SelectedNode.Name);
 
-                //treeView1.Nodes.Clear();
+                //dsUniversalCabinetsFoldersFiles = objFilesManager.GetCabinetsFolderAndFiles();
+                treeView1.SelectedNode.Nodes.Add("TempKey", "");
                 treeView1.SelectedNode.Collapse();
                 treeView1.SelectedNode.Expand();
-                
+                treeView1.SelectedNode.Nodes.RemoveByKey("TempKey");
             }
             else
             {
@@ -2455,8 +2442,9 @@ namespace DocSort_CPA.Forms
             //} 
 
             MoveFiles MF = new MoveFiles();
+            GetFolders(); //nishanth remove this as soon as possible and make sure it works as per new structure.
 
-            
+
             DialogResult DlgResult = MF.ShowDialog();
 
             string Cabinet = MF.GetCabinet;
@@ -3664,13 +3652,20 @@ namespace DocSort_CPA.Forms
         {
             //'%112116%'
             string searchInput1 = "'%" + txtSearch.Text + "'%";
-            if (txtSearch.Text.Length < 2)
+
+            String minimumCharachtersRequiredToPerformSearch = ConfigurationManager.AppSettings["MinimumCharachtersRequiredToPerformSearch"].ToString();
+
+            int minimumCharachtersCount = 4;
+            int.TryParse(minimumCharachtersRequiredToPerformSearch, out minimumCharachtersCount);
+
+            if (txtSearch.Text.Length < minimumCharachtersCount)
             {
                 treeView1.BeginUpdate();
                 treeView1.Nodes.Clear();
 
-                dsUniversalCabinetsFoldersFiles = objFilesManager.GetCabinetsFolderAndFiles();
-                
+                // dsUniversalCabinetsFoldersFiles = objFilesManager.GetCabinetsFolderAndFiles();//Nishanth commented this line to see if below line works
+                dsUniversalCabinetsFoldersFiles = objFilesManager.GetCabinetsAndFolders();
+
 
                 universalDataView = dsUniversalCabinetsFoldersFiles.ResultTable.Select().CopyToDataTable().DefaultView;
                 DataTable sortedDT1 = universalDataView.ToTable();
@@ -3717,7 +3712,19 @@ namespace DocSort_CPA.Forms
             else
             {
                 //'%112116%'
+
+                
+
                 string searchInput = '%' + txtSearch.Text + '%';
+
+                String showMessageBoxesWhilePerformingSearch = ConfigurationManager.AppSettings["ShowMessageBoxesWhilePerformingSearch"].ToString();
+                if (showMessageBoxesWhilePerformingSearch == "Y")
+                {
+                    NandanaResult dsGetCountOfAllRows = objFilesManager.GetCountOfAllRows();
+                    string totalNumberOfFiles = dsGetCountOfAllRows.ResultRow.ItemArray[0].ToString();
+                    MessageBox.Show("DocSort is searching in " + totalNumberOfFiles + " records. Please wait...");
+                }
+
                 dsUniversalCabinetsFoldersFiles = objFilesManager.DynamicSearchResults(searchInput);
                 DataView universalDataView2 = dsUniversalCabinetsFoldersFiles.ResultTable.Select().CopyToDataTable().DefaultView;
 
@@ -3727,11 +3734,12 @@ namespace DocSort_CPA.Forms
                 //DataTable sortedDT1 = universalDataView.ToTable();
 
                 DataTable sortedDT1 = universalDataView2.ToTable();
-                //string searchCriteria1 = "FileCabinetName like '%" + txtSearch.Text.ToUpper() + "%'" + " or " + "FolderName like '%" + txtSearch.Text.ToUpper() + "%'" + "  or " + "FileName like '%" + txtSearch.Text.ToUpper() + "%'";
 
-                //DataTable dtFirstSixColumns = sortedDT1.AsDataView().ToTable("FirstFourColumns", true, "FileCabinetID", "FileCabinetName", "FolderID", "FolderName", "FileName", "FileID");
-                //DataTable dtFirstColum = universalDataView.ToTable("FirstFourColumns", true, "FileCabinetID");
-                // DataRow[] datarowsSearch = dtFirstSixColumns.Select(searchCriteria1);
+                if (showMessageBoxesWhilePerformingSearch == "Y")
+                {
+                    MessageBox.Show("DocSort Found " + sortedDT1.Rows.Count + " Matching Files. Please wait while we load your results...");
+                }
+
                 DataTable dtFirstSixColumns = sortedDT1.AsDataView().ToTable();
                 var list = dtFirstSixColumns.Select().OfType<DataRow>().Select(dr => dr.Field<Int32>("FileCabinetID")).ToList().Distinct();
 
@@ -3740,7 +3748,7 @@ namespace DocSort_CPA.Forms
                     
                     treeView1.BeforeExpand -= treeView1_BeforeExpand;
                     treeView1.Nodes.Clear();
-                    
+                    treeView1.ImageList = imageList1;
                     foreach (Int32 fileCabinetID in list)
                     {
                         //Add Result FileCabinet
@@ -3782,21 +3790,24 @@ namespace DocSort_CPA.Forms
                             treeNode11.ImageKey = "FolderIcon.png";
                             treeNode11.SelectedImageKey = "FolderIcon.png";
 
-                            GetImmediateFiles(treeNode11, dtFirstSixColumns.Select().CopyToDataTable(),universalDataView1);
-
+                            
+                            //treeNode11.Expand();
+                            if (treeNode11.Nodes.Count > 0)
+                            {
+                                treeNode11.ToolTipText = treeNode11.Nodes.Count.ToString() + " Folders/Files.";
+                            }
+                            else
+                            {
+                                treeNode11.ToolTipText = "Empty Folder.";
+                            }
                             treeNode.Nodes.Add(treeNode11);
-                            treeNode11.Expand();
-
-
+                            GetImmediateFiles(treeNode11, dtFirstSixColumns.Select().CopyToDataTable(), universalDataView1);
                         }
                         treeView1.Nodes.Add(treeNode);
-                        treeView1.ImageList = imageList1;
-                       
-                        treeNode.Expand();
+                        //treeNode.Expand();
                         //treeView1.ExpandAll();
-                       
                     }
-
+                    treeView1.ExpandAll();
                 }
                 catch (Exception ex)
                 {
@@ -3805,6 +3816,7 @@ namespace DocSort_CPA.Forms
                 finally {
                     treeView1.BeforeExpand += treeView1_BeforeExpand;
                     treeView1.EndUpdate();
+                    MessageBox.Show("Your Search Results are ready !!!");
                 }
             }
 
@@ -4091,7 +4103,7 @@ namespace DocSort_CPA.Forms
         public void DeleteFoldersexistingFileCabinetID(string FileCabinetID)
         {
             DataTable objgetsubfolders = new DataTable();
-
+            GetFolders();
             if (DtFolders.Rows.Count > 0)
             {
                 DataRow[] drResult = DtFolders.Select("FileCabinet_ID = '" + FileCabinetID + "'" + "and" + " IsDelete = '" + "True" + "'");
