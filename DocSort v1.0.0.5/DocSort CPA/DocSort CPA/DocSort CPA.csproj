@@ -579,6 +579,10 @@
       <Project>{C330D1DD-7F60-4279-9D0D-A33DE44D62E0}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataBase Scripts\DataBase Scripts.csproj">
+      <Project>{1297e6ea-f466-4a3a-91f1-dd62ee0b3f1f}</Project>
+      <Name>DataBase Scripts</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Home_Click.png" />

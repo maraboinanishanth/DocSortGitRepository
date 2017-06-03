@@ -56,7 +56,7 @@ namespace DocSort_CPA.Forms
 
             if (drResult.Count() != 0)
             {
-                listBox1.Items.Add("ROOT");
+                //listBox1.Items.Add("ROOT");
 
                 DataTable dtfilecabinets = drResult.CopyToDataTable();
 
