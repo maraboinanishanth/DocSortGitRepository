@@ -50,6 +50,8 @@ namespace DocSort_CPA.Forms
         DataView universalDataView = new DataView();
         private void DashBoardHome_Load(object sender, EventArgs e)
         {
+
+            
             // Checking Useraccesspermissions based on Role
             GetPermissiondetails(2);
 
@@ -2670,7 +2672,7 @@ namespace DocSort_CPA.Forms
                         {
                             if (DtFolders.Rows.Count > 0)
                             {
-                                DataRow[] drResult = DtFolders.Select("Folder_Name = '" + n.Text + "'");
+                                DataRow[] drResult = DtFolders.Select("Folder_Id = '" + n.Name + "'");
                                 if (drResult.Count() != 0)
                                 {
                                     DtMainFolders = drResult.CopyToDataTable();
@@ -2685,7 +2687,7 @@ namespace DocSort_CPA.Forms
 
                                         // Cabinet => move to
                                         // n.Name => move from
-                                        NandanaResult objinsertfilesdetails = objFilesManager.UpdateFolderCabinet(Cabinet, n.Text);
+                                        NandanaResult objinsertfilesdetails = objFilesManager.UpdateFolderCabinet(Cabinet,Convert.ToInt32(n.Name));
                                     }
                                 }
                             }
@@ -2695,7 +2697,62 @@ namespace DocSort_CPA.Forms
                     {
                         MessageBox.Show(ex.Message);
                     }
+                    
 
+                        m_sConfigFile = null;
+                    m_sFileCabinetDocFile = null;
+                    m_sImportedFolderDocFile = null;
+
+                    //Folder = n.Text;
+
+                    if (m_sConfigFile == null)
+                    {
+                        m_sConfigFile = ConfigurationManager.AppSettings["TreeviewFilepath"].ToString();
+                        if (!System.IO.Directory.Exists(m_sConfigFile))
+                            System.IO.Directory.CreateDirectory(m_sConfigFile);
+                    }
+
+                    if ((m_sFileCabinetDocFile == null) && (Cabinet != null))
+                    {
+                        if (Folder != null)
+                        {
+                            m_sFileCabinetDocFile = m_sConfigFile + "\\" + Cabinet + "\\" + Folder;
+                            //FolderID = GetMainFolderCabinetID(Folder);
+                        }
+                        else
+                        {
+                            //FolderID = 0;
+                            m_sFileCabinetDocFile = m_sConfigFile + "\\" + Cabinet; // +"\\" + treeView1.SelectedNode.Text.ToUpper();
+                        }
+
+                        if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
+                            System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
+
+                        if (!System.IO.Directory.Exists(m_sFileCabinetDocFile + "\\" + n.Text))
+                            System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile + "\\" + n.Text);
+
+                        string nodePath = "";
+                        //while (node.Parent != null)
+                        //{
+                        //    node = node.Parent;
+                        //}
+                        node = n;
+                        while (node.Parent != null)
+                        {
+                            node = node.Parent;
+                            nodePath = node.Text + "\\" + nodePath ;
+                        }
+
+                        string ParentNode = m_sConfigFile + "\\" + nodePath + n.Text;
+                        string NodeFile = m_sFileCabinetDocFile + "\\" + n.Text;
+                        //if (File.Exists(ParentNode))
+                        //{
+                        //    if (!File.Exists(NodeFile))
+                        //        System.IO.File.Copy(ParentNode, NodeFile, true);
+                        //}
+                        Copy(ParentNode, NodeFile);
+                    }
+                    return;
                     int FolderID = 0;
                     foreach (TreeNode SubNode in n.Nodes)
                     {
@@ -4477,6 +4534,362 @@ namespace DocSort_CPA.Forms
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void lblTextBoxClear_Click(object sender, EventArgs e)
+        {
+            txtSearch.Clear();
+        }
+
+        private void treeView1_DragDrop(object sender, DragEventArgs e)
+        {
+
+
+            // Retrieve the client coordinates of the drop location.  
+            Point targetPoint = treeView1.PointToClient(new Point(e.X, e.Y));
+
+            // Retrieve the node at the drop location.  
+            TreeNode targetNode = treeView1.GetNodeAt(targetPoint);
+
+            // Retrieve the node that was dragged.  
+            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
+
+            TreeNode tempTargetNode = targetNode;
+            TreeNode tempDraggedNode = draggedNode;
+            while (tempTargetNode.Parent != null)
+            {
+                tempTargetNode = tempTargetNode.Parent;
+                if (tempTargetNode.Name == draggedNode.Name)
+                {
+                    MessageBox.Show("Dont be silly, we cant make a node become a child to itself.");
+                    return;
+                    
+                }
+            }
+
+            if (draggedNode.ImageKey == "LockerIcon.png")
+            {
+
+                MessageBox.Show("This Option is not supported for File Cabinets. Please choose folders for Drag and Drop.");
+                return;
+            }
+            if (draggedNode.Parent.Name == targetNode.Name)
+            {
+                MessageBox.Show("Destination can not be the parent of the dragged node for drag and drop.");
+                return;
+            }
+
+            if ((draggedNode.Parent != null && targetNode.Parent != null) && (draggedNode.Name == targetNode.Name && draggedNode.Parent.Name == targetNode.Parent.Name))
+            {
+                MessageBox.Show("Target and Destination can not be the same to drag and drop.");
+                return;
+            }
+
+            if (targetNode.ImageKey != "FolderIcon.png" && targetNode.ImageKey != "LockerIcon.png")
+            {
+                MessageBox.Show("Target node can be a File Cabinet or a Folder only !!");
+                return;
+            }
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to move #" + draggedNode.Text + "# to #" + targetNode.Text + "# ?", "Confirmation", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                //do something
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                return;
+            }
+
+            TreeNode sourceTreeNode = draggedNode;
+            
+            TreeNode targetTempnode;
+            TreeNode draggedTempnode;
+            string targetFilePath = string.Empty;
+            string draggedFilePath = string.Empty;
+            string targetFileCabinetID = string.Empty;
+            targetTempnode = targetNode;
+            while (targetTempnode.Parent != null)
+            {
+                //targetFilePath += targetTempnode.Text + "\\";
+                targetFilePath = targetFilePath.Insert(0, "\\" + targetTempnode.Text);
+                targetTempnode = targetTempnode.Parent;
+                
+            }
+            targetFilePath = targetTempnode.Text + targetFilePath;
+
+            draggedTempnode = sourceTreeNode;
+            while (draggedTempnode.Parent != null)
+            {
+                draggedFilePath = draggedFilePath.Insert(0, "\\" +  draggedTempnode.Text );
+                draggedTempnode = draggedTempnode.Parent;
+            }
+            draggedFilePath = draggedTempnode.Text  + draggedFilePath;
+            string Path = string.Empty;
+
+            //Path = fd.SelectedPath;
+
+            object sender1 = new object();//Nishanth Import Folder task changes start
+            EventArgs e1 = new EventArgs();
+
+            string folderName = Path.Split('\\')[Path.Split('\\').Count() - 1];
+
+            m_sConfigFile = null;
+            m_sFileCabinetDocFile = null;
+            m_sImportedFolderDocFile = null;
+
+            if (m_sConfigFile == null)
+            {
+                m_sConfigFile = ConfigurationManager.AppSettings["TreeviewFilepath"].ToString();
+                if (!System.IO.Directory.Exists(m_sConfigFile))
+                    System.IO.Directory.CreateDirectory(m_sConfigFile);
+            }
+
+            if (m_sFileCabinetDocFile == null)
+            {
+                m_sFileCabinetDocFile = m_sConfigFile + "\\" + treeView1.SelectedNode.Text.ToUpper();
+                if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
+                    System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
+            }
+
+            if (m_sImportedFolderDocFile == null)
+            {
+                m_sImportedFolderDocFile = m_sFileCabinetDocFile + "\\";// + TempNodeText.ToUpper();
+                if (!System.IO.Directory.Exists(m_sImportedFolderDocFile))
+                    System.IO.Directory.CreateDirectory(m_sImportedFolderDocFile);
+            }
+
+            string sourceDirectory = m_sConfigFile + "\\" + draggedFilePath;
+            string targetDirectory = m_sConfigFile + "\\" + targetFilePath + "\\" + sourceTreeNode.Text;
+
+
+            try
+            {
+                if (File.Exists(sourceDirectory))
+                {
+                    // path is a file. 
+
+
+                    // Ensure that the target does not exist.
+                    if (File.Exists(@targetDirectory))
+                        File.Delete(@targetDirectory);
+                    string fileID = string.Empty;
+                   File.Copy(@sourceDirectory, @targetDirectory);
+                    if (!draggedNode.Equals(targetNode) && !ContainsNode(draggedNode, targetNode))
+                    {
+                        // If it is a move operation, remove the node from its current   
+                        // location and add it to the node at the drop location.  
+                        if (e.Effect == DragDropEffects.Move)
+                        {
+                             fileID = draggedNode.Name;
+                            draggedNode.Remove();
+                            //targetNode.Nodes.Add(draggedNode);
+                        }
+
+                        // If it is a copy operation, clone the dragged node   
+                        // and add it to the node at the drop location.  
+                        else if (e.Effect == DragDropEffects.Copy)
+                        {
+                            targetNode.Nodes.Add((TreeNode)draggedNode.Clone());
+                        }
+                        string ParentFolderID = string.Empty;
+
+
+                        if (sourceTreeNode.Parent != null && sourceTreeNode.Parent.ImageKey != "LockerIcon.png")
+                        {
+                            ParentFolderID = sourceTreeNode.Parent.Name;
+                        }
+                        else
+                        {
+                            ParentFolderID = "0";
+                        }
+                        
+                        Path = targetDirectory;// m_sFileCabinetDocFile + "\\" + sourceTreeNode.Text;
+
+                        var rootFileInfo = new FileInfo(Path);
+                        string Folder_ID = string.Empty;
+                        string FileCabinet_ID = string.Empty;
+                        string File_Name = string.Empty;
+                        string File_Path = string.Empty;
+                        string IsDelete = "True";
+                        if (sourceTreeNode.Parent != null && sourceTreeNode.Parent.ImageKey != "LockerIcon.png")
+                        {
+                            Folder_ID = sourceTreeNode.Parent.Name;
+                            FileCabinet_ID = targetTempnode.Name;
+                            Folder_ID = targetTempnode.Name;
+                        }
+                        else
+                        {
+                            Folder_ID = "0";
+                            FileCabinet_ID = targetTempnode.Name;
+                               
+                            NandanaResult insertintofiles = objFilesManager.InsertFileDetails(0, Convert.ToInt32(FileCabinet_ID), rootFileInfo.Name, rootFileInfo.FullName, "True");
+                            if (insertintofiles.resultDS != null && insertintofiles.resultDS.Tables[0].Rows.Count > 0)
+                            {
+                                DataRow dr = insertintofiles.resultDS.Tables[0].Rows[0];
+                                FileID = dr["FileId"].ToString();
+                            }
+                            draggedNode.Name = FileID;
+                            targetNode.Nodes.Add(draggedNode);
+                            NandanaResult UpdateFileDetails = objFilesManager.DeleteFileDetails(fileID , "False");
+                            if (UpdateFileDetails.resultDS != null && UpdateFileDetails.resultDS.Tables[0].Rows.Count > 0)
+                            {
+                                DataRow dr = UpdateFileDetails.resultDS.Tables[0].Rows[0];
+                                //FileID = dr["FileId"].ToString();
+                            }
+                        }
+                        //Folder_ID,
+                        //FileCabinet_ID,
+                        //File_Name,
+                        //File_Path,
+                        //IsDelete
+                        
+
+
+                        //WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, ParentFolderID);
+                        //SaveDraggedTreeNode(targetNode, sourceTreeNode);
+                        //DeleteFromSourceTreeNode(draggedTempnode.Name, sourceTreeNode.Name);
+                        //MovePhysicalFoldersFromSourceTarget();
+
+                        // Expand the node at the location   
+                        // to show the dropped node.  
+                        targetNode.Expand();
+                    }
+                }
+                else if (Directory.Exists(sourceDirectory))
+                {
+                    // path is a directory.
+                    Copy(sourceDirectory, targetDirectory);
+                    Path = targetDirectory;// m_sFileCabinetDocFile + "\\" + sourceTreeNode.Text;
+
+                    var rootDirectoryInfo = new DirectoryInfo(Path);
+                    //WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, targetTempnode.Parent == null ? "0" : sourceTreeNode.Name);
+
+                    // Confirm that the node at the drop location is not   
+                    // the dragged node or a descendant of the dragged node.  
+                    if (!draggedNode.Equals(targetNode) && !ContainsNode(draggedNode, targetNode))
+                    {
+                        // If it is a move operation, remove the node from its current   
+                        // location and add it to the node at the drop location.  
+                        if (e.Effect == DragDropEffects.Move)
+                        {
+                            draggedNode.Remove();
+                            targetNode.Nodes.Add(draggedNode);
+                        }
+
+                        // If it is a copy operation, clone the dragged node   
+                        // and add it to the node at the drop location.  
+                        else if (e.Effect == DragDropEffects.Copy)
+                        {
+                            targetNode.Nodes.Add((TreeNode)draggedNode.Clone());
+                        }
+                        string ParentFolderID = string.Empty;
+
+
+                        if (sourceTreeNode.Parent.ImageKey != "LockerIcon.png")
+                        {
+                            ParentFolderID = sourceTreeNode.Parent.Name;
+                        }
+                        else
+                        {
+                            ParentFolderID = "0";
+                        }
+
+                        WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, ParentFolderID);
+                        SaveDraggedTreeNode(targetNode, sourceTreeNode);
+                        DeleteFromSourceTreeNode(draggedTempnode.Name, sourceTreeNode.Name);
+                        //MovePhysicalFoldersFromSourceTarget();
+
+                        // Expand the node at the location   
+                        // to show the dropped node.  
+                        targetNode.Expand();
+                    }
+                }
+                else
+                {
+                    // path doesn't exist. 
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex ;
+            }
+
+           
+        }
+
+        private void DeleteFromSourceTreeNode(string fileCabinetID ,  string folderID)
+        {
+            NandanaResult deleteFolderAndFIles = objFilesManager.DeleteFolderAndFiles(Convert.ToInt32(fileCabinetID), Convert.ToInt32(folderID));
+            if (deleteFolderAndFIles.resultDS != null && deleteFolderAndFIles.resultDS.Tables[0].Rows.Count > 0)
+            {
+                
+                
+            }
+        }
+
+        private void SaveDraggedTreeNode(TreeNode targetNode, TreeNode sourceTreeNode)
+        {
+            
+            
+
+                
+
+                //dsUniversalCabinetsFoldersFiles = objFilesManager.GetCabinetsFolderAndFiles();
+                //treeView1.SelectedNode.Nodes.Add("TempKey", "");
+                //treeView1.SelectedNode.Collapse();
+                //treeView1.SelectedNode.Expand();
+                //treeView1.SelectedNode.Nodes.RemoveByKey("TempKey");
+            
+            
+        }
+
+        private void treeView1_DragOver(object sender, DragEventArgs e)
+        {
+            // Retrieve the client coordinates of the mouse position.  
+            Point targetPoint = treeView1.PointToClient(new Point(e.X, e.Y));
+
+            // Select the node at the mouse position.  
+            treeView1.SelectedNode = treeView1.GetNodeAt(targetPoint);
+        }
+
+        private void treeView1_DragEnter(object sender, DragEventArgs e)
+        {
+            // e.Effect = e.AllowedEffect;
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void treeView1_DragLeave(object sender, EventArgs e)
+        {
+            
+        }
+
+        private bool ContainsNode(TreeNode node1, TreeNode node2)
+        {
+            // Check the parent node of the second node.  
+            if (node2.Parent == null) return false;
+            if (node2.Parent.Equals(node1)) return true;
+
+            // If the parent node is not null or equal to the first node,   
+            // call the ContainsNode method recursively using the parent of   
+            // the second node.  
+            return ContainsNode(node1, node2.Parent);
+        }
+
+        private void treeView1_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            // Move the dragged node when the left mouse button is used.  
+            if (e.Button == MouseButtons.Left)
+            {
+                DoDragDrop(e.Item, DragDropEffects.Move);
+            }
+
+            // Copy the dragged node when the right mouse button is used.  
+            else if (e.Button == MouseButtons.Right)
+            {
+                DoDragDrop(e.Item, DragDropEffects.Copy);
+            }
         }
     }
 }

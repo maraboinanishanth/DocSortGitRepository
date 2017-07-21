@@ -1584,6 +1584,7 @@ namespace DocSort_CPA.Forms
                             // End
                         }
                     }
+                   
                 }
                 else
                 {
@@ -1852,12 +1853,8 @@ namespace DocSort_CPA.Forms
 
                                 if (SearchText != "")
                                 {
-                                    // Checking any one of the Category Value is present in contened Data or not
                                     if (CategoryValue != "")
                                     {
-                                        //string GivenTotalYears = GetSubfolderStrings();
-
-                                        //string[] CategoryValues = GivenTotalYears.Split(',');
                                         count = 0;
                                         compareposition = 0;
                                         comparesearchstringvalue = string.Empty;
@@ -1878,8 +1875,6 @@ namespace DocSort_CPA.Forms
                                             }
                                         }
 
-                                        //if (i == document.Pages.Count - 1)
-                                        //{
                                         if (count == 0)
                                         {
                                             FileCount = FileCount + 1;
@@ -1892,19 +1887,13 @@ namespace DocSort_CPA.Forms
                                             FileCount = FileCount + 1;
                                         }
 
-
                                         // Saving in FileCabinet
                                         FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
                                         // End
 
-
                                         // Stroring values in Temp table
-
                                         StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
-
                                         // End
-
-                                        //i = document.Pages.Count - 1;
                                     }
                                     else
                                     {
@@ -1913,17 +1902,13 @@ namespace DocSort_CPA.Forms
                                         // Saving in FileCabinet
                                         FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
                                         // End
-
-
+                                        
                                         // Stroring values in Temp table
-
                                         StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
-
-                                        // End
-
-                                        //i = document.Pages.Count - 1;
                                     }
                                 }
+                                break;// If we encounter the parent and subfolder values in the current page, we need to stop the execution and g 
+                                //to next document. Else the same file is going into a sub folder and MISMATCHED folder
                             }
                             else
                             {
@@ -1934,12 +1919,7 @@ namespace DocSort_CPA.Forms
                                 {
                                     if (SearchValues[k].ToString() != "")
                                     {
-                                        //int size = Math.Max(SearchValues[k].Length < 6 ? SearchValues[k].Length : SearchValues[k].Length / 2 + 1, 5);
-
                                         int size = SearchValues[k].Length < 6 ? SearchValues[k].Length : Math.Max(SearchValues[k].Length / 2 + 1, 5);
-
-                                        //for (int j = 0; j < (SearchValues[k].Length - 4) + 1; j++)
-                                        //{
                                         if (imgdata.Contains(SearchValues[k].Substring(0, size).ToString().ToUpper()))
                                         {
                                             UnMatchedSearchcount += 1;
@@ -1953,8 +1933,6 @@ namespace DocSort_CPA.Forms
                                                 UnMatchedcompareposition = position;
 
                                                 UnMatchedcomparesearchstringvalue = UnMatchedcompareposition + "-" + k;
-
-                                                //j = (SearchValues[i].Length - 3);
                                             }
                                             else
                                             {
@@ -1962,18 +1940,15 @@ namespace DocSort_CPA.Forms
                                                 if (result == UnMatchedcompareposition)
                                                 {
                                                     UnMatchedcompareposition = result;
-                                                    UnMatchedcomparesearchstringvalue = UnMatchedcomparesearchstringvalue;
+                                                   // UnMatchedcomparesearchstringvalue = UnMatchedcomparesearchstringvalue;
                                                 }
                                                 else if (result == nextposition)
                                                 {
                                                     UnMatchedcompareposition = result;
                                                     UnMatchedcomparesearchstringvalue = UnMatchedcompareposition + "-" + k;
                                                 }
-
-                                                //j = (SearchValues[k].Length - 3);
                                             }
                                         }
-                                        //}
                                     }
                                 }
                                 if (UnMatchedSearchcount != 0)
@@ -1986,10 +1961,6 @@ namespace DocSort_CPA.Forms
                                     // Checking any one of the Category Value is present in contened Data or not
                                     if (CategoryValue != "")
                                     {
-                                        //string GivenTotalYears = GetSubfolderStrings();
-
-                                        //string[] CategoryValues = GivenTotalYears.Split(',');
-
                                         count = 0;
                                         compareposition = 0;
                                         comparesearchstringvalue = string.Empty;
@@ -2010,8 +1981,6 @@ namespace DocSort_CPA.Forms
                                             }
                                         }
 
-                                        //if (i == document.Pages.Count - 1)
-                                        //{
                                         if (count == 0)
                                         {
                                             FileCount = FileCount + 1;
@@ -2028,14 +1997,9 @@ namespace DocSort_CPA.Forms
                                         FileCabinetClass.MatchedDocumentsInFileCabinet(SearchText, TypeOfDoc, FileName, path);
                                         // End
 
-
                                         // Stroring values in Temp table
-
                                         StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
-
                                         // End
-
-                                        //i = document.Pages.Count - 1;
                                     }
                                     else
                                     {
@@ -2046,16 +2010,9 @@ namespace DocSort_CPA.Forms
                                         // End
 
                                         // Stroring values in Temp table
-
                                         StroeValuesInTempTable(SearchText, TypeOfDoc, SourceFolder, DestinationFolder, path, FileName, DocumentID);
-
                                         // End
-
-                                        //i = document.Pages.Count - 1;
                                     }
-
-
-                                    // End
                                 }
                                 else
                                 {
@@ -2113,8 +2070,8 @@ namespace DocSort_CPA.Forms
                     }
                 }
 
-                if (i == 0)
-                {
+                //if (i == 0)
+                //{
                     if (!System.IO.File.Exists(m_sDocFile + "\\" + FileName))
                     {
                         if (System.IO.Directory.Exists(m_sImages))
@@ -2129,7 +2086,7 @@ namespace DocSort_CPA.Forms
                             dir.Delete(true);
                         }
                     }
-                }
+               // }
             }
         }
 

@@ -51,7 +51,6 @@ namespace DocSort_CPA.Forms
         private void LoadCabinets()
         {
             DataTable DtCabinets = DBHome.GetFileCabinets();
-
             DataRow[] drResult = DtCabinets.Select("FileCabinet_ID <> '" + 1 + "'" + "and" + " IsDelete = '" + "True" + "'");
 
             if (drResult.Count() != 0)

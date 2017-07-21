@@ -44,15 +44,42 @@ namespace Business.Manager
             return result;
         }
 
+        public NandanaResult DeleteFolderAndFiles( int FileCabinet_ID, int Folder_ID)
+        {
+            NandanaResult result;
+            NandanaDataSet resultDS;
 
-        public NandanaResult UpdateFolderCabinet(string CabinetName, string FolderName)
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new NandanaDBRequest.Parameter("@FolderId", Folder_ID));
+            paramArray.Add(new NandanaDBRequest.Parameter("@FilecabinetId", FileCabinet_ID));
+
+            try
+            {
+                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
+                NandanaDBRequest request = new NandanaDBRequest("sp_DeleteFolderAndFiles", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from sp_DeleteFolderAndFiles sp.", m_oSession, e));
+            }
+            result = new NandanaResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from sp_DeleteFolderAndFiles sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public NandanaResult UpdateFolderCabinet(string CabinetName, Int32 FolderID)
         {
             NandanaResult result;
             NandanaDataSet resultDS;
 
             ArrayList paramArray = new ArrayList();
             paramArray.Add(new NandanaDBRequest.Parameter("@CabinetName", CabinetName));
-            paramArray.Add(new NandanaDBRequest.Parameter("@Foldername", FolderName));
+            paramArray.Add(new NandanaDBRequest.Parameter("@FolderID", FolderID));
 
             try
             {
