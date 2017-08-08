@@ -12,6 +12,7 @@ using Word = Microsoft.Office.Interop.Word;
 using Business.Manager;
 using Common;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace DocSort_CPA.Forms
 {
@@ -34,7 +35,7 @@ namespace DocSort_CPA.Forms
             get;
         }
 
-        
+
         OpenFileCabinet openfilecabinet = new OpenFileCabinet();
         NewFileCabinet newfilecabinet = new NewFileCabinet();
 
@@ -51,7 +52,7 @@ namespace DocSort_CPA.Forms
         private void DashBoardHome_Load(object sender, EventArgs e)
         {
 
-            
+
             // Checking Useraccesspermissions based on Role
             GetPermissiondetails(2);
 
@@ -74,7 +75,7 @@ namespace DocSort_CPA.Forms
             //dsUniversalCabinetsFoldersFiles = objFilesManager.GetCabinetsFolderAndFiles(); This line I have commented to do a better approach .Nishanth May19
 
             dsUniversalCabinetsFoldersFiles = objFilesManager.GetCabinetsAndFolders();
-            if(dsUniversalCabinetsFoldersFiles.HasData)
+            if (dsUniversalCabinetsFoldersFiles.HasData)
             {
                 universalDataView = dsUniversalCabinetsFoldersFiles.ResultTable.Select().CopyToDataTable().DefaultView;
 
@@ -101,7 +102,7 @@ namespace DocSort_CPA.Forms
 
                             TreeNode treeNodeTemp = treeNode.Nodes.Add("TempKey", "");
                             treeView1.Nodes.Add(treeNode);
-                           
+
                         }
                     }
                     catch (Exception ex)
@@ -110,7 +111,7 @@ namespace DocSort_CPA.Forms
                     }
                 }
             }
-            
+
         }
 
         private void treeView1_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -130,15 +131,15 @@ namespace DocSort_CPA.Forms
 
         private void GetImmediateChildren(TreeNode node)
         {
-            
-             GetImmediateFolders(node);
-             
+
+            GetImmediateFolders(node);
+
         }
 
         private void GetImmediateFiles(TreeNode node, DataTable sourceDataTable, DataView universalDataView1)
         {
             Dictionary<string, string> fileDictionary = new Dictionary<string, string>();
-           
+
             if (sourceDataTable == null)
             {
                 if (node.ImageKey == "LockerIcon.png")
@@ -147,7 +148,7 @@ namespace DocSort_CPA.Forms
                     {
                         DataView universalDataView2 = objFilesManager.GetCabinetFilesByFileCabinetID(node.Name).ResultTable.Select().CopyToDataTable().DefaultView;
                         //universalDataView = universalDataView1;
-                        IEnumerable<DataRow> datarows1 = universalDataView2.ToTable().AsEnumerable(); 
+                        IEnumerable<DataRow> datarows1 = universalDataView2.ToTable().AsEnumerable();
                         var resultSet1 = datarows1.Distinct();
 
                         foreach (DataRow dr1 in resultSet1)
@@ -217,7 +218,7 @@ namespace DocSort_CPA.Forms
 
                     }
                 }
-                    if (!objFilesManager.GetFilesByFolderID(node.Name).HasData)
+                if (!objFilesManager.GetFilesByFolderID(node.Name).HasData)
                 { return; }
                 universalDataView1 = objFilesManager.GetFilesByFolderID(node.Name).ResultTable.Select().CopyToDataTable().DefaultView;
                 IEnumerable<DataRow> datarows = universalDataView1.ToTable().AsEnumerable();
@@ -260,7 +261,7 @@ namespace DocSort_CPA.Forms
             {
                 if (!string.IsNullOrEmpty(kk.Key) && !string.IsNullOrEmpty(kk.Value))
                 {
-                   // node.Nodes.RemoveByKey("TempKey");
+                    // node.Nodes.RemoveByKey("TempKey");
                     TreeNode treeNode22 = new TreeNode();
                     treeNode22.Name = kk.Key;
                     treeNode22.Text = kk.Value;
@@ -334,11 +335,11 @@ namespace DocSort_CPA.Forms
                     {
                         return;
                     }
-                        universalDataView1 = objFilesManager.GetCabinetsFolderAndFilesByFileCabinetID(node.Name).ResultTable.Select().CopyToDataTable().DefaultView;
-                        universalDataView = universalDataView1;
-                        var dt = universalDataView1.ToTable().AsEnumerable();
-                        resultSet = dt.Distinct();
-                    
+                    universalDataView1 = objFilesManager.GetCabinetsFolderAndFilesByFileCabinetID(node.Name).ResultTable.Select().CopyToDataTable().DefaultView;
+                    universalDataView = universalDataView1;
+                    var dt = universalDataView1.ToTable().AsEnumerable();
+                    resultSet = dt.Distinct();
+
                 }
                 else
                 {
@@ -347,14 +348,14 @@ namespace DocSort_CPA.Forms
                         GetImmediateFiles(node, null, universalDataView1);//Nishanth pass the second parameter only while serching.
                     }
                     if (!objFilesManager.GetCabinetsFolderAndFilesByFolderID(node.Name).HasData)
-                    { return;}
+                    { return; }
                     universalDataView1 = objFilesManager.GetCabinetsFolderAndFilesByFolderID(node.Name).ResultTable.Select().CopyToDataTable().DefaultView;
                     universalDataView = universalDataView1;
                     var dt = universalDataView1.ToTable().AsEnumerable();
                     // resultSet = dt.Where(x => x.ItemArray[4].ToString() == node.Name).Distinct();
                     resultSet = dt.Distinct();
                 }
-                
+
                 Dictionary<string, string> folderDictionary = new Dictionary<string, string>();
                 Dictionary<string, string> fileDictionary = new Dictionary<string, string>();
                 foreach (DataRow dr1 in resultSet)
@@ -379,7 +380,7 @@ namespace DocSort_CPA.Forms
                     node.Nodes.Add(treeNode11);
 
                 }
-                
+
             }
             catch { }
         }
@@ -408,6 +409,28 @@ namespace DocSort_CPA.Forms
                     ChangeControlStatus(true);
                 }
             }
+        }
+
+        public bool GetDeletePermissiondetails()
+        {
+            Boolean canDelete = false;
+            UserManager objUserManager = new UserManager();
+            NandanaResult dsuserPermission = new NandanaResult();
+            dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
+            if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
+            {
+               
+
+                DataRow[] drpermissions = dsuserPermission.resultDS.Tables[0].Select("Form_ID ='" + 17 + "'");//17 is the Form_ID of Delete option in tbl_Useraccesspermission
+
+                if (drpermissions.Length > 0)
+                {
+                    canDelete = Convert.ToBoolean(drpermissions[0]["IsView"]);
+                    
+                }
+                
+            }
+            return canDelete;
         }
 
         public void ChangeControlStatus(bool status)
@@ -580,7 +603,7 @@ namespace DocSort_CPA.Forms
                 {
                     if (DtFolders.Rows.Count > 0)
                     {
-                        DataRow[] drResult = DtFolders.Select("Folder_Name = '" + FolderName  + "'");
+                        DataRow[] drResult = DtFolders.Select("Folder_Name = '" + FolderName + "'");
                         if (drResult.Count() != 0)
                         {
                             DtMainFolders = drResult.CopyToDataTable();
@@ -594,7 +617,7 @@ namespace DocSort_CPA.Forms
                             }
                         }
                     }
-                }               
+                }
 
             }
             catch (Exception ex)
@@ -631,7 +654,7 @@ namespace DocSort_CPA.Forms
                                 parentNode.ContextMenuStrip = FolderContextMenu;
                                 parentNode.ImageKey = "FolderIcon.png";
                                 parentNode.SelectedImageKey = "FolderIcon.png";
-                                
+
                                 PopulateFolderTreeView(Convert.ToInt32(dr["Folder_ID"].ToString()), parentNode, Convert.ToInt32(strRootNodeID));
                             }
                         }
@@ -882,14 +905,14 @@ namespace DocSort_CPA.Forms
             }
 
             //* End  *//
-           
+
             foreach (var file in rootDirectoryInfo.GetFiles())
             {
                 System.IO.File.Copy(path + "\\" + file.Name, m_sImportedFolderDocFile + "\\" + file.Name, true);
 
                 //* inserting files details in Files table *//
 
-                NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(FolderID),Convert.ToInt32(strRootNodeID), file.Name, m_sImportedFolderDocFile + "\\" + file.Name, "True");
+                NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(FolderID), Convert.ToInt32(strRootNodeID), file.Name, m_sImportedFolderDocFile + "\\" + file.Name, "True");
 
                 //* End  *//
 
@@ -915,7 +938,7 @@ namespace DocSort_CPA.Forms
         string DocumentID = string.Empty;
 
         // adding Files to Selected Node //
-        private void  ListFiles(TreeView treeView, string path)
+        private void ListFiles(TreeView treeView, string path)
         {
             m_sConfigFile = null;
             m_sFileCabinetDocFile = null;
@@ -930,7 +953,7 @@ namespace DocSort_CPA.Forms
 
             if (m_sFileCabinetDocFile == null)
             {
-                m_sFileCabinetDocFile = m_sConfigFile + "\\" + treeView1.SelectedNode.Text.ToUpper();  
+                m_sFileCabinetDocFile = m_sConfigFile + "\\" + treeView1.SelectedNode.Text.ToUpper();
                 if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
                     System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
             }
@@ -961,16 +984,16 @@ namespace DocSort_CPA.Forms
 
             //* inserting files details in Files table *//
 
-            NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(0,Convert.ToInt32(treeView1.SelectedNode.Name), rootFileInfo.Name, m_sFileCabinetDocFile + "\\" + rootFileInfo.Name, "True");
+            NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(0, Convert.ToInt32(treeView1.SelectedNode.Name), rootFileInfo.Name, m_sFileCabinetDocFile + "\\" + rootFileInfo.Name, "True");
             if (objinsertfilesdetails.resultDS != null && objinsertfilesdetails.resultDS.Tables[0].Rows.Count > 0)
             {
                 DataRow dr = objinsertfilesdetails.resultDS.Tables[0].Rows[0];
                 FileID = dr["FileId"].ToString();
             }
-            
+
             //* End  *//
 
-           
+
             newNode.Name = FileID;
             newNode.ContextMenuStrip = FileContextMenu;
             string[] FileType = rootFileInfo.Name.ToString().Split('.');
@@ -1170,7 +1193,7 @@ namespace DocSort_CPA.Forms
 
                                     if (treeView1.SelectedNode.Parent.ImageKey == "LockerIcon.png")
                                     {
-                                        NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(treeView1.SelectedNode.Name),Convert.ToInt32(treeView1.SelectedNode.Parent.Name), rootFileInfo, m_sFileCabinetDocFile + "\\" + rootFileInfo, "True");
+                                        NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(treeView1.SelectedNode.Name), Convert.ToInt32(treeView1.SelectedNode.Parent.Name), rootFileInfo, m_sFileCabinetDocFile + "\\" + rootFileInfo, "True");
                                         if (objinsertfilesdetails.resultDS != null && objinsertfilesdetails.resultDS.Tables[0].Rows.Count > 0)
                                         {
                                             DataRow drfile = objinsertfilesdetails.resultDS.Tables[0].Rows[0];
@@ -1179,14 +1202,14 @@ namespace DocSort_CPA.Forms
                                     }
                                     else
                                     {
-                                        NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(treeView1.SelectedNode.Name),Convert.ToInt32(treeView1.SelectedNode.Parent.Parent.Name), rootFileInfo, m_sFileCabinetDocFile + "\\" + rootFileInfo, "True");
+                                        NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(treeView1.SelectedNode.Name), Convert.ToInt32(treeView1.SelectedNode.Parent.Parent.Name), rootFileInfo, m_sFileCabinetDocFile + "\\" + rootFileInfo, "True");
                                         if (objinsertfilesdetails.resultDS != null && objinsertfilesdetails.resultDS.Tables[0].Rows.Count > 0)
                                         {
                                             DataRow drfile = objinsertfilesdetails.resultDS.Tables[0].Rows[0];
                                             FileID = drfile["FileId"].ToString();
                                         }
                                     }
-                                    
+
                                     //* End  *//
 
 
@@ -1259,7 +1282,7 @@ namespace DocSort_CPA.Forms
                     m_sFileCabinetDocFile = m_sImportedFolderDocFile;
                     if (FolderId == treeView1.SelectedNode.Name)
                     {
-                       
+
                         System.IO.File.Copy(path, m_sFileCabinetDocFile + "\\" + rootFileInfo, true);
                         //CheckCreateFolder(FolderId, m_sFileCabinetDocFile);
 
@@ -1280,7 +1303,7 @@ namespace DocSort_CPA.Forms
 
                         if (treeView1.SelectedNode.Parent.ImageKey == "LockerIcon.png")
                         {
-                            NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(treeView1.SelectedNode.Name),Convert.ToInt32(treeView1.SelectedNode.Parent.Name), rootFileInfo, m_sFileCabinetDocFile + "\\" + rootFileInfo, "True");
+                            NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(treeView1.SelectedNode.Name), Convert.ToInt32(treeView1.SelectedNode.Parent.Name), rootFileInfo, m_sFileCabinetDocFile + "\\" + rootFileInfo, "True");
                             if (objinsertfilesdetails.resultDS != null && objinsertfilesdetails.resultDS.Tables[0].Rows.Count > 0)
                             {
                                 DataRow drfile = objinsertfilesdetails.resultDS.Tables[0].Rows[0];
@@ -1289,7 +1312,7 @@ namespace DocSort_CPA.Forms
                         }
                         else
                         {
-                            NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(treeView1.SelectedNode.Name),Convert.ToInt32(treeView1.SelectedNode.Parent.Parent.Name), rootFileInfo, m_sFileCabinetDocFile + "\\" + rootFileInfo, "True");
+                            NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(treeView1.SelectedNode.Name), Convert.ToInt32(treeView1.SelectedNode.Parent.Parent.Name), rootFileInfo, m_sFileCabinetDocFile + "\\" + rootFileInfo, "True");
                             if (objinsertfilesdetails.resultDS != null && objinsertfilesdetails.resultDS.Tables[0].Rows.Count > 0)
                             {
                                 DataRow drfile = objinsertfilesdetails.resultDS.Tables[0].Rows[0];
@@ -1354,7 +1377,7 @@ namespace DocSort_CPA.Forms
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            //Nishanth check if delete folder permission code should comehere
             treeView1.SelectedNode.Remove();
         }
 
@@ -1436,11 +1459,11 @@ namespace DocSort_CPA.Forms
         public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
         {
             Directory.CreateDirectory(target.FullName);
-           
+
             // Copy each file into the new directory.
             foreach (FileInfo fi in source.GetFiles())
             {
-               // Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
+                // Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
                 fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
             }
 
@@ -1522,8 +1545,8 @@ namespace DocSort_CPA.Forms
             string TempNodeText = string.Empty;
             EnterText frm = new EnterText();
             //treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
-            treeView1.HideSelection = false; 
-            
+            treeView1.HideSelection = false;
+
             frm.CurrentFolderName = treeView1.SelectedNode.Text.ToUpper();
             frm.FileCabinetID = treeView1.SelectedNode.Name;
             frm.ShowDialog();
@@ -1662,8 +1685,8 @@ namespace DocSort_CPA.Forms
 
                 //* End  *//
                 if (string.IsNullOrEmpty(FolderID))
-                { 
-                 MessageBox.Show("FolderID is Empty !!");
+                {
+                    MessageBox.Show("FolderID is Empty !!");
                 }
                 newNode.Name = FolderID;
 
@@ -1674,12 +1697,12 @@ namespace DocSort_CPA.Forms
                 //newNode.ImageKey = "Folder.jpg";
                 //newNode.SelectedImageKey = "Folder.jpg";
 
-                
+
 
 
                 SaveImportingFolderFiles(treeView1, Path, FolderID, treeView1.SelectedNode.Parent.Name, newNode);
 
-              
+
                 var rootDirectoryInfo = new DirectoryInfo(Path);
                 foreach (var file in rootDirectoryInfo.GetFiles())
                 {
@@ -1690,7 +1713,7 @@ namespace DocSort_CPA.Forms
                     treeView1.SelectedNode.Nodes.Add(newNode);
                 }
 
-                
+
             }
         }
 
@@ -1753,25 +1776,25 @@ namespace DocSort_CPA.Forms
                 //* End  *//
 
                 //directoryNode.Nodes.Add(new TreeNode(file.Name));
-                
-                
+
+
                 //newNode.Nodes.Add(new TreeNode(file.Name));
             }
 
             foreach (TreeNode ChildNode in directoryNode.Nodes)
             {
                 //ChildNode.ContextMenuStrip = FileContextMenu;
-                
-                
-                
-                
+
+
+
+
                 //ChildNode.ImageKey = "File.png";
                 //ChildNode.SelectedImageKey = "File.png";
 
             }
 
-           // treeView.SelectedNode.Nodes.Add(directoryNode);
-           // directoryNode.ContextMenuStrip = FolderContextMenu;
+            // treeView.SelectedNode.Nodes.Add(directoryNode);
+            // directoryNode.ContextMenuStrip = FolderContextMenu;
             //directoryNode.ImageKey = "FolderIcon.png";
             //directoryNode.SelectedImageKey = "FolderIcon.png";
 
@@ -1879,7 +1902,7 @@ namespace DocSort_CPA.Forms
             ///treeView.SelectedNode.Nodes.Remove 
             newNode1.Nodes.Add(newNode);
 
-           // treeView.SelectedNode.Expand();
+            // treeView.SelectedNode.Expand();
         }
 
         private void NewFolderToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -1906,7 +1929,7 @@ namespace DocSort_CPA.Forms
             {
                 TempNodeText = frm.FolderName;
             }
-            
+
             frm.Dispose();
 
             if ((TempNodeText != null))
@@ -2012,7 +2035,7 @@ namespace DocSort_CPA.Forms
 
             }
 
-            
+
             if (getMainFolderNames.HasErrors != null && getMainFolderNames.Rows.Count > 0)
             {
                 DataRow dr = getMainFolderNames.Rows[0];
@@ -2154,14 +2177,24 @@ namespace DocSort_CPA.Forms
         string DeleteFilesIDs = string.Empty;
         private void DeleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            DeleteConfirmation objDeleteConfirmation = new DeleteConfirmation();
-            objDeleteConfirmation.ShowDialog();
+            //Check if the user hase permission to delete folder
+            bool userCanDelete = GetDeletePermissiondetails();
 
-            if (objDeleteConfirmation.DeleteConfirmationRequest == "Yes")
+            if (userCanDelete)
             {
-                NandanaResult deletefolders = objFolderManager.DeleteFolderDetails(treeView1.SelectedNode.Name, "False");
+                DeleteConfirmation objDeleteConfirmation = new DeleteConfirmation();
+                objDeleteConfirmation.ShowDialog();
 
-                treeView1.SelectedNode.Remove();
+                if (objDeleteConfirmation.DeleteConfirmationRequest == "Yes")
+                {
+                    NandanaResult deletefolders = objFolderManager.DeleteFolderDetails(treeView1.SelectedNode.Name, "False");
+
+                    treeView1.SelectedNode.Remove();
+                }
+            }
+            else {
+
+                MessageBox.Show("You do not access to delete. Please check with your admin to get access.");
             }
         }
 
@@ -2213,7 +2246,7 @@ namespace DocSort_CPA.Forms
                     }
                 }
             }
-            
+
             if (objgetFiles.HasErrors != null && objgetFiles.Rows.Count > 0)
             {
                 foreach (DataRow dr in objgetFiles.Rows)
@@ -2306,7 +2339,7 @@ namespace DocSort_CPA.Forms
             {
                 SelectedNode.Text = TempNodeText;
 
-                NandanaResult updateFolderName = objFolderManager.UpdateFolderNameDetails(treeView1.SelectedNode.Name,TempNodeText.ToUpper());
+                NandanaResult updateFolderName = objFolderManager.UpdateFolderNameDetails(treeView1.SelectedNode.Name, TempNodeText.ToUpper());
             }
             string folderID = string.Empty;
             string fileCabinetID = string.Empty;
@@ -2328,10 +2361,10 @@ namespace DocSort_CPA.Forms
                 {
                     Directory.Move(originalName, TempNodeText);
                 }
-                
-                if (drResult.Count() != 0 )//Nishanth Folder Name Change
+
+                if (drResult.Count() != 0)//Nishanth Folder Name Change
                 {
-                   
+
                     foreach (DataRow dataRow in drResult)
                     {
                         filePath = dataRow["File_Path"].ToString();
@@ -2352,7 +2385,7 @@ namespace DocSort_CPA.Forms
                 DataRow[] drResult = DtFiles.Select("Folder_ID = '" + treeView1.SelectedNode.Name + "'" + "and" + " FileCabinet_ID = '" + treeView1.SelectedNode.Parent.Parent.Name + "'" + "and" + " IsDelete = '" + "True" + "'");
 
                 DirectoryInfo dinfo = Directory.GetParent(Path.GetDirectoryName(m_sImportedFolderDocFile));
-               
+
                 Directory.SetCurrentDirectory(dinfo.FullName);
                 if (Directory.Exists(originalName))
                 {
@@ -2526,7 +2559,7 @@ namespace DocSort_CPA.Forms
             if (dr == DialogResult.OK)
             {
                 Path = fd.SelectedPath;
-               
+
 
                 object sender1 = new object();//Nishanth Import Folder task changes start
                 EventArgs e1 = new EventArgs();
@@ -2557,7 +2590,7 @@ namespace DocSort_CPA.Forms
             }
         }
 
-        private void WalkDirectoryTree(System.IO.DirectoryInfo root,string fileCabinetID, string parentFolderID)
+        private void WalkDirectoryTree(System.IO.DirectoryInfo root, string fileCabinetID, string parentFolderID)
         {
             System.IO.FileInfo[] files = null;
             System.IO.DirectoryInfo[] subDirs = null;
@@ -2576,7 +2609,7 @@ namespace DocSort_CPA.Forms
                     FolderID = dr["FolderId"].ToString();
                     foreach (FileInfo f in files)
                     {
-                        NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(FolderID), Convert.ToInt32(fileCabinetID), f.Name,f.FullName, "True");
+                        NandanaResult objinsertfilesdetails = objFilesManager.InsertFileDetails(Convert.ToInt32(FolderID), Convert.ToInt32(fileCabinetID), f.Name, f.FullName, "True");
                     }
                 }
             }
@@ -2619,22 +2652,31 @@ namespace DocSort_CPA.Forms
 
         private void DeleteFileToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            DeleteConfirmation objDeleteConfirmation = new DeleteConfirmation();
-            objDeleteConfirmation.ShowDialog();
+            //Check if the user hase permission to delete folder
+            bool userCanDelete = GetDeletePermissiondetails();
 
-            if (objDeleteConfirmation.DeleteConfirmationRequest == "Yes")
+            if (userCanDelete)
             {
-                
-                NandanaResult DeleteFiles = objFilesManager.DeleteFileDetails(treeView1.SelectedNode.Name, "False");
+                DeleteConfirmation objDeleteConfirmation = new DeleteConfirmation();
+                objDeleteConfirmation.ShowDialog();
 
-                treeView1.SelectedNode.Remove();
+                if (objDeleteConfirmation.DeleteConfirmationRequest == "Yes")
+                {
+                    NandanaResult DeleteFiles = objFilesManager.DeleteFileDetails(treeView1.SelectedNode.Name, "False");
+
+                    treeView1.SelectedNode.Remove();
+                }
+            }
+            else
+            {
+                MessageBox.Show("You do not access to delete. Please check with your admin to get access.");
             }
         }
 
         private void MoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Folder level Move
-            
+
             TreeNode node = treeView1.SelectedNode;
             treeView1.HideSelection = false;
             //
@@ -2687,7 +2729,7 @@ namespace DocSort_CPA.Forms
 
                                         // Cabinet => move to
                                         // n.Name => move from
-                                        NandanaResult objinsertfilesdetails = objFilesManager.UpdateFolderCabinet(Cabinet,Convert.ToInt32(n.Name));
+                                        NandanaResult objinsertfilesdetails = objFilesManager.UpdateFolderCabinet(Cabinet, Convert.ToInt32(n.Name));
                                     }
                                 }
                             }
@@ -2697,9 +2739,9 @@ namespace DocSort_CPA.Forms
                     {
                         MessageBox.Show(ex.Message);
                     }
-                    
 
-                        m_sConfigFile = null;
+
+                    m_sConfigFile = null;
                     m_sFileCabinetDocFile = null;
                     m_sImportedFolderDocFile = null;
 
@@ -2740,7 +2782,7 @@ namespace DocSort_CPA.Forms
                         while (node.Parent != null)
                         {
                             node = node.Parent;
-                            nodePath = node.Text + "\\" + nodePath ;
+                            nodePath = node.Text + "\\" + nodePath;
                         }
 
                         string ParentNode = m_sConfigFile + "\\" + nodePath + n.Text;
@@ -2756,7 +2798,7 @@ namespace DocSort_CPA.Forms
                     int FolderID = 0;
                     foreach (TreeNode SubNode in n.Nodes)
                     {
-                 
+
                         m_sConfigFile = null;
                         m_sFileCabinetDocFile = null;
                         m_sImportedFolderDocFile = null;
@@ -2791,7 +2833,7 @@ namespace DocSort_CPA.Forms
 
                             //string PrevNode = n.FullPath;
 
-                            string ParentNode =  m_sConfigFile + "\\" + n.Parent.Text  +"\\" + newNode.Text;
+                            string ParentNode = m_sConfigFile + "\\" + n.Parent.Text + "\\" + newNode.Text;
                             //string ParentNode = m_sConfigFile + "\\" + n.FullPath;
                             string NodeFile = m_sFileCabinetDocFile + "\\";
                             if (File.Exists(ParentNode))
@@ -2806,7 +2848,7 @@ namespace DocSort_CPA.Forms
                         }
                         else break;
                     }
-                 
+
                 }
 
                 treeView1.Nodes.Clear();
@@ -2833,7 +2875,7 @@ namespace DocSort_CPA.Forms
 
             //MessageBox.Show(string.Format("You selected: {0}", Cabinet));
             //MessageBox.Show(string.Format("You selected: {0}", Folder));    
-  
+
             MoveFiles MF = new MoveFiles();
             DialogResult DlgResult = MF.ShowDialog();
 
@@ -2888,7 +2930,7 @@ namespace DocSort_CPA.Forms
                         if (File.Exists(ParentNode))
                         {
                             if (!File.Exists(NodeFile))
-                                System.IO.File.Copy(ParentNode, NodeFile , true);
+                                System.IO.File.Copy(ParentNode, NodeFile, true);
                         }
                         //* inserting files details in Files table *//
 
@@ -2897,10 +2939,10 @@ namespace DocSort_CPA.Forms
                     }
                     else break;
                 }
-                 
+
                 treeView1.Nodes.Clear();
                 DashBoardHome_Load(sender, e);
-                
+
                 MF.Dispose();
             }
             else
@@ -2930,7 +2972,7 @@ namespace DocSort_CPA.Forms
             if (treeView1.SelectedNode.Parent.ImageKey == "LockerIcon.png")
             {
                 frm.CurrentFolderName = "0";
-               // frm.FileCabinetID = treeView1.SelectedNode.Parent.Name;
+                // frm.FileCabinetID = treeView1.SelectedNode.Parent.Name;
             }
             else
             {
@@ -2963,7 +3005,7 @@ namespace DocSort_CPA.Forms
             {
                 SelectedNode.Text = TempNodeText + "." + splitfilenames[1].ToString();
 
-                
+
                 NandanaResult updateFolderName = objFilesManager.UpdateFileNameDetails(treeView1.SelectedNode.Name, TempNodeText + "." + splitfilenames[1].ToString());
             }
         }
@@ -3066,7 +3108,7 @@ namespace DocSort_CPA.Forms
                         }
                     }
                 }
-                
+
 
                 if (getFolderNames.HasErrors != null && getFolderNames.Rows.Count > 0)
                 {
@@ -3106,7 +3148,7 @@ namespace DocSort_CPA.Forms
 
                         drtemp["Size"] = Size;
                         drtemp["Date"] = File.GetCreationTime(dr["File_Path"].ToString());
-                        if (splitFileName[1].ToUpper() == "JPG" || splitFileName[1].ToUpper() == "PNG" || splitFileName[1].ToUpper() == "BMP" || splitFileName[1].ToUpper() == "GIF" || splitFileName[1].ToUpper() == "TIF" || splitFileName[1].ToUpper()== "TIFF") // or // ImageFormat.Jpeg.ToString()
+                        if (splitFileName[1].ToUpper() == "JPG" || splitFileName[1].ToUpper() == "PNG" || splitFileName[1].ToUpper() == "BMP" || splitFileName[1].ToUpper() == "GIF" || splitFileName[1].ToUpper() == "TIF" || splitFileName[1].ToUpper() == "TIFF") // or // ImageFormat.Jpeg.ToString()
                         {
                             //drtemp["img"] = global::MoveMyFiles.Properties.Resources.JPGIcon;
                             drtemp["PageCount"] = Convert.ToString(1);
@@ -3168,7 +3210,7 @@ namespace DocSort_CPA.Forms
                 //dgview.ColumnHeadersDefaultCellStyle.BackColor = Color.Red;
                 dgvDocuments.RowHeadersDefaultCellStyle.BackColor = Color.Gray;
 
-             
+
                 DataGridViewColumn clnName = new DataGridViewTextBoxColumn();
                 clnName.DataPropertyName = "Name";
                 clnName.Name = "Name";
@@ -3271,7 +3313,7 @@ namespace DocSort_CPA.Forms
                         }
                     }
                 }
-                
+
                 if (getFolderNames.HasErrors != null && getFolderNames.Rows.Count > 0)
                 {
                     foreach (DataRow dr in getFolderNames.Rows)
@@ -3361,7 +3403,7 @@ namespace DocSort_CPA.Forms
                 dgvDocuments.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
                 dgvDocuments.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.ColorTranslator.FromHtml("#444444");
                 this.dgvDocuments.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 11.00F);
-                
+
                 dgvDocuments.BorderStyle = BorderStyle.None;
                 dgvDocuments.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
                 //dgview.ColumnHeadersDefaultCellStyle.BackColor = Color.Red;
@@ -3447,7 +3489,7 @@ namespace DocSort_CPA.Forms
                         }
                     }
                 }
-                
+
                 if (getFolderNames.HasErrors != null && getFolderNames.Rows.Count > 0)
                 {
                     foreach (DataRow dr in getFolderNames.Rows)
@@ -3605,7 +3647,7 @@ namespace DocSort_CPA.Forms
             }
         }
 
-        
+
 
         void treeView1_BeforeSelect(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)
         {
@@ -3663,7 +3705,7 @@ namespace DocSort_CPA.Forms
                 //this.PanelGridview.Width = this.Width - 265;
                 //this.PanelGridview.Height = this.Height - 8;
 
-                this.PanelGridview.Size = new System.Drawing.Size(745, 570); 
+                this.PanelGridview.Size = new System.Drawing.Size(745, 570);
                 //this.PanelGridview.Width = Screen.PrimaryScreen.WorkingArea.Width - 260;
                 //this.PanelGridview.Height = Screen.PrimaryScreen.WorkingArea.Height - 170;
                 //dgvDocuments.Size = new System.Drawing.Size(Screen.PrimaryScreen.WorkingArea.Width - 240, Screen.PrimaryScreen.WorkingArea.Height - 150);
@@ -3719,7 +3761,7 @@ namespace DocSort_CPA.Forms
 
                 //universalDataView = objFilesManager.GetFilesByFolderID(node.Name).ResultTable.Select().CopyToDataTable().DefaultView;
                 DataTable dtLastTwoColumns = universalDataView.ToTable("LastTwoColumns", true, "FileID", "FilePath");
-                
+
 
                 //if (DtFiles != null)
                 //{
@@ -3735,7 +3777,7 @@ namespace DocSort_CPA.Forms
 
                 if (universalDataView.Table.Rows.Count > 0)
                 {
-                    
+
                     //DataRow dr = getfiledetails.Rows[0];
                     string strfilepath = dtLastTwoColumns.Select("FileID = " + treeView1.SelectedNode.Name)[0].ItemArray[1].ToString();
 
@@ -4371,20 +4413,31 @@ namespace DocSort_CPA.Forms
 
         private void DeleteToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            DeleteConfirmation objDeleteConfirmation = new DeleteConfirmation();
-            objDeleteConfirmation.ShowDialog();
+            //Check if the user hase permission to delete folder
+            bool userCanDelete = GetDeletePermissiondetails();
 
-            if (objDeleteConfirmation.DeleteConfirmationRequest == "Yes")
+            if (userCanDelete)
             {
-                DeleteFoldersexistingFileCabinetID(treeView1.SelectedNode.Name);
-                DeleteFilesexistingFileCabinetID(treeView1.SelectedNode.Name);
+                DeleteConfirmation objDeleteConfirmation = new DeleteConfirmation();
+                objDeleteConfirmation.ShowDialog();
 
-                
-                NandanaResult deletefilecabinet = objFileCabinetManager.DeleteFileCabinetDetails(treeView1.SelectedNode.Name, "False");
+                if (objDeleteConfirmation.DeleteConfirmationRequest == "Yes")
+                {
+                    DeleteFoldersexistingFileCabinetID(treeView1.SelectedNode.Name);
+                    DeleteFilesexistingFileCabinetID(treeView1.SelectedNode.Name);
 
-                treeView1.SelectedNode.Remove();
+
+                    NandanaResult deletefilecabinet = objFileCabinetManager.DeleteFileCabinetDetails(treeView1.SelectedNode.Name, "False");
+
+                    treeView1.SelectedNode.Remove();
+                }
             }
-        }
+
+            else {
+
+                MessageBox.Show("You do not access to delete. Please check with your admin to get access.");
+            }
+        } 
 
         public void DeleteFoldersexistingFileCabinetID(string FileCabinetID)
         {
@@ -4665,24 +4718,29 @@ namespace DocSort_CPA.Forms
 
             try
             {
+                
                 if (File.Exists(sourceDirectory))
                 {
                     // path is a file. 
-
-
                     // Ensure that the target does not exist.
                     if (File.Exists(@targetDirectory))
+                    {
                         File.Delete(@targetDirectory);
+                    }
                     string fileID = string.Empty;
                    File.Copy(@sourceDirectory, @targetDirectory);
                     if (!draggedNode.Equals(targetNode) && !ContainsNode(draggedNode, targetNode))
                     {
+                       
+
                         // If it is a move operation, remove the node from its current   
                         // location and add it to the node at the drop location.  
                         if (e.Effect == DragDropEffects.Move)
                         {
                              fileID = draggedNode.Name;
+                            treeView1.BeginUpdate();
                             draggedNode.Remove();
+                            treeView1.EndUpdate();
                             //targetNode.Nodes.Add(draggedNode);
                         }
 
@@ -4690,8 +4748,11 @@ namespace DocSort_CPA.Forms
                         // and add it to the node at the drop location.  
                         else if (e.Effect == DragDropEffects.Copy)
                         {
+                            treeView1.BeginUpdate();
                             targetNode.Nodes.Add((TreeNode)draggedNode.Clone());
+                            treeView1.EndUpdate();
                         }
+                        //treeView1.EndUpdate();
                         string ParentFolderID = string.Empty;
 
 
@@ -4730,7 +4791,9 @@ namespace DocSort_CPA.Forms
                                 FileID = dr["FileId"].ToString();
                             }
                             draggedNode.Name = FileID;
+                            treeView1.BeginUpdate();
                             targetNode.Nodes.Add(draggedNode);
+                            treeView1.EndUpdate();
                             NandanaResult UpdateFileDetails = objFilesManager.DeleteFileDetails(fileID , "False");
                             if (UpdateFileDetails.resultDS != null && UpdateFileDetails.resultDS.Tables[0].Rows.Count > 0)
                             {
@@ -4753,7 +4816,7 @@ namespace DocSort_CPA.Forms
 
                         // Expand the node at the location   
                         // to show the dropped node.  
-                        targetNode.Expand();
+                        //targetNode.Expand();
                     }
                 }
                 else if (Directory.Exists(sourceDirectory))
@@ -4773,15 +4836,17 @@ namespace DocSort_CPA.Forms
                         // location and add it to the node at the drop location.  
                         if (e.Effect == DragDropEffects.Move)
                         {
-                            draggedNode.Remove();
+                            treeView1.BeginUpdate();
+                            draggedNode.Remove();                           
                             targetNode.Nodes.Add(draggedNode);
+                            treeView1.EndUpdate();
                         }
 
                         // If it is a copy operation, clone the dragged node   
                         // and add it to the node at the drop location.  
                         else if (e.Effect == DragDropEffects.Copy)
                         {
-                            targetNode.Nodes.Add((TreeNode)draggedNode.Clone());
+                           // targetNode.Nodes.Add((TreeNode)draggedNode.Clone());
                         }
                         string ParentFolderID = string.Empty;
 
@@ -4794,29 +4859,40 @@ namespace DocSort_CPA.Forms
                         {
                             ParentFolderID = "0";
                         }
+                        
 
-                        WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, ParentFolderID);
-                        SaveDraggedTreeNode(targetNode, sourceTreeNode);
-                        DeleteFromSourceTreeNode(draggedTempnode.Name, sourceTreeNode.Name);
-                        //MovePhysicalFoldersFromSourceTarget();
+                       // WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, ParentFolderID);
+                       
+                       // SaveDraggedTreeNode(targetNode, sourceTreeNode);
+                        //DeleteFromSourceTreeNode(draggedTempnode.Name, sourceTreeNode.Name);
+
+                        //Parallel.Invoke(() => WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, ParentFolderID), () => SaveDraggedTreeNode(targetNode, sourceTreeNode), ()=> DeleteFromSourceTreeNode(draggedTempnode.Name, sourceTreeNode.Name));
+
+                        var task1 = Task.Factory.StartNew(() => WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, ParentFolderID));
+                        var task2 = Task.Factory.StartNew(() => SaveDraggedTreeNode(targetNode, sourceTreeNode));
+                        var task3 = Task.Factory.StartNew(() => DeleteFromSourceTreeNode(draggedTempnode.Name, sourceTreeNode.Name));
+
+                        //Task.WaitAny(task1, task2, task3);
 
                         // Expand the node at the location   
                         // to show the dropped node.  
-                        targetNode.Expand();
+                        //targetNode.Expand();
+                        
                     }
                 }
                 else
                 {
                     // path doesn't exist. 
                 }
+              //  treeView1.EndUpdate();
             }
             catch (Exception ex)
             {
 
                 throw ex ;
             }
-
            
+
         }
 
         private void DeleteFromSourceTreeNode(string fileCabinetID ,  string folderID)
