@@ -527,100 +527,127 @@ namespace DocSort_CPA.Forms
                 }
             }
         }
+        public bool GetDeletePermissiondetails()
+        {
+            Boolean canDelete = false;
+            UserManager objUserManager = new UserManager();
+            NandanaResult dsuserPermission = new NandanaResult();
+            dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
+            if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
+            {
+
+
+                DataRow[] drpermissions = dsuserPermission.resultDS.Tables[0].Select("Form_ID ='" + 18 + "'");//18 is the Form_ID of Delete option in tbl_Useraccesspermission
+
+                if (drpermissions.Length > 0)
+                {
+                    canDelete = Convert.ToBoolean(drpermissions[0]["IsView"]);
+
+                }
+
+            }
+            return canDelete;
+        }
 
         public string UserID;
         private void dgvUsers_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            NewUserManager objNewUserManager = new NewUserManager();
-            if (dgvUsers.Rows.Count > 0)
+            bool canLoginUserDeleteAnotherUser = GetDeletePermissiondetails();
+
+            if (canLoginUserDeleteAnotherUser)
             {
-                if (e.ColumnIndex == 8)
+                NewUserManager objNewUserManager = new NewUserManager();
+                if (dgvUsers.Rows.Count > 0)
                 {
-                    int row;
-                    row = e.RowIndex;
-
-                    DeleteConfirmation objDeleteConfirmation = new DeleteConfirmation();
-                    objDeleteConfirmation.UserName = dgvUsers.Rows[row].Cells[1].Value.ToString();
-                    objDeleteConfirmation.ShowDialog();
-
-                    if (objDeleteConfirmation.DeleteConfirmationRequest == "Yes")
+                    if (e.ColumnIndex == 8)
                     {
-                       
+                        int row;
+                        row = e.RowIndex;
+
+                        DeleteConfirmation objDeleteConfirmation = new DeleteConfirmation();
+                        objDeleteConfirmation.UserName = dgvUsers.Rows[row].Cells[1].Value.ToString();
+                        objDeleteConfirmation.ShowDialog();
+
+                        if (objDeleteConfirmation.DeleteConfirmationRequest == "Yes")
+                        {
+                            if (row >= 0)
+                            {
+                                UserID = dgvUsers.Rows[row].Cells[0].Value.ToString();
+                                try
+                                {
+                                    NandanaResult result = new NandanaResult();
+                                    result = objNewUserManager.DeleteUserDetails(UserID);
+                                }
+                                catch (Exception x)
+                                {
+                                    MessageBox.Show(x.Message, "Error while Deleting Data from DeletePayslip SP");
+                                }
+                                GetUsersDetails();
+                            }
+                        }
+                    }
+                    if (e.ColumnIndex == 1)
+                    {
+                        int row;
+                        row = e.RowIndex;
                         if (row >= 0)
                         {
                             UserID = dgvUsers.Rows[row].Cells[0].Value.ToString();
+                        }
+                        if (UserID != null && UserID != string.Empty)
+                        {
+                            Boolean Status = false;
                             try
                             {
+                                NandanaResult dsUserdetailValues = objNewUserManager.GetUserDetailsUsingUserID(UserID);
+                                if (dsUserdetailValues.resultDS != null && dsUserdetailValues.resultDS.Tables[0].Rows.Count > 0)
+                                {
+                                    DataRow dr = dsUserdetailValues.resultDS.Tables[0].Rows[0];
+                                    txtFirstName.Text = dr["FirstName"].ToString();
+                                    txtLastName.Text = dr["LastName"].ToString();
+                                    txtMiddleName.Text = dr["MiddleName"].ToString();
+                                    txtAddress.Text = dr["Address"].ToString();
+                                    txtCity.Text = dr["City"].ToString();
+                                    txtState.Text = dr["State"].ToString();
+                                    txtCountry.Text = dr["Country"].ToString();
+                                    txtZip.Text = dr["Zip"].ToString();
+                                    txtMobile.Text = dr["MobileNo"].ToString();
+                                    txtHomePhone.Text = dr["AlternateMobileNo"].ToString();
+                                    txtUserName.Text = dr["User_Name"].ToString();
+                                    txtPassword.Text = this.Decrypt(dr["Password"].ToString());
+                                    txtConfirmPassword.Text = this.Decrypt(dr["Password"].ToString());
+                                    cmbRoles.SelectedValue = dr["Role_ID"].ToString();
+                                    Status = Convert.ToBoolean(dr["Status"]);
+                                }
 
-                                NandanaResult result = new NandanaResult();
-                                result = objNewUserManager.DeleteUserDetails(UserID);
+                                txtUserName.ReadOnly = true;
+
+                                if (Status == true)
+                                {
+                                    cmbStatus.Text = "Active";
+                                }
+                                else
+                                {
+                                    cmbStatus.Text = "InActive";
+                                }
+
+                                btnSave.Visible = false;
+                                btnUpdate.Visible = true;
+                                btnUpdate.Location = new Point(471, 301);
                             }
                             catch (Exception x)
                             {
-                                MessageBox.Show(x.Message, "Error while Deleting Data from DeletePayslip SP");
+                                MessageBox.Show(x.Message, "Error while Retreiving Data from GetUserDetailsUsingUserID SP");
                             }
-                            GetUsersDetails();
+
+                            txtFirstName.Focus();
                         }
                     }
                 }
-                if (e.ColumnIndex == 1)
-                {
-                    int row;
-                    row = e.RowIndex;
-                    if (row >= 0)
-                    {
-                        UserID = dgvUsers.Rows[row].Cells[0].Value.ToString();
-                    }
-                    if (UserID != null && UserID != string.Empty)
-                    {
-                        Boolean Status = false;
-                        try
-                        {
-                            
-                            NandanaResult dsUserdetailValues = objNewUserManager.GetUserDetailsUsingUserID(UserID);
-                            if (dsUserdetailValues.resultDS != null && dsUserdetailValues.resultDS.Tables[0].Rows.Count > 0)
-                            {
-                                DataRow dr = dsUserdetailValues.resultDS.Tables[0].Rows[0];
-                                txtFirstName.Text = dr["FirstName"].ToString();
-                                txtLastName.Text = dr["LastName"].ToString();
-                                txtMiddleName.Text = dr["MiddleName"].ToString();
-                                txtAddress.Text = dr["Address"].ToString();
-                                txtCity.Text = dr["City"].ToString();
-                                txtState.Text = dr["State"].ToString();
-                                txtCountry.Text = dr["Country"].ToString();
-                                txtZip.Text = dr["Zip"].ToString();
-                                txtMobile.Text = dr["MobileNo"].ToString();
-                                txtHomePhone.Text = dr["AlternateMobileNo"].ToString();
-                                txtUserName.Text = dr["User_Name"].ToString();
-                                txtPassword.Text =this.Decrypt(dr["Password"].ToString());
-                                txtConfirmPassword.Text =this.Decrypt(dr["Password"].ToString());
-                                cmbRoles.SelectedValue = dr["Role_ID"].ToString();
-                                Status=Convert.ToBoolean(dr["Status"]);
-                            }
-
-                            txtUserName.ReadOnly = true;
-
-                            if (Status == true)
-                            {
-                                cmbStatus.Text = "Active";
-                            }
-                            else
-                            {
-                                cmbStatus.Text = "InActive";
-                            }
-
-                            btnSave.Visible = false;
-                            btnUpdate.Visible = true;
-                            btnUpdate.Location = new Point(471, 301);
-                        }
-                        catch (Exception x)
-                        {
-                            MessageBox.Show(x.Message, "Error while Retreiving Data from GetUserDetailsUsingUserID SP");
-                        }
-                        
-                        txtFirstName.Focus();
-                    }
-                }
+            }
+            else
+            {
+                MessageBox.Show("You do not access to delete. Please check with your admin to get access.");
             }
         }
 

@@ -72,7 +72,7 @@ namespace Business.Manager
             return result;
         }
 
-        public NandanaResult UpdateFolderCabinet(string CabinetName, Int32 FolderID)
+        public NandanaResult UpdateFolderCabinet(string CabinetName, Int32 FolderID, string TargetFolderName, int sourceParentFolderID)
         {
             NandanaResult result;
             NandanaDataSet resultDS;
@@ -80,6 +80,8 @@ namespace Business.Manager
             ArrayList paramArray = new ArrayList();
             paramArray.Add(new NandanaDBRequest.Parameter("@CabinetName", CabinetName));
             paramArray.Add(new NandanaDBRequest.Parameter("@FolderID", FolderID));
+            paramArray.Add(new NandanaDBRequest.Parameter("@TargetFolderName", TargetFolderName));
+            paramArray.Add(new NandanaDBRequest.Parameter("@sourceParentFolderID", sourceParentFolderID));
 
             try
             {

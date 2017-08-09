@@ -2192,8 +2192,8 @@ namespace DocSort_CPA.Forms
                     treeView1.SelectedNode.Remove();
                 }
             }
-            else {
-
+            else
+            {
                 MessageBox.Show("You do not access to delete. Please check with your admin to get access.");
             }
         }
@@ -2679,67 +2679,60 @@ namespace DocSort_CPA.Forms
 
             TreeNode node = treeView1.SelectedNode;
             treeView1.HideSelection = false;
-            //
-            //foreach (TreeNode n in treeView1.SelectedNodes)
-            //{
-            //    MessageBox.Show(string.Format("You selected: {0}", n.Text));                
-            //} 
-
             MoveFiles MF = new MoveFiles();
             GetFolders(); //nishanth remove this as soon as possible and make sure it works as per new structure.
-
-
             DialogResult DlgResult = MF.ShowDialog();
 
             string Cabinet = MF.GetCabinet;
             string Folder = MF.GetFolder;
-
-            //MessageBox.Show(string.Format("You selected: {0}", Cabinet));
-            //MessageBox.Show(string.Format("You selected: {0}", Folder));    
-
-            int SelectedCabinetID = 0;
 
             if (DlgResult == DialogResult.OK)
             {
                 //MessageBox.Show("Ok");
                 foreach (TreeNode n in treeView1.SelectedNodes)
                 {
+                    string sourceParentFolderID = "0";
+                    if (n.Parent.ImageKey != "LockerIcon.png")
+                    {
+                        sourceParentFolderID = n.Parent.Name;
+                        //MessageBox.Show("Move Option is currently availble for the immediate folders under FileCabinets.");
+                        //break;
+                    }
+                    NandanaResult objinsertfilesdetails = objFilesManager.UpdateFolderCabinet(Cabinet, Convert.ToInt32(n.Name), Folder, Convert.ToInt32(sourceParentFolderID));
                     //MessageBox.Show(string.Format("You selected: {0}", n.Text));
                     // Get folder cabinet number
-                    try
-                    {
-                        DataTable DtMainFolders = new DataTable();
+                    //try
+                    //{
+                    //    DataTable DtMainFolders = new DataTable();
 
-                        if (DtFolders != null)
-                        {
-                            if (DtFolders.Rows.Count > 0)
-                            {
-                                DataRow[] drResult = DtFolders.Select("Folder_Id = '" + n.Name + "'");
-                                if (drResult.Count() != 0)
-                                {
-                                    DtMainFolders = drResult.CopyToDataTable();
-                                }
+                    //    if (DtFolders != null)
+                    //    {
+                    //        if (DtFolders.Rows.Count > 0)
+                    //        {
+                    //            DataRow[] drResult = DtFolders.Select("Folder_Id = '" + n.Name + "'");
+                    //            if (drResult.Count() != 0)
+                    //            {
+                    //                DtMainFolders = drResult.CopyToDataTable();
+                    //            }
 
-                                if (DtMainFolders.HasErrors != null && DtMainFolders.Rows.Count > 0)
-                                {
-                                    TreeNode parentNode = new TreeNode();
+                    //            if (DtMainFolders.HasErrors != null && DtMainFolders.Rows.Count > 0)
+                    //            {
+                    //                TreeNode parentNode = new TreeNode();
 
-                                    foreach (DataRow dr in DtMainFolders.Rows)
-                                    {
-
-                                        // Cabinet => move to
-                                        // n.Name => move from
-                                        NandanaResult objinsertfilesdetails = objFilesManager.UpdateFolderCabinet(Cabinet, Convert.ToInt32(n.Name));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-
+                    //                foreach (DataRow dr in DtMainFolders.Rows)
+                    //                {
+                    //                    // Cabinet => move to
+                    //                    // n.Name => move from
+                    //                   // NandanaResult objinsertfilesdetails = objFilesManager.UpdateFolderCabinet(Cabinet, Convert.ToInt32(n.Name), Folder);
+                    //                }
+                    //            }
+                    //        }
+                    //    }
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    MessageBox.Show(ex.Message);
+                    //}
 
                     m_sConfigFile = null;
                     m_sFileCabinetDocFile = null;
@@ -2774,10 +2767,7 @@ namespace DocSort_CPA.Forms
                             System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile + "\\" + n.Text);
 
                         string nodePath = "";
-                        //while (node.Parent != null)
-                        //{
-                        //    node = node.Parent;
-                        //}
+                       
                         node = n;
                         while (node.Parent != null)
                         {
@@ -2787,67 +2777,63 @@ namespace DocSort_CPA.Forms
 
                         string ParentNode = m_sConfigFile + "\\" + nodePath + n.Text;
                         string NodeFile = m_sFileCabinetDocFile + "\\" + n.Text;
-                        //if (File.Exists(ParentNode))
-                        //{
-                        //    if (!File.Exists(NodeFile))
-                        //        System.IO.File.Copy(ParentNode, NodeFile, true);
-                        //}
-                        Copy(ParentNode, NodeFile);
+                        
+                       // Copy(ParentNode, NodeFile);//NISHANTH NEED TO WORK ON THIS Copy folers physically to complete this move option
                     }
-                    return;
-                    int FolderID = 0;
-                    foreach (TreeNode SubNode in n.Nodes)
-                    {
+                   // return;
+                    //int FolderID = 0;
+                    //foreach (TreeNode SubNode in n.Nodes)
+                    //{
 
-                        m_sConfigFile = null;
-                        m_sFileCabinetDocFile = null;
-                        m_sImportedFolderDocFile = null;
+                    //    m_sConfigFile = null;
+                    //    m_sFileCabinetDocFile = null;
+                    //    m_sImportedFolderDocFile = null;
 
-                        Folder = n.Text;
+                    //    Folder = n.Text;
 
-                        if (m_sConfigFile == null)
-                        {
-                            m_sConfigFile = ConfigurationManager.AppSettings["TreeviewFilepath"].ToString();
-                            if (!System.IO.Directory.Exists(m_sConfigFile))
-                                System.IO.Directory.CreateDirectory(m_sConfigFile);
-                        }
+                    //    if (m_sConfigFile == null)
+                    //    {
+                    //        m_sConfigFile = ConfigurationManager.AppSettings["TreeviewFilepath"].ToString();
+                    //        if (!System.IO.Directory.Exists(m_sConfigFile))
+                    //            System.IO.Directory.CreateDirectory(m_sConfigFile);
+                    //    }
 
-                        if ((m_sFileCabinetDocFile == null) && (Cabinet != null))
-                        {
-                            if (Folder != null)
-                            {
-                                m_sFileCabinetDocFile = m_sConfigFile + "\\" + Cabinet + "\\" + Folder;
-                                FolderID = GetMainFolderCabinetID(Folder);
-                            }
-                            else
-                            {
-                                FolderID = 0;
-                                m_sFileCabinetDocFile = m_sConfigFile + "\\" + Cabinet; // +"\\" + treeView1.SelectedNode.Text.ToUpper();
-                            }
+                    //    if ((m_sFileCabinetDocFile == null) && (Cabinet != null))
+                    //    {
+                    //        if (Folder != null)
+                    //        {
+                    //            m_sFileCabinetDocFile = m_sConfigFile + "\\" + Cabinet + "\\" + Folder;
+                    //            FolderID = GetMainFolderCabinetID(Folder);
+                    //        }
+                    //        else
+                    //        {
+                    //            FolderID = 0;
+                    //            m_sFileCabinetDocFile = m_sConfigFile + "\\" + Cabinet; // +"\\" + treeView1.SelectedNode.Text.ToUpper();
+                    //        }
 
-                            if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
-                                System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
+                    //        if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
+                    //            System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
 
-                            TreeNode newNode = new TreeNode();
-                            newNode.Text = n.Text.ToUpper();
+                    //        TreeNode newNode = new TreeNode();
+                    //        newNode.Text = n.Text.ToUpper();
 
-                            //string PrevNode = n.FullPath;
+                    //        //string PrevNode = n.FullPath;
 
-                            string ParentNode = m_sConfigFile + "\\" + n.Parent.Text + "\\" + newNode.Text;
-                            //string ParentNode = m_sConfigFile + "\\" + n.FullPath;
-                            string NodeFile = m_sFileCabinetDocFile + "\\";
-                            if (File.Exists(ParentNode))
-                            {
-                                if (!File.Exists(NodeFile))
-                                    System.IO.File.Copy(ParentNode, NodeFile, true);
-                            }
-                            //* inserting files details in Files table *//
+                    //        string ParentNode = m_sConfigFile + "\\" + n.Parent.Text + "\\" + newNode.Text;
+                    //        //string ParentNode = m_sConfigFile + "\\" + n.FullPath;
+                    //        string NodeFile = m_sFileCabinetDocFile + "\\";
+                    //        if (File.Exists(ParentNode))
+                    //        {
+                    //            if (!File.Exists(NodeFile))
+                    //                System.IO.File.Copy(ParentNode, NodeFile, true);
+                    //        }
+                    //        //* inserting files details in Files table *//
 
-                            NandanaResult objinsertfilesdetails = objFilesManager.UpdateFileDetails(FolderID, Convert.ToInt32(n.Name), Cabinet, n.Text.ToUpper(), m_sFileCabinetDocFile + "\\" + n.Text.ToUpper(), "True");
-                            //* End  *//
-                        }
-                        else break;
-                    }
+                    //        NandanaResult objinsertfilesdetails = objFilesManager.UpdateFileDetails(FolderID, Convert.ToInt32(n.Name), Cabinet, n.Text.ToUpper(), m_sFileCabinetDocFile + "\\" + n.Text.ToUpper(), "True");
+                    //        //* End  *//
+                    //    }
+                    //    else break;
+                    //}
 
                 }
 
