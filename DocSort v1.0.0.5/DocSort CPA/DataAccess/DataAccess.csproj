@@ -49,13 +49,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="NandanaAbstractDataProducts.cs" />
-    <Compile Include="NandanaAbstractFactory.cs" />
-    <Compile Include="NandanaConnStrings.cs" />
-    <Compile Include="NandanaDBInstance.cs" />
-    <Compile Include="NandanaDBRequest.cs" />
-    <Compile Include="NandanaMySqlFactory.cs" />
-    <Compile Include="NandanaMySqlData.cs" />
+    <Compile Include="DocSortAbstractDataProducts.cs" />
+    <Compile Include="DocSortAbstractFactory.cs" />
+    <Compile Include="DocSortConnStrings.cs" />
+    <Compile Include="DocSortDBInstance.cs" />
+    <Compile Include="DocSortDBRequest.cs" />
+    <Compile Include="DocSortMySqlFactory.cs" />
+    <Compile Include="DocSortMySqlData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

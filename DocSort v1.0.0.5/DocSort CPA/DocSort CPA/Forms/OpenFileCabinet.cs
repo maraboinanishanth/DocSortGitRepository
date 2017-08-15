@@ -50,7 +50,7 @@ namespace DocSort_CPA.Forms
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -165,7 +165,7 @@ namespace DocSort_CPA.Forms
                 if (RoleID != null && UserID != null)
                 {
                     FileCabinetManager objFileCabinetManager = new FileCabinetManager();
-                    NandanaResult result = new NandanaResult();
+                    DocSortResult result = new DocSortResult();
                     result = objFileCabinetManager.GetFileCabinets();
                    
                     if (!result.HasError && result.resultDS.Tables[0].Rows.Count > 0)

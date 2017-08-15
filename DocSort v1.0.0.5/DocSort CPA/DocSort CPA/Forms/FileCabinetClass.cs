@@ -44,7 +44,7 @@ class FileCabinetClass
             SelectedFileCabinetID = "1";
         }
 
-        NandanaResult getfilecabinets = objFileCabinetManager.GetFileCabinets();
+        DocSortResult getfilecabinets = objFileCabinetManager.GetFileCabinets();
         if (!getfilecabinets.HasError && getfilecabinets.resultDS.Tables[0].Rows.Count > 0)
         {
             foreach (DataRow dr in getfilecabinets.resultDS.Tables[0].Rows)
@@ -83,7 +83,7 @@ class FileCabinetClass
         }
         int Mainfoldercount = 0;
 
-        NandanaResult getfolderdetails = objFolderManager.GetFolderDetails();
+        DocSortResult getfolderdetails = objFolderManager.GetFolderDetails();
         DataTable getFolderNames = new DataTable();
         if (getfolderdetails.resultDS != null && getfolderdetails.resultDS.Tables[0].Rows.Count > 0)
         {
@@ -109,7 +109,7 @@ class FileCabinetClass
         }
         if (Mainfoldercount == 0)
         {
-            NandanaResult objinsertintofolder = objFolderManager.InsertFolderDetails(SelectedFileCabinetID, MainFolder.ToUpper(), "0", "True");
+            DocSortResult objinsertintofolder = objFolderManager.InsertFolderDetails(SelectedFileCabinetID, MainFolder.ToUpper(), "0", "True");
             if (objinsertintofolder.resultDS != null && objinsertintofolder.resultDS.Tables[0].Rows.Count > 0)
             {
                 DataRow dr = objinsertintofolder.resultDS.Tables[0].Rows[0];
@@ -134,7 +134,7 @@ class FileCabinetClass
             int Subfoldercount = 0;
 
 
-            NandanaResult objgetfolderdetails = objFolderManager.GetFolderDetails();
+            DocSortResult objgetfolderdetails = objFolderManager.GetFolderDetails();
 
             DataTable getSubFolderNames = new DataTable();
             if (objgetfolderdetails.resultDS != null && objgetfolderdetails.resultDS.Tables[0].Rows.Count > 0)
@@ -162,7 +162,7 @@ class FileCabinetClass
 
             if (Subfoldercount == 0)
             {
-                NandanaResult objinsertintofolder = objFolderManager.InsertFolderDetails(SelectedFileCabinetID, SubFolder.ToUpper(), MainFolderID, "True");
+                DocSortResult objinsertintofolder = objFolderManager.InsertFolderDetails(SelectedFileCabinetID, SubFolder.ToUpper(), MainFolderID, "True");
                 if (objinsertintofolder.resultDS != null && objinsertintofolder.resultDS.Tables[0].Rows.Count > 0)
                 {
                     DataRow dr = objinsertintofolder.resultDS.Tables[0].Rows[0];
@@ -187,7 +187,7 @@ class FileCabinetClass
             int filecount = 0;
 
 
-            NandanaResult objGetFiledetails = objFilesManager.GetFileDetails();
+            DocSortResult objGetFiledetails = objFilesManager.GetFileDetails();
 
             DataTable objgetFiles = new DataTable();
             if (objGetFiledetails.resultDS != null && objGetFiledetails.resultDS.Tables[0].Rows.Count > 0)
@@ -214,7 +214,7 @@ class FileCabinetClass
 
             if (filecount == 0)
             {
-                NandanaResult insertintofiles = objFilesManager.InsertFileDetails(Convert.ToInt32(SubFolderID), Convert.ToInt32(SelectedFileCabinetID), FileName, m_sSubFolderFile + "\\" + FileName, "True");
+                DocSortResult insertintofiles = objFilesManager.InsertFileDetails(Convert.ToInt32(SubFolderID), Convert.ToInt32(SelectedFileCabinetID), FileName, m_sSubFolderFile + "\\" + FileName, "True");
                 if (insertintofiles.resultDS != null && insertintofiles.resultDS.Tables[0].Rows.Count > 0)
                 {
                     DataRow dr = insertintofiles.resultDS.Tables[0].Rows[0];
@@ -230,7 +230,7 @@ class FileCabinetClass
 
             int filecount = 0;
 
-            NandanaResult objgetfiledetails = objFilesManager.GetFileDetails();
+            DocSortResult objgetfiledetails = objFilesManager.GetFileDetails();
 
             DataTable objgetFiles = new DataTable();
             if (objgetfiledetails.resultDS != null && objgetfiledetails.resultDS.Tables[0].Rows.Count != 0)
@@ -260,7 +260,7 @@ class FileCabinetClass
             {
                 // Insert into tbl_files table
 
-                NandanaResult insertintofiles = objFilesManager.InsertFileDetails(Convert.ToInt32(MainFolderID), Convert.ToInt32(SelectedFileCabinetID), FileName, m_sMainFolderFile + "\\" + FileName, "True");
+                DocSortResult insertintofiles = objFilesManager.InsertFileDetails(Convert.ToInt32(MainFolderID), Convert.ToInt32(SelectedFileCabinetID), FileName, m_sMainFolderFile + "\\" + FileName, "True");
                 if (insertintofiles.resultDS != null && insertintofiles.resultDS.Tables[0].Rows.Count > 0)
                 {
                     DataRow dr = insertintofiles.resultDS.Tables[0].Rows[0];
@@ -293,7 +293,7 @@ class FileCabinetClass
         }
 
 
-        NandanaResult objgetfilecabinets = objFileCabinetManager.GetFileCabinets();
+        DocSortResult objgetfilecabinets = objFileCabinetManager.GetFileCabinets();
         if (objgetfilecabinets.resultDS != null && objgetfilecabinets.resultDS.Tables[0].Rows.Count > 0)
         {
             foreach (DataRow dr in objgetfilecabinets.resultDS.Tables[0].Rows)
@@ -321,7 +321,7 @@ class FileCabinetClass
         int Mainfoldercount = 0;
 
 
-        NandanaResult objgetfolderdetails = objFolderManager.GetFolderDetails();
+        DocSortResult objgetfolderdetails = objFolderManager.GetFolderDetails();
         DataTable getFolderNames = new DataTable();
         if (objgetfolderdetails.resultDS != null && objgetfolderdetails.resultDS.Tables[0].Rows.Count > 0)
         {
@@ -348,7 +348,7 @@ class FileCabinetClass
         {
             // insert into tbl_folder table
 
-            NandanaResult objinsertintofolder = objFolderManager.InsertFolderDetails(SelectedFileCabinetID, "Mismatched".ToUpper(), "0", "True");
+            DocSortResult objinsertintofolder = objFolderManager.InsertFolderDetails(SelectedFileCabinetID, "Mismatched".ToUpper(), "0", "True");
             if (objinsertintofolder.resultDS != null && objinsertintofolder.resultDS.Tables[0].Rows.Count > 0)
             {
                 DataRow dr = objinsertintofolder.resultDS.Tables[0].Rows[0];
@@ -372,7 +372,7 @@ class FileCabinetClass
 
         int filecount = 0;
 
-        NandanaResult objgetfiledetails = objFilesManager.GetFileDetails();
+        DocSortResult objgetfiledetails = objFilesManager.GetFileDetails();
 
         DataTable objgetFiles = new DataTable();
         if (objgetfiledetails.resultDS != null && objgetfiledetails.resultDS.Tables[0].Rows.Count != 0)
@@ -400,7 +400,7 @@ class FileCabinetClass
         {
             // Insert into tbl_files table
 
-            NandanaResult insertintofiles = objFilesManager.InsertFileDetails(Convert.ToInt32(MainFolderID), Convert.ToInt32(SelectedFileCabinetID), FileName, m_sMainFolderFile + "\\" + FileName, "True");
+            DocSortResult insertintofiles = objFilesManager.InsertFileDetails(Convert.ToInt32(MainFolderID), Convert.ToInt32(SelectedFileCabinetID), FileName, m_sMainFolderFile + "\\" + FileName, "True");
             if (insertintofiles.resultDS != null && insertintofiles.resultDS.Tables[0].Rows.Count > 0)
             {
                 DataRow dr = insertintofiles.resultDS.Tables[0].Rows[0];

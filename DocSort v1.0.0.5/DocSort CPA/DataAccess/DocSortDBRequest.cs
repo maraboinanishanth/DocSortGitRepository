@@ -9,7 +9,7 @@ namespace DataAccess
 	/// <summary>
 	/// Helper Class which contains all the neccesary details to execute single query.
 	/// </summary>
-	public class NandanaDBRequest
+	public class DocSortDBRequest
 	{
 		private CommandType m_lCommandType;
 		private string m_sCommand;
@@ -17,7 +17,7 @@ namespace DataAccess
 		private MySqlTransaction sqlm_oTransaction;
 		
 		/// <summary>Default Constructor</summary>
-		public NandanaDBRequest()
+		public DocSortDBRequest()
 		{
 		}
 
@@ -26,7 +26,7 @@ namespace DataAccess
 		/// </summary>
 		/// <param name="sCommand">Command Text</param>
 		/// <param name="lCommandType">Command Type</param>
-		public NandanaDBRequest(string sCommand,CommandType lCommandType)
+		public DocSortDBRequest(string sCommand,CommandType lCommandType)
 		{
 			m_sCommand = sCommand;
 			m_lCommandType = lCommandType;
@@ -37,7 +37,7 @@ namespace DataAccess
 		/// <param name="sCommand">Command Text</param>
 		/// <param name="lCommandType">Command Type</param>
 		/// <param name="colParamList">Parameter List</param>
-		public NandanaDBRequest(string sCommand,CommandType lCommandType,ArrayList colParamList)
+		public DocSortDBRequest(string sCommand,CommandType lCommandType,ArrayList colParamList)
 		{
 			m_sCommand = sCommand;
 			m_lCommandType = lCommandType;
@@ -50,7 +50,7 @@ namespace DataAccess
 		/// <param name="lCommandType">Command Type</param>
 		/// <param name="oTransaction">Transaction Object</param>
 		/// <param name="colParamList">Array of Parameter List</param>
-		public NandanaDBRequest(string sCommand,CommandType lCommandType,MySqlTransaction oTransaction,ArrayList colParamList)
+		public DocSortDBRequest(string sCommand,CommandType lCommandType,MySqlTransaction oTransaction,ArrayList colParamList)
 		{
 			SetRequest(sCommand,lCommandType,oTransaction,colParamList);
 		}

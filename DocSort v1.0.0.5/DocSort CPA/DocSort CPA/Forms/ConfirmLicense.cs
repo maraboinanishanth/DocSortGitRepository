@@ -116,7 +116,7 @@ namespace DocSort_CPA.Forms
             string Licensekeys = string.Empty;
 
             ConfirmLicenseManager objConfirmLicenseManager = new ConfirmLicenseManager();
-            NandanaResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
+            DocSortResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
             if (getAllConfigValues.resultDS != null && getAllConfigValues.resultDS.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow dr in getAllConfigValues.resultDS.Tables[0].Rows)
@@ -173,7 +173,7 @@ namespace DocSort_CPA.Forms
                             {
                                 if (dr["Config_ID"].ToString() == "5")
                                 {
-                                    NandanaResult updateLicensekeys = objConfirmLicenseManager.UpdateConfigValues("5", Licensekeys + "," + SplitLicensekey[1].ToString());
+                                    DocSortResult updateLicensekeys = objConfirmLicenseManager.UpdateConfigValues("5", Licensekeys + "," + SplitLicensekey[1].ToString());
 
                                 }
                             }
@@ -207,7 +207,7 @@ namespace DocSort_CPA.Forms
                         {
                             if (dr["Config_ID"].ToString() == "5")
                             {
-                                NandanaResult updateLicensekeys = objConfirmLicenseManager.UpdateConfigValues("5", SplitLicensekey[1].ToString());
+                                DocSortResult updateLicensekeys = objConfirmLicenseManager.UpdateConfigValues("5", SplitLicensekey[1].ToString());
 
                             }
                         }
@@ -232,7 +232,7 @@ namespace DocSort_CPA.Forms
                     {
                         if (dr["Config_ID"].ToString() == "1")
                         {
-                            NandanaResult updateIsExpired = objConfirmLicenseManager.UpdateConfigValues("1", "0");
+                            DocSortResult updateIsExpired = objConfirmLicenseManager.UpdateConfigValues("1", "0");
                             
                         }
                     }
@@ -257,7 +257,7 @@ namespace DocSort_CPA.Forms
                         {
                             if (dr["Config_ID"].ToString() == "3")
                             {
-                                NandanaResult updateScanRecordCount;
+                                DocSortResult updateScanRecordCount;
                                 if(ScannedReadCountConfigValue!=null)
                                     updateScanRecordCount = objConfirmLicenseManager.UpdateConfigValues("3", this.Encrypt((Convert.ToInt32(CompareConfigValue) +Convert.ToInt32(this.Decrypt(ScannedReadCountConfigValue))).ToString()));
                                 else
@@ -265,7 +265,7 @@ namespace DocSort_CPA.Forms
                             }
                         }
 
-                        NandanaResult getupdatedConfigValues = objConfirmLicenseManager.GetAllConfigValues();
+                        DocSortResult getupdatedConfigValues = objConfirmLicenseManager.GetAllConfigValues();
                         foreach (DataRow dr in getupdatedConfigValues.resultDS.Tables[0].Rows)
                         {
                             switch (dr["Config_Name"].ToString())
@@ -300,7 +300,7 @@ namespace DocSort_CPA.Forms
                         {
                             if (dr["Config_ID"].ToString() == "3")
                             {
-                                NandanaResult updateScanRecordCount;
+                                DocSortResult updateScanRecordCount;
                                 if (ScannedReadCountConfigValue != null)
                                     updateScanRecordCount = objConfirmLicenseManager.UpdateConfigValues("3", this.Encrypt((Convert.ToInt32(CompareConfigValue) +Convert.ToInt32(this.Decrypt(ScannedReadCountConfigValue))).ToString()));
                                     
@@ -350,12 +350,12 @@ namespace DocSort_CPA.Forms
                                 if (dr["Config_ID"].ToString() == "8")
                                 {
                                     
-                                    NandanaResult updateDate = objConfirmLicenseManager.UpdateConfigValues("8", this.Encrypt(DateTime.Parse(DateTime.Today.ToString(), System.Globalization.CultureInfo.InvariantCulture).ToString()));
+                                    DocSortResult updateDate = objConfirmLicenseManager.UpdateConfigValues("8", this.Encrypt(DateTime.Parse(DateTime.Today.ToString(), System.Globalization.CultureInfo.InvariantCulture).ToString()));
                                    
                                 }
                                 if (dr["Config_ID"].ToString() == "9")
                                 {
-                                    NandanaResult updateDays = objConfirmLicenseManager.UpdateConfigValues("9", this.Encrypt((Convert.ToInt32(NoOfDays)).ToString()));
+                                    DocSortResult updateDays = objConfirmLicenseManager.UpdateConfigValues("9", this.Encrypt((Convert.ToInt32(NoOfDays)).ToString()));
 
                                 }
                             }
@@ -369,13 +369,13 @@ namespace DocSort_CPA.Forms
                                     
                                     if (dr["Config_Value"].ToString() == "")
                                     {
-                                        NandanaResult updateDate = objConfirmLicenseManager.UpdateConfigValues("8", this.Encrypt(DateTime.Parse(DateTime.Today.ToString(), System.Globalization.CultureInfo.InvariantCulture).ToString()));
+                                        DocSortResult updateDate = objConfirmLicenseManager.UpdateConfigValues("8", this.Encrypt(DateTime.Parse(DateTime.Today.ToString(), System.Globalization.CultureInfo.InvariantCulture).ToString()));
                                         
                                     }
                                 }
                                 if (dr["Config_ID"].ToString() == "9")
                                 {
-                                    NandanaResult updateDays = objConfirmLicenseManager.UpdateConfigValues("9", this.Encrypt((Convert.ToInt32(PresentDays) + (Convert.ToInt32(NoOfDays))).ToString()));
+                                    DocSortResult updateDays = objConfirmLicenseManager.UpdateConfigValues("9", this.Encrypt((Convert.ToInt32(PresentDays) + (Convert.ToInt32(NoOfDays))).ToString()));
                                     
                                 }
                             }
@@ -404,7 +404,7 @@ namespace DocSort_CPA.Forms
                         {
                             if (dr["Config_ID"].ToString() == "9")
                             {
-                                NandanaResult updateDays = objConfirmLicenseManager.UpdateConfigValues("9", this.Encrypt((Convert.ToInt32(PresentDays) + (Convert.ToInt32(NoOfDays))).ToString()));
+                                DocSortResult updateDays = objConfirmLicenseManager.UpdateConfigValues("9", this.Encrypt((Convert.ToInt32(PresentDays) + (Convert.ToInt32(NoOfDays))).ToString()));
                             }
                         }
                     }

@@ -5,9 +5,9 @@ using Security;
 namespace Common
 {
    	/// <summary>
-	/// Summary description for NandanaSession.
+	/// Summary description for DocSortSession.
 	/// </summary>
-	public class NandanaSession
+	public class DocSortSession
 	{
 		/// <summary>
 		/// Stores premission(s) available to user
@@ -17,12 +17,12 @@ namespace Common
 		/// <summary>
 		/// Default Constructor of Session
 		/// </summary>
-		public NandanaSession()
+		public DocSortSession()
 		{
 			_permissions = new ArrayList();
 		}
 
-		#region Nandana Session varables
+		#region DocSort Session varables
 
 		/// <summary> User ID </summary>
 		public int UserID;

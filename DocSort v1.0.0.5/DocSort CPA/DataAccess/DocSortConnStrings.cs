@@ -8,10 +8,10 @@ namespace DataAccess
    	/// <summary>
 	/// Helper class to get ConnectionString from the Configuration file.
 	/// </summary>
-	public class NandanaConnStrings
+	public class DocSortConnStrings
 	{
 		// based on GoF singleton definition
-		private static NandanaConnStrings m_Instance = null;
+		private static DocSortConnStrings m_Instance = null;
 		private static System.Threading.Mutex m_Mutex = InitializeMutex();
 		private static NameValueCollection m_colConnetionStrings =(NameValueCollection) ConfigurationSettings.GetConfig("appSettings");
 		
@@ -24,12 +24,12 @@ namespace DataAccess
 		/// Function to get instance of this class
 		/// </summary>
 		/// <returns>Instance of the ConnectionStrings class</returns>
-		public static NandanaConnStrings GetInstance()
+		public static DocSortConnStrings GetInstance()
 		{
 			// To be thread safe, we use Mutex to synchronize threads
 			m_Mutex.WaitOne(); // WaitOne() requests a thread
 			if (m_Instance == null)
-				m_Instance = new NandanaConnStrings();
+				m_Instance = new DocSortConnStrings();
 			m_Mutex.ReleaseMutex();
 			return m_Instance;
 		}

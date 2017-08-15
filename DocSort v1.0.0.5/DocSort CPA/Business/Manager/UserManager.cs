@@ -9,590 +9,590 @@ using Common;
 
 namespace Business.Manager 
 {
-    public class UserManager : NandanaBase 
+    public class UserManager : DocSortBase 
     {
-        public NandanaResult InserRoleValues(string Rolename, string Roledesc, Boolean Isactive)
+        public DocSortResult InserRoleValues(string Rolename, string Roledesc, Boolean Isactive)
         {
-            NandanaResult result;
+            DocSortResult result;
             int iVal = -1;
             ArrayList paramArray = new ArrayList();
 
-            paramArray.Add(new NandanaDBRequest.Parameter("@Rolename", Rolename));
-            paramArray.Add(new NandanaDBRequest.Parameter("@Roledesc", Roledesc));
-            paramArray.Add(new NandanaDBRequest.Parameter("@Isactive", Isactive));
+            paramArray.Add(new DocSortDBRequest.Parameter("@Rolename", Rolename));
+            paramArray.Add(new DocSortDBRequest.Parameter("@Roledesc", Roledesc));
+            paramArray.Add(new DocSortDBRequest.Parameter("@Isactive", Isactive));
             
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_InsertRoleValues", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_InsertRoleValues", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 iVal = factory.ExecuteNonQuery(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertRoleValues sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertRoleValues sp.", m_oSession, e));
             }
 
             if (iVal < 0)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertRoleValues sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertRoleValues sp.", m_oSession));
             }
             else
             {
-                result = new NandanaResult(null);
+                result = new DocSortResult(null);
             }
             return result;
         }
 
-        public NandanaResult InsertUserValues(string Username, string password, string RoleId)
+        public DocSortResult InsertUserValues(string Username, string password, string RoleId)
         {
-            NandanaResult result;
+            DocSortResult result;
             int iVal = -1;
             ArrayList paramArray = new ArrayList();
 
-            paramArray.Add(new NandanaDBRequest.Parameter("@Username", Username));
-            paramArray.Add(new NandanaDBRequest.Parameter("@password", password));
-            paramArray.Add(new NandanaDBRequest.Parameter("@RoleId", RoleId));
+            paramArray.Add(new DocSortDBRequest.Parameter("@Username", Username));
+            paramArray.Add(new DocSortDBRequest.Parameter("@password", password));
+            paramArray.Add(new DocSortDBRequest.Parameter("@RoleId", RoleId));
 
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_InsertUserValues", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_InsertUserValues", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 iVal = factory.ExecuteNonQuery(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUserValues sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUserValues sp.", m_oSession, e));
             }
 
             if (iVal < 0)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUserValues sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUserValues sp.", m_oSession));
             }
             else
             {
-                result = new NandanaResult(null);
+                result = new DocSortResult(null);
             }
             return result;
         }
 
-        public NandanaResult GetFormDetailsByMenuID(string MenuId)
+        public DocSortResult GetFormDetailsByMenuID(string MenuId)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
 
-            paramArray.Add(new NandanaDBRequest.Parameter("@MenuId", MenuId));
+            paramArray.Add(new DocSortDBRequest.Parameter("@MenuId", MenuId));
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("GetFormDetailsByMenuID", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("GetFormDetailsByMenuID", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetFormDetailsByMenuID sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetFormDetailsByMenuID sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetFormDetailsByMenuID sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetFormDetailsByMenuID sp.", m_oSession));
             }
             return result;
         }
 
-        public NandanaResult GetSubMenusByMenuID(string MenuId)
+        public DocSortResult GetSubMenusByMenuID(string MenuId)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
 
-            paramArray.Add(new NandanaDBRequest.Parameter("@MenuId", MenuId));
+            paramArray.Add(new DocSortDBRequest.Parameter("@MenuId", MenuId));
 
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("GetSubMenusByMenuID", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("GetSubMenusByMenuID", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetSubMenusByMenuID sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetSubMenusByMenuID sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetSubMenusByMenuID sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetSubMenusByMenuID sp.", m_oSession));
             }
             return result;
 
         }
 
-        public NandanaResult GetMenuDetails(int RoleId, int UserId)
+        public DocSortResult GetMenuDetails(int RoleId, int UserId)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
-            paramArray.Add(new NandanaDBRequest.Parameter("@RoleID", RoleId));
-            paramArray.Add(new NandanaDBRequest.Parameter("@UserId", UserId));
+            paramArray.Add(new DocSortDBRequest.Parameter("@RoleID", RoleId));
+            paramArray.Add(new DocSortDBRequest.Parameter("@UserId", UserId));
 
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("GetMenuItemsBasedonRoleanduser", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("GetMenuItemsBasedonRoleanduser", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetMenuItemsBasedonRoleanduser sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetMenuItemsBasedonRoleanduser sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetMenuItemsBasedonRoleanduser sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetMenuItemsBasedonRoleanduser sp.", m_oSession));
             }
             return result;
         }
 
-        public NandanaResult GetFormClassNamebyformName(string FormName)
+        public DocSortResult GetFormClassNamebyformName(string FormName)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
 
-            paramArray.Add(new NandanaDBRequest.Parameter("@FormName", FormName));
+            paramArray.Add(new DocSortDBRequest.Parameter("@FormName", FormName));
 
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("GetFormClassNamebyformName", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("GetFormClassNamebyformName", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetFormClassNamebyformName sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetFormClassNamebyformName sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetFormClassNamebyformName sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetFormClassNamebyformName sp.", m_oSession));
             }
             return result;
         }
 
-        public NandanaResult GetRoles()
+        public DocSortResult GetRoles()
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetRoles", CommandType.StoredProcedure, m_oTransaction, paramArray);//Issue fixed by Nishanth//Getting error onclick of last tab.Fixed.
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_GetRoles", CommandType.StoredProcedure, m_oTransaction, paramArray);//Issue fixed by Nishanth//Getting error onclick of last tab.Fixed.
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetRoles sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetRoles sp.", m_oSession, e));
             }
 
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetRoles sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetRoles sp.", m_oSession));
             }
             return result;
 
         }
 
-        public NandanaResult BindUsers()
+        public DocSortResult BindUsers()
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_BindUsers", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_BindUsers", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from BindUsers sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from BindUsers sp.", m_oSession, e));
             }
 
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from BindUsers sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from BindUsers sp.", m_oSession));
             }
             return result;
 
         }
 
-        public NandanaResult GetUserDetailsByRoleID(string RoleId)
+        public DocSortResult GetUserDetailsByRoleID(string RoleId)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
 
-            paramArray.Add(new NandanaDBRequest.Parameter("@RoleId", RoleId));
-
-
-            try
-            {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetUsersBasedonRole", CommandType.StoredProcedure, m_oTransaction, paramArray);
-                resultDS = factory.ExecuteDataSet(request);
-            }
-            catch (Exception e)
-            {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUsersBasedonRole sp.", m_oSession, e));
-            }
-            result = new NandanaResult();
-            result.resultDS = resultDS.ReturnedDataSet;
-            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
-            {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUsersBasedonRole sp.", m_oSession));
-            }
-            return result;
-        }
-
-        public NandanaResult GetAllConfigParams()
-        {
-            NandanaResult result;
-            NandanaDataSet resultDS;
-            ArrayList paramArray = new ArrayList();
-            try
-            {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("GetAllConfigParams", CommandType.StoredProcedure, m_oTransaction, paramArray);
-                resultDS = factory.ExecuteDataSet(request);
-            }
-            catch (Exception e)
-            {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetAllConfigParams sp.", m_oSession, e));
-            }
-
-            result = new NandanaResult();
-            result.resultDS = resultDS.ReturnedDataSet;
-            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
-            {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetAllConfigParams sp.", m_oSession));
-            }
-            return result;
-        }
-
-        public NandanaResult GetConfigParamUserPermissions(string RoleId, string UserId)
-        {
-            NandanaResult result;
-            NandanaDataSet resultDS;
-            ArrayList paramArray = new ArrayList();
-            paramArray.Add(new NandanaDBRequest.Parameter("@RoleId", RoleId));
-            paramArray.Add(new NandanaDBRequest.Parameter("@UserId", UserId));
+            paramArray.Add(new DocSortDBRequest.Parameter("@RoleId", RoleId));
 
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("GetUserConfigParamPermissions", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_GetUsersBasedonRole", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUserConfigParamPermissions sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUsersBasedonRole sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUserConfigParamPermissions sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUsersBasedonRole sp.", m_oSession));
             }
             return result;
         }
 
-        public NandanaResult InsertUpdateConfigParamUserAccessPermissions(string RoleID, string UserID, string ID, Boolean HasAccess)
+        public DocSortResult GetAllConfigParams()
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
-            ArrayList paramArray = new ArrayList();
-            paramArray.Add(new NandanaDBRequest.Parameter("@RoleID", RoleID));
-            paramArray.Add(new NandanaDBRequest.Parameter("@UserID", UserID));
-            paramArray.Add(new NandanaDBRequest.Parameter("@ID", ID));
-            paramArray.Add(new NandanaDBRequest.Parameter("@HasAccess", HasAccess));
-
-            try
-            {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("InsertUpdateConfigParamUserAccessPermissions", CommandType.StoredProcedure, m_oTransaction, paramArray);
-                resultDS = factory.ExecuteDataSet(request);
-            }
-            catch (Exception e)
-            {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from InsertUpdateConfigParamUserAccessPermissions sp.", m_oSession, e));
-            }
-            result = new NandanaResult();
-            result.resultDS = resultDS.ReturnedDataSet;
-            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
-            {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from InsertUpdateConfigParamUserAccessPermissions sp.", m_oSession));
-            }
-            return result;
-        }
-
-        public NandanaResult GetAllForms()
-        {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetAllForms", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("GetAllConfigParams", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetAllForms sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetAllConfigParams sp.", m_oSession, e));
             }
 
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetAllForms sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetAllConfigParams sp.", m_oSession));
             }
             return result;
         }
 
-        public NandanaResult GetUserPermissions(string RoleId)
+        public DocSortResult GetConfigParamUserPermissions(string RoleId, string UserId)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
-            paramArray.Add(new NandanaDBRequest.Parameter("@RoleId", RoleId));
+            paramArray.Add(new DocSortDBRequest.Parameter("@RoleId", RoleId));
+            paramArray.Add(new DocSortDBRequest.Parameter("@UserId", UserId));
 
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetUserPermissions", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("GetUserConfigParamPermissions", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUserPermissions sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUserConfigParamPermissions sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUserPermissions sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUserConfigParamPermissions sp.", m_oSession));
             }
             return result;
         }
 
-        public NandanaResult GetMainMenus()
+        public DocSortResult InsertUpdateConfigParamUserAccessPermissions(string RoleID, string UserID, string ID, Boolean HasAccess)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
-            try
-            {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetMainMenus", CommandType.StoredProcedure, m_oTransaction, paramArray);
-                resultDS = factory.ExecuteDataSet(request);
-            }
-            catch (Exception e)
-            {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetMainMenus sp.", m_oSession, e));
-            }
-
-            result = new NandanaResult();
-            result.resultDS = resultDS.ReturnedDataSet;
-            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
-            {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetAllForms sp.", m_oSession));
-            }
-            return result;
-        }
-
-        public NandanaResult GetMenuNamesByFormID(string FormID)
-        {
-            NandanaResult result;
-            NandanaDataSet resultDS;
-            ArrayList paramArray = new ArrayList();
-            paramArray.Add(new NandanaDBRequest.Parameter("@FormId", FormID));
-
+            paramArray.Add(new DocSortDBRequest.Parameter("@RoleID", RoleID));
+            paramArray.Add(new DocSortDBRequest.Parameter("@UserID", UserID));
+            paramArray.Add(new DocSortDBRequest.Parameter("@ID", ID));
+            paramArray.Add(new DocSortDBRequest.Parameter("@HasAccess", HasAccess));
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetMenuNamesByFormID", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("InsertUpdateConfigParamUserAccessPermissions", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetMenuNamesByFormID sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from InsertUpdateConfigParamUserAccessPermissions sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetMenuNamesByFormID sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from InsertUpdateConfigParamUserAccessPermissions sp.", m_oSession));
             }
             return result;
         }
 
-        public NandanaResult GetMenuDetilsByMainMenuId(string MenuId)
+        public DocSortResult GetAllForms()
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
-            paramArray.Add(new NandanaDBRequest.Parameter("@MenuId", MenuId));
+            try
+            {
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_GetAllForms", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetAllForms sp.", m_oSession, e));
+            }
+
+            result = new DocSortResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetAllForms sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public DocSortResult GetUserPermissions(string RoleId)
+        {
+            DocSortResult result;
+            DocSortDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new DocSortDBRequest.Parameter("@RoleId", RoleId));
 
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("GetMenuDetailsByMainMenuId", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_GetUserPermissions", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetMenuDetilsByMainMenuId sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUserPermissions sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetMenuDetilsByMainMenuId sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUserPermissions sp.", m_oSession));
             }
             return result;
         }
 
-        public NandanaResult InsertUpdateUserAccessPermissions(string RoleID, string ID, Boolean View)
+        public DocSortResult GetMainMenus()
         {
-            NandanaResult result;
+            DocSortResult result;
+            DocSortDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            try
+            {
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_GetMainMenus", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetMainMenus sp.", m_oSession, e));
+            }
+
+            result = new DocSortResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetAllForms sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public DocSortResult GetMenuNamesByFormID(string FormID)
+        {
+            DocSortResult result;
+            DocSortDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new DocSortDBRequest.Parameter("@FormId", FormID));
+
+
+            try
+            {
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_GetMenuNamesByFormID", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetMenuNamesByFormID sp.", m_oSession, e));
+            }
+            result = new DocSortResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetMenuNamesByFormID sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public DocSortResult GetMenuDetilsByMainMenuId(string MenuId)
+        {
+            DocSortResult result;
+            DocSortDataSet resultDS;
+            ArrayList paramArray = new ArrayList();
+            paramArray.Add(new DocSortDBRequest.Parameter("@MenuId", MenuId));
+
+
+            try
+            {
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("GetMenuDetailsByMainMenuId", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                resultDS = factory.ExecuteDataSet(request);
+            }
+            catch (Exception e)
+            {
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetMenuDetilsByMainMenuId sp.", m_oSession, e));
+            }
+            result = new DocSortResult();
+            result.resultDS = resultDS.ReturnedDataSet;
+            if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
+            {
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetMenuDetilsByMainMenuId sp.", m_oSession));
+            }
+            return result;
+        }
+
+        public DocSortResult InsertUpdateUserAccessPermissions(string RoleID, string ID, Boolean View)
+        {
+            DocSortResult result;
             int iVal = -1;
             ArrayList paramArray = new ArrayList();
-            paramArray.Add(new NandanaDBRequest.Parameter("@RoleId", RoleID));
-            paramArray.Add(new NandanaDBRequest.Parameter("@FormId", ID));
-            paramArray.Add(new NandanaDBRequest.Parameter("@Isview", View));
+            paramArray.Add(new DocSortDBRequest.Parameter("@RoleId", RoleID));
+            paramArray.Add(new DocSortDBRequest.Parameter("@FormId", ID));
+            paramArray.Add(new DocSortDBRequest.Parameter("@Isview", View));
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_InsertUpdateUserAccessPermissions", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_InsertUpdateUserAccessPermissions", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 iVal = factory.ExecuteNonQuery(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUpdateUserAccessPermissions sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUpdateUserAccessPermissions sp.", m_oSession, e));
             }
 
             if (iVal < 0)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUpdateUserAccessPermissions sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUpdateUserAccessPermissions sp.", m_oSession));
             }
             else
             {
-                result = new NandanaResult(null);
+                result = new DocSortResult(null);
             }
             return result;
            
         }
 
-        public NandanaResult GetUserDetailsByCredentials(string Name, string Password)
+        public DocSortResult GetUserDetailsByCredentials(string Name, string Password)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
 
-            paramArray.Add(new NandanaDBRequest.Parameter("@UserName", Name));
-            paramArray.Add(new NandanaDBRequest.Parameter("@Pwd", Password));
+            paramArray.Add(new DocSortDBRequest.Parameter("@UserName", Name));
+            paramArray.Add(new DocSortDBRequest.Parameter("@Pwd", Password));
             
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_Users", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_Users", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUserDetailsByCredentials sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUserDetailsByCredentials sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUserDetailsByCredentials  sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUserDetailsByCredentials  sp.", m_oSession));
             }
             return result;
         }
 
-        public NandanaResult GetFormLevelControlPermissions(string RoleId, string UserId, string FormName)
+        public DocSortResult GetFormLevelControlPermissions(string RoleId, string UserId, string FormName)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
-            paramArray.Add(new NandanaDBRequest.Parameter("@RoleId", RoleId));
-            paramArray.Add(new NandanaDBRequest.Parameter("@UserId", UserId));
-            paramArray.Add(new NandanaDBRequest.Parameter("@FormName", FormName));
+            paramArray.Add(new DocSortDBRequest.Parameter("@RoleId", RoleId));
+            paramArray.Add(new DocSortDBRequest.Parameter("@UserId", UserId));
+            paramArray.Add(new DocSortDBRequest.Parameter("@FormName", FormName));
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("GetUserAccessControls", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("GetUserAccessControls", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUserAccessControls sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUserAccessControls sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUserAccessControls sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUserAccessControls sp.", m_oSession));
             }
             return result;
         }
 
-        public NandanaResult BindMonth()
+        public DocSortResult BindMonth()
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_BindMonth", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_BindMonth", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from BindMonth sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from BindMonth sp.", m_oSession, e));
             }
 
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from BindMonth sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from BindMonth sp.", m_oSession));
             }
             return result;
         }

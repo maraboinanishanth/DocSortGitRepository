@@ -85,7 +85,7 @@ namespace DocSort_CPA.Forms
                     // Checking duplicate Role names
 
                     UserManager objUserManager = new UserManager();
-                    NandanaResult result = new NandanaResult();
+                    DocSortResult result = new DocSortResult();
                     result = objUserManager.GetRoles();
 
                     if (!result.HasError && result.resultDS.Tables[0].Rows.Count > 0)
@@ -110,7 +110,7 @@ namespace DocSort_CPA.Forms
 
                     //* inserting Role details in Roles table *//
 
-                    NandanaResult insertFileCabinet = objUserManager.InserRoleValues(txtRoleName.Text.Trim(),txtRoleName.Text+" Desc",Convert.ToBoolean(1));
+                    DocSortResult insertFileCabinet = objUserManager.InserRoleValues(txtRoleName.Text.Trim(),txtRoleName.Text+" Desc",Convert.ToBoolean(1));
                     
 
                     //* End  *//

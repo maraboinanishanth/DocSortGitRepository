@@ -338,7 +338,7 @@ namespace DocSort_CPA.Reports
                     //dgvDocuments.DataSource = dtFinalResult1;
 
                     //MoveMyFilesManager objMoveMyFilesManager = new MoveMyFilesManager();
-                    //NandanaResult dsgetScannedDocumentResultsdetails = objMoveMyFilesManager.GetTotalScannedDocumentCountResultsUsingDate(dtpStartDate.Value.ToString("yyyy-MM-dd"), dtpEndDate.Value.ToString("yyyy-MM-dd"));
+                    //DocSortResult dsgetScannedDocumentResultsdetails = objMoveMyFilesManager.GetTotalScannedDocumentCountResultsUsingDate(dtpStartDate.Value.ToString("yyyy-MM-dd"), dtpEndDate.Value.ToString("yyyy-MM-dd"));
 
                     //DataTable dtFinal = new DataTable();
                     //DataTable dtFinalResult = new DataTable();

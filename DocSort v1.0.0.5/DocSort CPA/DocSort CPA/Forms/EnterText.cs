@@ -97,7 +97,7 @@ namespace DocSort_CPA.Forms
 
                     DataTable getFolderNames = new DataTable();
 
-                    NandanaResult objgetfolderdetails = objFolderManager.GetFolderDetails();
+                    DocSortResult objgetfolderdetails = objFolderManager.GetFolderDetails();
 
                     if (objgetfolderdetails.resultDS != null && objgetfolderdetails.resultDS.Tables[0].Rows.Count > 0)
                     {
@@ -108,7 +108,6 @@ namespace DocSort_CPA.Forms
                         }
                     }
                     
-                    //NandanaResult getFolderNames = objFolderManager.GetMainFolderNamesUsingFileCabinetID(FileCabinetID);
                     if (getFolderNames.HasErrors != null && getFolderNames.Rows.Count > 0)
                     {
                         DataTable dtAllFolders = getFolderNames;
@@ -144,7 +143,7 @@ namespace DocSort_CPA.Forms
                 {
                     DataTable getFolderNames = new DataTable();
 
-                    NandanaResult objgetfolderdetails = objFolderManager.GetFolderDetails();
+                    DocSortResult objgetfolderdetails = objFolderManager.GetFolderDetails();
 
                     if (objgetfolderdetails.resultDS != null && objgetfolderdetails.resultDS.Tables[0].Rows.Count > 0)
                     {
@@ -156,7 +155,6 @@ namespace DocSort_CPA.Forms
                     }
                    
 
-                    //NandanaResult getFolderNames = objFolderManager.GetMainFolderNamesUsingFileCabinetID(FileCabinetID);
                     if (getFolderNames.HasErrors != null && getFolderNames.Rows.Count > 0)
                     {
                         DataTable dtAllFolders = getFolderNames;
@@ -192,7 +190,7 @@ namespace DocSort_CPA.Forms
                 {
                     DataTable getMainFolderNames = new DataTable();
 
-                    NandanaResult objgetfolderdetails = objFolderManager.GetFolderDetails();
+                    DocSortResult objgetfolderdetails = objFolderManager.GetFolderDetails();
 
                     DataTable getSubFolderNames = new DataTable();
 
@@ -242,7 +240,7 @@ namespace DocSort_CPA.Forms
                 {
                     DataTable getfiles = new DataTable();
 
-                    NandanaResult objgetfiledetails = objFilesManager.GetFileDetails();
+                    DocSortResult objgetfiledetails = objFilesManager.GetFileDetails();
 
                     if (objgetfiledetails.resultDS != null && objgetfiledetails.resultDS.Tables[0].Rows.Count > 0)
                     {
@@ -254,7 +252,6 @@ namespace DocSort_CPA.Forms
                     }
                      
 
-                    //NandanaResult getfiles = objFilesManager.GetFileDetailsUsingFileID(FileID);
                     if (getfiles.HasErrors != null && getfiles.Rows.Count > 0)
                     {
                         DataRow dr = getfiles.Rows[0];
@@ -262,7 +259,7 @@ namespace DocSort_CPA.Forms
                         string Folderid = dr["Folder_ID"].ToString();
 
                         DataTable getfiledetailsussingfolderid = new DataTable();
-                        NandanaResult objgetfolderdetails = objFolderManager.GetFolderDetails();
+                        DocSortResult objgetfolderdetails = objFolderManager.GetFolderDetails();
 
                         if (objgetfolderdetails.resultDS!=null && objgetfolderdetails.resultDS.Tables[0].Rows.Count > 0)
                         {
@@ -273,8 +270,6 @@ namespace DocSort_CPA.Forms
                             }
                         }
                        
-
-                        //NandanaResult getfiledetailsussingfolderid = objFilesManager.GetFilesUsingFileCabinetAndFolderID(Folderid, FileCabinetID);
                         if (getfiledetailsussingfolderid.HasErrors != null && getfiledetailsussingfolderid.Rows.Count > 0)
                         {
                             foreach (DataRow drfiles in getfiledetailsussingfolderid.Rows)
@@ -299,7 +294,7 @@ namespace DocSort_CPA.Forms
         {
             DataTable getFolderNames = new DataTable();
 
-            NandanaResult objgetfolderdetails = objFolderManager.GetFolderDetails();
+            DocSortResult objgetfolderdetails = objFolderManager.GetFolderDetails();
 
             if (objgetfolderdetails.resultDS != null && objgetfolderdetails.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -309,22 +304,14 @@ namespace DocSort_CPA.Forms
                     getFolderNames = drResult.CopyToDataTable();
                 }
             }
-           
-
-            //FolderManager objFolderManager = new FolderManager();
-            //NandanaResult ds = new NandanaResult();
-
-            //ds = objFolderManager.GetMainFolderNamesUsingFileCabinetID(CabinetID);
-
             return getFolderNames;
-
         }
 
         private DataTable GetSubFolderNames(string FolderID)
         {
             DataTable getSubFolderNames = new DataTable();
 
-            NandanaResult objgetfolderdetails = objFolderManager.GetFolderDetails();
+            DocSortResult objgetfolderdetails = objFolderManager.GetFolderDetails();
 
             if (objgetfolderdetails.resultDS != null && objgetfolderdetails.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -334,15 +321,7 @@ namespace DocSort_CPA.Forms
                     getSubFolderNames = drResult.CopyToDataTable();
                 }
             }
-          
-
-            //FolderManager objFolderManager = new FolderManager();
-            //NandanaResult ds = new NandanaResult();
-
-            //ds = objFolderManager.GetSubFolderNamesUsingFolderID(FolderID);
-
             return getSubFolderNames;
-
         }
 
         private void txtFolderName_KeyPress(object sender, KeyPressEventArgs e)

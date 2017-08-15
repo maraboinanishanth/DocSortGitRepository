@@ -7,7 +7,7 @@ namespace Common
 	/// Base Class to be implemented for all the record classes.
 	/// This provides basic functions for validation and formatting which will be overwritten
 	/// </summary>
-	public class NandanaRecord
+	public class DocSortRecord
 	{
 		/// <summary>Separator for multiple fields </summary>
 		protected string Separator="<br>";
@@ -37,7 +37,7 @@ namespace Common
 		/// Function to validate UI Rules for ContactInfo Record
 		/// </summary>
 		/// <returns>Error String </returns>
-		public virtual NandanaResult ValidateRules()
+		public virtual DocSortResult ValidateRules()
 		{
 			ValidateMandatory();
 			ValidateDates();
@@ -55,8 +55,8 @@ namespace Common
 				ErrorDescription+= "The following fields have more no. of characters specified.<br>"+ErrorMaxLengthFields;
 
 			if (ErrorDescription.Length>0)
-				return (new NandanaResult(NandanaError.ErrorType.ERR_INVALID_DATA,ErrorDescription,null));
-			return (new NandanaResult());
+				return (new DocSortResult(DocSortError.ErrorType.ERR_INVALID_DATA,ErrorDescription,null));
+			return (new DocSortResult());
 		
 		}
 	}

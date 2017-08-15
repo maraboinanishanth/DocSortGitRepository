@@ -57,7 +57,7 @@ namespace DocSort_CPA.Forms
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -186,26 +186,6 @@ namespace DocSort_CPA.Forms
             return newDataTable;
         }
 
-        //public void BindCategories()
-        //{
-        //    try
-        //    {
-        //        CategoryManager objCategoryManager = new CategoryManager();
-        //        NandanaResult dsCategorydetails = objCategoryManager.GetCategoryDetails();
-        //        if (dsCategorydetails.resultDS != null && dsCategorydetails.resultDS.Tables[0].Rows.Count > 0)
-        //        {
-        //            // cmbCategoryName.Items.Clear();
-        //            cmbCategoryName.DisplayMember = "Category_Name";
-        //            cmbCategoryName.ValueMember = "Category_ID";
-        //            cmbCategoryName.DataSource = GetComboBoxedDataTable(dsCategorydetails.resultDS.Tables[0], "Category_ID", "Category_Name", "0", "-Select Category-");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message, "Error While retriving data from Category table");
-        //    }
-        //}
-
         public void GetDocumentDetails()
         {
             dgvDocuments.Columns.Clear();
@@ -266,7 +246,7 @@ namespace DocSort_CPA.Forms
             {
 
                 ShowDocumentsManager objShowDocumentsManager = new ShowDocumentsManager();
-                NandanaResult dsgetScannedDocumentResultsdetails = objShowDocumentsManager.ShowScannedDocuments();
+                DocSortResult dsgetScannedDocumentResultsdetails = objShowDocumentsManager.ShowScannedDocuments();
                 if (dsgetScannedDocumentResultsdetails.resultDS != null && dsgetScannedDocumentResultsdetails.resultDS.Tables[0].Rows.Count > 0)
                 {
                     foreach (DataRow dr in dsgetScannedDocumentResultsdetails.resultDS.Tables[0].Rows)
@@ -317,7 +297,7 @@ namespace DocSort_CPA.Forms
             {
 
                 ShowDocumentsManager objShowDocumentsManager = new ShowDocumentsManager();
-                NandanaResult dsgetScannedDocumentResultsdetails = objShowDocumentsManager.ShowScannedDocuments();
+                DocSortResult dsgetScannedDocumentResultsdetails = objShowDocumentsManager.ShowScannedDocuments();
 
                 DataTable dtFinalResult = new DataTable();
                 if (dsgetScannedDocumentResultsdetails.resultDS != null && dsgetScannedDocumentResultsdetails.resultDS.Tables[0].Rows.Count > 0)

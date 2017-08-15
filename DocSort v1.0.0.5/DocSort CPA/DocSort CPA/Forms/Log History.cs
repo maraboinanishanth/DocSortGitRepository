@@ -73,7 +73,7 @@ namespace DocSort_CPA.Forms
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -164,7 +164,7 @@ namespace DocSort_CPA.Forms
             try
             {
                 Log_History_Manager objLogHistory = new Log_History_Manager();
-                NandanaResult dsgethistorydetails = objLogHistory.GetLogHistoryDetails();
+                DocSortResult dsgethistorydetails = objLogHistory.GetLogHistoryDetails();
                 if (!dsgethistorydetails.HasError && dsgethistorydetails.resultDS.Tables[0].Rows.Count > 0)
                 {
                     dgvLogHistory.DataSource = dsgethistorydetails.resultDS.Tables[0];
@@ -189,7 +189,7 @@ namespace DocSort_CPA.Forms
                 try
                 {
                     Log_History_Manager objLogHistory = new Log_History_Manager();
-                    NandanaResult dsgethistorydetailsusingDate = objLogHistory.GetLogHistoryDetailsGO(dtpLogDate.Value.ToString("dd-MM-yyyy"));
+                    DocSortResult dsgethistorydetailsusingDate = objLogHistory.GetLogHistoryDetailsGO(dtpLogDate.Value.ToString("dd-MM-yyyy"));
                     if (!dsgethistorydetailsusingDate.HasError && dsgethistorydetailsusingDate.resultDS.Tables[0].Rows.Count > 0)
                     {
                         if (cmbType.Text != "-Select Type-" && cmbType.Text.Length != 0)
@@ -236,7 +236,7 @@ namespace DocSort_CPA.Forms
                 try
                 {
                     Log_History_Manager objLogHistory = new Log_History_Manager();
-                    NandanaResult dsgethistorydetailsusingDate = objLogHistory.GetLogHistoryDetailsGO(dtpLogDate.Value.ToString("dd-MM-yyyy"));
+                    DocSortResult dsgethistorydetailsusingDate = objLogHistory.GetLogHistoryDetailsGO(dtpLogDate.Value.ToString("dd-MM-yyyy"));
                     if (!dsgethistorydetailsusingDate.HasError && dsgethistorydetailsusingDate.resultDS.Tables[0].Rows.Count > 0)
                     {
                         dgvLogHistory.DataSource = dsgethistorydetailsusingDate.resultDS.Tables[0];

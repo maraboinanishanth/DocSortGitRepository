@@ -12,31 +12,31 @@ using Common;
 
 namespace Business.Manager
 {
-    public class DocumentCountReportManager:NandanaBase
+    public class DocumentCountReportManager:DocSortBase
     {
-        public NandanaResult GetDocumentCountReportUsingDate(string StartDate, string EndDate)
+        public DocSortResult GetDocumentCountReportUsingDate(string StartDate, string EndDate)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
 
-            paramArray.Add(new NandanaDBRequest.Parameter("@StartDate", StartDate));
-            paramArray.Add(new NandanaDBRequest.Parameter("@EndDate", EndDate));
+            paramArray.Add(new DocSortDBRequest.Parameter("@StartDate", StartDate));
+            paramArray.Add(new DocSortDBRequest.Parameter("@EndDate", EndDate));
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetDocumentCountReportUsingDate", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_GetDocumentCountReportUsingDate", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetDocumentCountReportUsingDate sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetDocumentCountReportUsingDate sp.", m_oSession, e));
             }
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetDocumentCountReportUsingDate sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetDocumentCountReportUsingDate sp.", m_oSession));
             }
             return result;
         }

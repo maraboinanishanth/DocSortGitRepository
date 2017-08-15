@@ -9,7 +9,7 @@ namespace DataAccess
     /// <summary>
     /// Abstract Base Class for Data reader
     /// </summary>
-    public abstract class NandanaDataReader
+    public abstract class DocSortDataReader
     {
         /// <summary>
         /// Abstract property for Return DataReader 
@@ -24,7 +24,7 @@ namespace DataAccess
     /// <summary>
     /// Abstract base class for DataSet
     /// </summary>
-    public abstract class NandanaDataSet
+    public abstract class DocSortDataSet
     {
         /// <summary>
         /// abstract Property for Returned Dataset 
@@ -40,7 +40,7 @@ namespace DataAccess
     /// <summary>
     /// Abstract class for Transaction
     /// </summary>
-    public abstract class NandanaTransaction
+    public abstract class DocSortTransaction
     {
         /// <summary>
         /// Returned Transaction

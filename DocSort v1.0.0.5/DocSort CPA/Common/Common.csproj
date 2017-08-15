@@ -47,13 +47,13 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Enumuration.cs" />
-    <Compile Include="NandanaConstants.cs" />
-    <Compile Include="NandanaError.cs" />
-    <Compile Include="NandanaRecord.cs" />
-    <Compile Include="NandanaResult.cs" />
-    <Compile Include="NandanaSecurity.cs" />
-    <Compile Include="NandanaSession.cs" />
-    <Compile Include="NandanaURL.cs" />
+    <Compile Include="DocSortConstants.cs" />
+    <Compile Include="DocSortError.cs" />
+    <Compile Include="DocSortRecord.cs" />
+    <Compile Include="DocSortResult.cs" />
+    <Compile Include="DocSortSecurity.cs" />
+    <Compile Include="DocSortSession.cs" />
+    <Compile Include="DocSortURL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegExValidator.cs" />
     <Compile Include="StopWordsTool.cs" />

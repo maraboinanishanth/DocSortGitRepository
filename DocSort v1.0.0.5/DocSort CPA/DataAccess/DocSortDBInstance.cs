@@ -10,24 +10,24 @@ namespace DataAccess
 	/// Class to instantiate Factory Object instance based on the parameter in the config and also has some 
 	/// helper functions to generate SQL queries.
 	/// </summary>
-	public class NandanaDBInstance
+	public class DocSortDBInstance
 	{
 		// based on GoF singleton definition
 		private static System.Threading.Mutex m_Mutex = new System.Threading.Mutex();
-		private static NandanaAbstractFactory m_oDBFactory;
+		private static DocSortAbstractFactory m_oDBFactory;
 		private static NameValueCollection m_colAppSettings;
 		/// <summary>
 		/// static constructor 
 		/// </summary>
-		public NandanaDBInstance()
+		public DocSortDBInstance()
 		{
 		}
 
 		/// <summary>
 		/// Get DBFactory object based on the DBType specified in the applicaton settings
 		/// </summary>
-		/// <returns>Single instance of the NandanaAbstractDBFactory. If DBType = SQL then it returns NandanaSqlFactory object</returns>
-		public static NandanaAbstractFactory GetDBFactory()
+		/// <returns>Single instance of the DocSortAbstractDBFactory. If DBType = SQL then it returns SqlFactory object</returns>
+		public static DocSortAbstractFactory GetDBFactory()
 		{
 			string sDBType ="";
 			if (null == m_oDBFactory)
@@ -40,9 +40,9 @@ namespace DataAccess
 				// To be thread safe, we use Mutex to synchronize threads
 				m_Mutex.WaitOne(); // WaitOne() requests a thread
 				if(sDBType == "SQL")
-					m_oDBFactory = new NandanaMySqlFactory();
+					m_oDBFactory = new DocSortMySqlFactory();
                 else if (sDBType == "MYSQL")
-                    m_oDBFactory = new NandanaMySqlFactory();
+                    m_oDBFactory = new DocSortMySqlFactory();
 				m_Mutex.ReleaseMutex();
 			}
 			return m_oDBFactory;

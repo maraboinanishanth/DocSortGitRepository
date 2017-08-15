@@ -181,7 +181,7 @@ namespace DocSort_CPA.Forms
             //lblSearchDocs_Click(sender, e);
            
             FileCabinetManager objFileCabinetManager = new FileCabinetManager();
-            NandanaResult result = objFileCabinetManager.GetFileCabinets();
+            DocSortResult result = objFileCabinetManager.GetFileCabinets();
             if (result.resultDS != null && result.resultDS.Tables[0].Rows.Count > 0)
             {
                 btnDashBoard_Click(sender, e);
@@ -207,7 +207,7 @@ namespace DocSort_CPA.Forms
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {

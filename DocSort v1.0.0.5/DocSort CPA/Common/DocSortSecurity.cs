@@ -8,12 +8,12 @@ namespace Security
     /// <summary>
     /// The Module Security Class
     /// </summary>
-    public class NandanaSecurity
+    public class DocSortSecurity
     {
         /// <summary>
         /// Default Constructor of Security Class
         /// </summary>
-        public NandanaSecurity()
+        public DocSortSecurity()
         {
         }
 

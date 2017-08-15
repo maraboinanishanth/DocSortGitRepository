@@ -55,7 +55,7 @@ namespace DocSort_CPA.Reports
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -250,7 +250,7 @@ namespace DocSort_CPA.Reports
                 try
                 {
                     DocumentStatusReportManager objDocumentStatusReportManager = new DocumentStatusReportManager();
-                    NandanaResult dsgetScannedDocumentResultsdetails = objDocumentStatusReportManager.GetDocumentStatusReportUsingDate(dtpStartDate.Value.ToString("yyyy-MM-dd"), dtpEndDate.Value.ToString("yyyy-MM-dd"));
+                    DocSortResult dsgetScannedDocumentResultsdetails = objDocumentStatusReportManager.GetDocumentStatusReportUsingDate(dtpStartDate.Value.ToString("yyyy-MM-dd"), dtpEndDate.Value.ToString("yyyy-MM-dd"));
 
                     DataTable dtFinalResult = new DataTable();
                     if (dsgetScannedDocumentResultsdetails.resultDS != null && dsgetScannedDocumentResultsdetails.resultDS.Tables[0].Rows.Count > 0)

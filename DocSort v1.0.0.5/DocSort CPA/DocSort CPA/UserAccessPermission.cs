@@ -43,32 +43,11 @@ namespace DocSort_CPA
                 ddlRoles.DisplayMember = "Role_Name";
                 ddlRoles.ValueMember = "Role_ID";
                 ddlRoles.DataSource = GetComboBoxedDataTable(dsroles.Tables[0], "Role_ID", "Role_Name", "0", "--Select Role--");
-
-                //UserManager objUserManager = new UserManager();
-
-                //NandanaResult dsUserData = objUserManager.GetUserDetails();
-                //if (!dsUserData.HasError && dsUserData.resultDS.Tables[0].Rows.Count > 0)
-                //{
-                //    ddlRoles.Items.Clear();
-                //    ddlRoles.DisplayMember = "Role_Name";
-                //    ddlRoles.ValueMember = "Role_ID";
-                //    ddlRoles.DataSource = GetComboBoxedDataTable(dsUserData.resultDS.Tables[0], "Role_ID", "Role_Name", "0", "--Select Role--");
-                //}
-                //else
-                //{
-                //    ddlRoles.Items.Clear();
-                //    DataTable dtRoles = new DataTable();
-                //    ddlRoles.DisplayMember = "Role_Name";
-                //    ddlRoles.ValueMember = "Role_ID";
-                //    ddlRoles.DataSource = GetComboBoxedDataTable(dtRoles, "Role_ID", "Role_Name", "0", "--Select Role--");
-                
-                //}
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Error While retriving data from GetUsers");
             }
-        
         }
         private void BindUsers(string RoleId)
         {
@@ -88,25 +67,6 @@ namespace DocSort_CPA
                 ddlUsers.DisplayMember = "User_Name";
                 ddlUsers.ValueMember = "User_ID";
                 ddlUsers.DataSource = GetComboBoxedDataTable(dtFinalResult, "User_ID", "User_Name", "0", "--Select User--");
-
-                //UserManager objUserManager = new UserManager();
-
-                //NandanaResult dsUserData = objUserManager.GetUserDetailsByRoleID(RoleId);
-                //if (!dsUserData.HasError && dsUserData.resultDS.Tables[0].Rows.Count > 0)
-                //{
-                //    //ddlUsers.Items.Clear();
-                //    ddlUsers.DisplayMember = "User_Name";
-                //    ddlUsers.ValueMember = "User_ID";
-                //    ddlUsers.DataSource = GetComboBoxedDataTable(dsUserData.resultDS.Tables[0], "User_ID", "User_Name", "0", "--Select User--");
-                //}
-                //else
-                //{
-                //    //ddlUsers.Items.Clear();
-                //    DataTable dtRoles = new DataTable();
-                //    ddlUsers.DisplayMember = "User_Name";
-                //    ddlUsers.ValueMember = "User_ID";
-                //    ddlUsers.DataSource = GetComboBoxedDataTable(dtRoles, "User_ID", "User_Name", "0", "--Select User--");
-                //}
             }
             catch (Exception e)
             {
@@ -143,11 +103,6 @@ namespace DocSort_CPA
                 string dfForms = "XMLs/Forms.xml";
                 DataSet dsResult = new DataSet();
                 dsResult.ReadXml(dfForms);
-
-                //NandanaResult dsResult = new NandanaResult();
-                //NandanaResult dsuserPermission = new NandanaResult();
-                //UserManager objUserManager = new UserManager();
-                //dsResult = objUserManager.GetAllForms();
 
                 string dfPermissions = "XMLs/UserAccessPermission.xml";
                 DataSet dsusers = new DataSet();
@@ -296,25 +251,8 @@ namespace DocSort_CPA
                     MenuName = drMain["MenuName"].ToString() + ":" + dr["MenuName"].ToString();
                 }
             }
-
-            //UserManager objUserManager = new UserManager();
-            //NandanaResult dsResult = new NandanaResult();
-            //dsResult = objUserManager.GetMenuNamesByFormID(ID);
-            // if (!dsResult.HasError && dsResult.resultDS.Tables[0].Rows.Count > 0)
-            // { 
-            // MenuName = Convert.ToString( dsResult.resultDS.Tables[0].Rows[0][0]);
-            // }
             return MenuName;
         }
-        //private string FormMenuwithMainMenu(string MenuId)
-        //{
-        //    string strMenuName = string.Empty;
-        //    NandanaResult dsResult = new NandanaResult();
-
-        //    UserManager objUserManager = new UserManager();
-        //    dsResult = objUserManager.GetMenuDetilsByMainMenuId(MenuId);
-        //    return strMenuName; 
-        //}
 
         private void ddlUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -356,7 +294,6 @@ namespace DocSort_CPA
                 bool Add = Convert.ToBoolean(gvrow.Cells[3].Value);
                 bool Edit = Convert.ToBoolean(gvrow.Cells[4].Value);
                 bool Delete = Convert.ToBoolean(gvrow.Cells[5].Value);
-                //NandanaResult dsResult = new NandanaResult();
                 try
                 {
 

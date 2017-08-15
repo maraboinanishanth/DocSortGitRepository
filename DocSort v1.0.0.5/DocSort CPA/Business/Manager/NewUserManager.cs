@@ -9,201 +9,201 @@ using Common;
 
 namespace Business.Manager
 {
-     public class NewUserManager:NandanaBase
+     public class NewUserManager:DocSortBase
     {
-         public NandanaResult InsertUserValues(string Firstname,string Lastname,string Middlename,string address,string city,string state,string country,string zip,string mobileno,string alternativemobileno,string Username, string password, string RoleId,Boolean status)
+         public DocSortResult InsertUserValues(string Firstname,string Lastname,string Middlename,string address,string city,string state,string country,string zip,string mobileno,string alternativemobileno,string Username, string password, string RoleId,Boolean status)
          {
-             NandanaResult result;
+             DocSortResult result;
              int iVal = -1;
              ArrayList paramArray = new ArrayList();
 
-             paramArray.Add(new NandanaDBRequest.Parameter("@Firstname", Firstname));
-             paramArray.Add(new NandanaDBRequest.Parameter("@Lastname", Lastname));
-             paramArray.Add(new NandanaDBRequest.Parameter("@Middlename", Middlename));
-             paramArray.Add(new NandanaDBRequest.Parameter("@address", address));
-             paramArray.Add(new NandanaDBRequest.Parameter("@city", city));
-             paramArray.Add(new NandanaDBRequest.Parameter("@state", state));
-             paramArray.Add(new NandanaDBRequest.Parameter("@country", country));
-             paramArray.Add(new NandanaDBRequest.Parameter("@zip", zip));
-             paramArray.Add(new NandanaDBRequest.Parameter("@mobileno", mobileno));
-             paramArray.Add(new NandanaDBRequest.Parameter("@alternativemobileno", alternativemobileno));
-             paramArray.Add(new NandanaDBRequest.Parameter("@Username", Username));
-             paramArray.Add(new NandanaDBRequest.Parameter("@password", password));
-             paramArray.Add(new NandanaDBRequest.Parameter("@RoleId", RoleId));
-             paramArray.Add(new NandanaDBRequest.Parameter("@Isstatus", status));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Firstname", Firstname));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Lastname", Lastname));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Middlename", Middlename));
+             paramArray.Add(new DocSortDBRequest.Parameter("@address", address));
+             paramArray.Add(new DocSortDBRequest.Parameter("@city", city));
+             paramArray.Add(new DocSortDBRequest.Parameter("@state", state));
+             paramArray.Add(new DocSortDBRequest.Parameter("@country", country));
+             paramArray.Add(new DocSortDBRequest.Parameter("@zip", zip));
+             paramArray.Add(new DocSortDBRequest.Parameter("@mobileno", mobileno));
+             paramArray.Add(new DocSortDBRequest.Parameter("@alternativemobileno", alternativemobileno));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Username", Username));
+             paramArray.Add(new DocSortDBRequest.Parameter("@password", password));
+             paramArray.Add(new DocSortDBRequest.Parameter("@RoleId", RoleId));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Isstatus", status));
 
              try
              {
-                 NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                 NandanaDBRequest request = new NandanaDBRequest("sp_InsertUserValues", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                 DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                 DocSortDBRequest request = new DocSortDBRequest("sp_InsertUserValues", CommandType.StoredProcedure, m_oTransaction, paramArray);
                  iVal = factory.ExecuteNonQuery(request);
              }
              catch (Exception e)
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUserValues sp.", m_oSession, e));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUserValues sp.", m_oSession, e));
              }
 
              if (iVal < 0)
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUserValues sp.", m_oSession));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertUserValues sp.", m_oSession));
              }
              else
              {
-                 result = new NandanaResult(null);
+                 result = new DocSortResult(null);
              }
              return result;
          }
 
-         public NandanaResult GetUsers()
+         public DocSortResult GetUsers()
          { 
-             NandanaResult result;
-             NandanaDataSet resultDS;
+             DocSortResult result;
+             DocSortDataSet resultDS;
              ArrayList paramArray = new ArrayList();
 
              try
              {
-                 NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                 NandanaDBRequest request = new NandanaDBRequest("sp_GetUsers", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                 DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                 DocSortDBRequest request = new DocSortDBRequest("sp_GetUsers", CommandType.StoredProcedure, m_oTransaction, paramArray);
                  resultDS = factory.ExecuteDataSet(request);
              }
              catch (Exception e)
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUsers sp.", m_oSession, e));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUsers sp.", m_oSession, e));
              }
-             result = new NandanaResult();
+             result = new DocSortResult();
              result.resultDS = resultDS.ReturnedDataSet;
              if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUsers sp.", m_oSession));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUsers sp.", m_oSession));
              }
              return result;
          }
 
-         public NandanaResult CheckDuplicateUser(string Username)
+         public DocSortResult CheckDuplicateUser(string Username)
          { 
-             NandanaResult result;
-             NandanaDataSet resultDS;
+             DocSortResult result;
+             DocSortDataSet resultDS;
              ArrayList paramArray = new ArrayList();
 
-             paramArray.Add(new NandanaDBRequest.Parameter("@Username", Username));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Username", Username));
 
              try
              {
-                 NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                 NandanaDBRequest request = new NandanaDBRequest("sp_CheckDuplicateUser", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                 DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                 DocSortDBRequest request = new DocSortDBRequest("sp_CheckDuplicateUser", CommandType.StoredProcedure, m_oTransaction, paramArray);
                  resultDS = factory.ExecuteDataSet(request);
              }
              catch (Exception e)
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from CheckDuplicateUser sp.", m_oSession, e));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from CheckDuplicateUser sp.", m_oSession, e));
              }
-             result = new NandanaResult();
+             result = new DocSortResult();
              result.resultDS = resultDS.ReturnedDataSet;
              if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from CheckDuplicateUser sp.", m_oSession));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from CheckDuplicateUser sp.", m_oSession));
              }
              return result;
          }
 
-         public NandanaResult GetUserDetailsUsingUserID(string UserId)
+         public DocSortResult GetUserDetailsUsingUserID(string UserId)
          {
-             NandanaResult result;
-             NandanaDataSet resultDS;
+             DocSortResult result;
+             DocSortDataSet resultDS;
              ArrayList paramArray = new ArrayList();
 
-             paramArray.Add(new NandanaDBRequest.Parameter("@UserId", UserId));
+             paramArray.Add(new DocSortDBRequest.Parameter("@UserId", UserId));
 
              try
              {
-                 NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                 NandanaDBRequest request = new NandanaDBRequest("sp_GetUserDetailsUsingUserID", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                 DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                 DocSortDBRequest request = new DocSortDBRequest("sp_GetUserDetailsUsingUserID", CommandType.StoredProcedure, m_oTransaction, paramArray);
                  resultDS = factory.ExecuteDataSet(request);
              }
              catch (Exception e)
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUserDetailsUsingUserID sp.", m_oSession, e));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error While retriving data from GetUserDetailsUsingUserID sp.", m_oSession, e));
              }
-             result = new NandanaResult();
+             result = new DocSortResult();
              result.resultDS = resultDS.ReturnedDataSet;
              if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUserDetailsUsingUserID sp.", m_oSession));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetUserDetailsUsingUserID sp.", m_oSession));
              }
              return result;
          }
 
-         public NandanaResult DeleteUserDetails(string UserId)
+         public DocSortResult DeleteUserDetails(string UserId)
          {
-             NandanaResult result;
+             DocSortResult result;
              int iVal = -1;
              ArrayList paramArray = new ArrayList();
 
-             paramArray.Add(new NandanaDBRequest.Parameter("@UserId", UserId));
+             paramArray.Add(new DocSortDBRequest.Parameter("@UserId", UserId));
             
 
              try
              {
-                 NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                 NandanaDBRequest request = new NandanaDBRequest("sp_DeleteUserDetails", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                 DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                 DocSortDBRequest request = new DocSortDBRequest("sp_DeleteUserDetails", CommandType.StoredProcedure, m_oTransaction, paramArray);
                  iVal = factory.ExecuteNonQuery(request);
              }
              catch (Exception e)
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into DeleteUserDetails sp.", m_oSession, e));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into DeleteUserDetails sp.", m_oSession, e));
              }
 
              if (iVal < 0)
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into DeleteUserDetails sp.", m_oSession));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into DeleteUserDetails sp.", m_oSession));
              }
              else
              {
-                 result = new NandanaResult(null);
+                 result = new DocSortResult(null);
              }
              return result;
          }
 
-         public NandanaResult UpdateUserDetails(string UserId,string Firstname, string Lastname, string Middlename, string address, string city, string state,string country, string zip, string mobileno, string alternativemobileno, string Username, string password, string RoleId, Boolean status)
+         public DocSortResult UpdateUserDetails(string UserId,string Firstname, string Lastname, string Middlename, string address, string city, string state,string country, string zip, string mobileno, string alternativemobileno, string Username, string password, string RoleId, Boolean status)
          {
-             NandanaResult result;
+             DocSortResult result;
              int iVal = -1;
              ArrayList paramArray = new ArrayList();
 
-             paramArray.Add(new NandanaDBRequest.Parameter("@UserId", UserId));
-             paramArray.Add(new NandanaDBRequest.Parameter("@Firstname", Firstname));
-             paramArray.Add(new NandanaDBRequest.Parameter("@Lastname", Lastname));
-             paramArray.Add(new NandanaDBRequest.Parameter("@Middlename", Middlename));
-             paramArray.Add(new NandanaDBRequest.Parameter("@address", address));
-             paramArray.Add(new NandanaDBRequest.Parameter("@city", city));
-             paramArray.Add(new NandanaDBRequest.Parameter("@state", state));
-             paramArray.Add(new NandanaDBRequest.Parameter("@country", country));
-             paramArray.Add(new NandanaDBRequest.Parameter("@zip", zip));
-             paramArray.Add(new NandanaDBRequest.Parameter("@mobileno", mobileno));
-             paramArray.Add(new NandanaDBRequest.Parameter("@alternativemobileno", alternativemobileno));
-             paramArray.Add(new NandanaDBRequest.Parameter("@Username", Username));
-             paramArray.Add(new NandanaDBRequest.Parameter("@password", password));
-             paramArray.Add(new NandanaDBRequest.Parameter("@RoleId", RoleId));
-             paramArray.Add(new NandanaDBRequest.Parameter("@Isstatus", status));
+             paramArray.Add(new DocSortDBRequest.Parameter("@UserId", UserId));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Firstname", Firstname));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Lastname", Lastname));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Middlename", Middlename));
+             paramArray.Add(new DocSortDBRequest.Parameter("@address", address));
+             paramArray.Add(new DocSortDBRequest.Parameter("@city", city));
+             paramArray.Add(new DocSortDBRequest.Parameter("@state", state));
+             paramArray.Add(new DocSortDBRequest.Parameter("@country", country));
+             paramArray.Add(new DocSortDBRequest.Parameter("@zip", zip));
+             paramArray.Add(new DocSortDBRequest.Parameter("@mobileno", mobileno));
+             paramArray.Add(new DocSortDBRequest.Parameter("@alternativemobileno", alternativemobileno));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Username", Username));
+             paramArray.Add(new DocSortDBRequest.Parameter("@password", password));
+             paramArray.Add(new DocSortDBRequest.Parameter("@RoleId", RoleId));
+             paramArray.Add(new DocSortDBRequest.Parameter("@Isstatus", status));
 
              try
              {
-                 NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                 NandanaDBRequest request = new NandanaDBRequest("sp_UpdateUserDetails", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                 DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                 DocSortDBRequest request = new DocSortDBRequest("sp_UpdateUserDetails", CommandType.StoredProcedure, m_oTransaction, paramArray);
                  iVal = factory.ExecuteNonQuery(request);
              }
              catch (Exception e)
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into UpdateUserDetails sp.", m_oSession, e));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into UpdateUserDetails sp.", m_oSession, e));
              }
 
              if (iVal < 0)
              {
-                 return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into UpdateUserDetails sp.", m_oSession));
+                 return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into UpdateUserDetails sp.", m_oSession));
              }
              else
              {
-                 result = new NandanaResult(null);
+                 result = new DocSortResult(null);
              }
              return result;
          }

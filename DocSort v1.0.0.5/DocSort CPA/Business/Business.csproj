@@ -63,7 +63,7 @@
     <Compile Include="Manager\NewUserManager.cs" />
     <Compile Include="Manager\ShowDocumentsManager.cs" />
     <Compile Include="Manager\UserManager.cs" />
-    <Compile Include="NandanaBase.cs" />
+    <Compile Include="DocSortBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

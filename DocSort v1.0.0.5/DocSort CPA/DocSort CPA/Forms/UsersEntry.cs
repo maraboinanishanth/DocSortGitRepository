@@ -79,7 +79,7 @@ namespace DocSort_CPA.Forms
             {
                 UserManager objUserManager = new UserManager();
 
-                NandanaResult dsUserData = objUserManager.GetRoles();
+                DocSortResult dsUserData = objUserManager.GetRoles();
                 if (!dsUserData.HasError && dsUserData.resultDS.Tables[0].Rows.Count > 0)
                 {
                     //cmbRoles.Items.Clear();
@@ -98,7 +98,7 @@ namespace DocSort_CPA.Forms
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -252,9 +252,9 @@ namespace DocSort_CPA.Forms
             {
 
                 NewUserManager objShowDocumentsManager = new NewUserManager();
-                NandanaResult dsgetScannedDocumentResultsdetails = objShowDocumentsManager.GetUsers();
+                DocSortResult dsgetScannedDocumentResultsdetails = objShowDocumentsManager.GetUsers();
                 UserManager objUserManager = new UserManager();
-                NandanaResult dsUserData = objUserManager.GetRoles();
+                DocSortResult dsUserData = objUserManager.GetRoles();
                 if (dsgetScannedDocumentResultsdetails.resultDS != null && dsgetScannedDocumentResultsdetails.resultDS.Tables[0].Rows.Count > 0)
                 {
                     foreach (DataRow dr in dsgetScannedDocumentResultsdetails.resultDS.Tables[0].Rows)
@@ -390,7 +390,7 @@ namespace DocSort_CPA.Forms
                     // Checking duplicate User names with the RoleID
 
                     NewUserManager objNewUserManager = new NewUserManager();
-                    NandanaResult dsUserData = objNewUserManager.CheckDuplicateUser(txtUserName.Text.Trim());
+                    DocSortResult dsUserData = objNewUserManager.CheckDuplicateUser(txtUserName.Text.Trim());
                     if (!dsUserData.HasError && dsUserData.resultDS.Tables[0].Rows.Count > 0)
                     {
                         pnlError.Visible = true;
@@ -416,7 +416,7 @@ namespace DocSort_CPA.Forms
                     {
                         Status = Convert.ToBoolean(0);
                     }
-                    NandanaResult insertUserValues = objNewUserManager.InsertUserValues(txtFirstName.Text.Trim(), txtLastName.Text.Trim(), txtMiddleName.Text.Trim(), txtAddress.Text.Trim(), txtCity.Text.Trim(), txtState.Text.Trim(),txtCountry.Text.Trim(),txtZip.Text.Trim(), txtMobile.Text.Trim(), txtHomePhone.Text.Trim(), txtUserName.Text.Trim(), this.Encrypt(txtPassword.Text.Trim()), cmbRoles.SelectedValue.ToString(), Status);
+                    DocSortResult insertUserValues = objNewUserManager.InsertUserValues(txtFirstName.Text.Trim(), txtLastName.Text.Trim(), txtMiddleName.Text.Trim(), txtAddress.Text.Trim(), txtCity.Text.Trim(), txtState.Text.Trim(),txtCountry.Text.Trim(),txtZip.Text.Trim(), txtMobile.Text.Trim(), txtHomePhone.Text.Trim(), txtUserName.Text.Trim(), this.Encrypt(txtPassword.Text.Trim()), cmbRoles.SelectedValue.ToString(), Status);
 
                     //* End  *//
 
@@ -531,7 +531,7 @@ namespace DocSort_CPA.Forms
         {
             Boolean canDelete = false;
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -575,7 +575,7 @@ namespace DocSort_CPA.Forms
                                 UserID = dgvUsers.Rows[row].Cells[0].Value.ToString();
                                 try
                                 {
-                                    NandanaResult result = new NandanaResult();
+                                    DocSortResult result = new DocSortResult();
                                     result = objNewUserManager.DeleteUserDetails(UserID);
                                 }
                                 catch (Exception x)
@@ -599,7 +599,7 @@ namespace DocSort_CPA.Forms
                             Boolean Status = false;
                             try
                             {
-                                NandanaResult dsUserdetailValues = objNewUserManager.GetUserDetailsUsingUserID(UserID);
+                                DocSortResult dsUserdetailValues = objNewUserManager.GetUserDetailsUsingUserID(UserID);
                                 if (dsUserdetailValues.resultDS != null && dsUserdetailValues.resultDS.Tables[0].Rows.Count > 0)
                                 {
                                     DataRow dr = dsUserdetailValues.resultDS.Tables[0].Rows[0];
@@ -647,7 +647,7 @@ namespace DocSort_CPA.Forms
             }
             else
             {
-                MessageBox.Show("You do not access to delete. Please check with your admin to get access.");
+                MessageBox.Show("You do not access to Edit. Please check with your admin to get access.");
             }
         }
 
@@ -796,7 +796,7 @@ namespace DocSort_CPA.Forms
                         Status = Convert.ToBoolean(0);
                     }
                     NewUserManager objNewUserManager = new NewUserManager();
-                    NandanaResult insertUserValues = objNewUserManager.UpdateUserDetails(UserID,txtFirstName.Text.Trim(), txtLastName.Text.Trim(), txtMiddleName.Text.Trim(), txtAddress.Text.Trim(), txtCity.Text.Trim(), txtState.Text.Trim(),txtCountry.Text.Trim(), txtZip.Text.Trim(), txtMobile.Text.Trim(), txtHomePhone.Text.Trim(), txtUserName.Text.Trim(), this.Encrypt(txtPassword.Text.Trim()), cmbRoles.SelectedValue.ToString(), Status);
+                    DocSortResult insertUserValues = objNewUserManager.UpdateUserDetails(UserID,txtFirstName.Text.Trim(), txtLastName.Text.Trim(), txtMiddleName.Text.Trim(), txtAddress.Text.Trim(), txtCity.Text.Trim(), txtState.Text.Trim(),txtCountry.Text.Trim(), txtZip.Text.Trim(), txtMobile.Text.Trim(), txtHomePhone.Text.Trim(), txtUserName.Text.Trim(), this.Encrypt(txtPassword.Text.Trim()), cmbRoles.SelectedValue.ToString(), Status);
 
                     //* End  *//
 

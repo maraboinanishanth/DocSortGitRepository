@@ -178,7 +178,7 @@ namespace DocSort_CPA
                         //con.Close();
 
                         UserManager objUserManager = new UserManager();
-                        NandanaResult dsUserData = objUserManager.GetUserDetailsByCredentials(txtusername.Text.Trim(), this.Encrypt(txtpassword.Text.Trim()));
+                        DocSortResult dsUserData = objUserManager.GetUserDetailsByCredentials(txtusername.Text.Trim(), this.Encrypt(txtpassword.Text.Trim()));
                         if (!dsUserData.HasError && dsUserData.resultDS.Tables[0].Rows.Count > 0)
                         {
                             strRoleId = Convert.ToString(dsUserData.resultDS.Tables[0].Rows[0]["Role_ID"]);
@@ -193,7 +193,7 @@ namespace DocSort_CPA
                             string presentdate = DateTime.Now.ToString("dd-MM-yyyy");
                             string Type = "Login";
                             Log_History_Manager objLogHistoryManager = new Log_History_Manager();
-                            NandanaResult ival = objLogHistoryManager.InsertLogHistoryDetails((DateTime.Now.ToString("dd-MM-yyyy h:mm:ss tt")), txtusername.Text.Trim(), Description.Trim(), Type.Trim(),(DateTime.Now.ToString("dd-MM-yyyy")));
+                            DocSortResult ival = objLogHistoryManager.InsertLogHistoryDetails((DateTime.Now.ToString("dd-MM-yyyy h:mm:ss tt")), txtusername.Text.Trim(), Description.Trim(), Type.Trim(),(DateTime.Now.ToString("dd-MM-yyyy")));
                             //* End  *//
 
                             AssignConfigParamValues(strRoleId, strUserId);
@@ -225,7 +225,7 @@ namespace DocSort_CPA
         public void CheckScanDocCountValue()
         {
             ConfirmLicenseManager objConfirmLicenseManager = new ConfirmLicenseManager();
-            NandanaResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
+            DocSortResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
             if (getAllConfigValues.resultDS != null && getAllConfigValues.resultDS.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow dr in getAllConfigValues.resultDS.Tables[0].Rows)
@@ -246,7 +246,7 @@ namespace DocSort_CPA
         public void GetConfigValuesOfIsExpired()
         {
             ConfirmLicenseManager objConfirmLicenseManager = new ConfirmLicenseManager();
-            NandanaResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
+            DocSortResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
             if (getAllConfigValues.resultDS != null && getAllConfigValues.resultDS.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow dr in getAllConfigValues.resultDS.Tables[0].Rows)
@@ -273,7 +273,7 @@ namespace DocSort_CPA
             //DateTime Givendate=DateTime.Now;
 
             ConfirmLicenseManager objConfirmLicenseManager = new ConfirmLicenseManager();
-            NandanaResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
+            DocSortResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
             if (getAllConfigValues.resultDS != null && getAllConfigValues.resultDS.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow dr in getAllConfigValues.resultDS.Tables[0].Rows)
@@ -335,7 +335,7 @@ namespace DocSort_CPA
                 TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider();
                 MD5CryptoServiceProvider MD5 = new MD5CryptoServiceProvider();
 
-                des.Key = MD5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(System.Configuration.ConfigurationSettings.AppSettings["SecurityKey"]));
+                des.Key = MD5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(System.Configuration.ConfigurationManager.AppSettings["SecurityKey"]));
                 des.IV = IVRegular;
                 EncryptionKey = Encoding.ASCII.GetString(des.CreateDecryptor().TransformFinalBlock(buffer, 0, buffer.Length));
 
@@ -343,17 +343,12 @@ namespace DocSort_CPA
             catch (CryptographicException e)
             {
                 return "Invalid LicenseKey";
-                // throw e;
-                //MessageBox.Show("Invalid LicenseKey", "Invalid LicenseKey");
             }
             catch (FormatException excp)
             {
                 return "Invalid LicenseKey";
-                //throw excp;
-                //MessageBox.Show("Invalid LicenseKey", "Invalid LicenseKey");
             }
             return EncryptionKey;
-
         }
 
         private string Encrypt(string serializedQueryString)
@@ -361,7 +356,7 @@ namespace DocSort_CPA
             byte[] buffer = Encoding.ASCII.GetBytes(serializedQueryString);
             TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider();
             MD5CryptoServiceProvider MD5 = new MD5CryptoServiceProvider();
-            des.Key = MD5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(System.Configuration.ConfigurationSettings.AppSettings["SecurityKey"]));
+            des.Key = MD5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(System.Configuration.ConfigurationManager.AppSettings["SecurityKey"]));
             des.IV = IVRegular;
             return Convert.ToBase64String(
                des.CreateEncryptor().TransformFinalBlock(
@@ -374,103 +369,8 @@ namespace DocSort_CPA
 
         private void AssignConfigParamValues(string RoleId, string UserId)
         {
-            //UserManager objUserManager = new UserManager();
-            //NandanaResult dsResult = new NandanaResult();
-            //dsResult = objUserManager.GetAllForms();
-            //NandanaResult dsuserPermission = objUserManager.GetUserPermissions(RoleId, UserId);
             UserAccessPermissionvalues.RoleID = RoleId;
             UserAccessPermissionvalues.UserID = UserId;
-            //if (dsResult.resultDS != null && dsResult.resultDS.Tables[0].Rows.Count > 0)
-            //{
-            //    foreach (DataRow dr in dsResult.resultDS.Tables[0].Rows)
-            //    {
-            //        Boolean View = false;
-            //        Boolean Add = false;
-            //        Boolean Edit = false;
-            //        Boolean Delete = false;
-            //        DataRow[] drpermissions = dsuserPermission.resultDS.Tables[0].Select("FormID ='" + Convert.ToString(dr["ID"]) + "'");
-            //        if (drpermissions.Length > 0)
-            //        {
-
-            //            View = Convert.ToBoolean(drpermissions[0]["IsView"]);
-            //            Add = Convert.ToBoolean(drpermissions[0]["IsInsert"]);
-            //            Edit = Convert.ToBoolean(drpermissions[0]["IsEdit"]);
-            //            Delete = Convert.ToBoolean(drpermissions[0]["IsDelete"]);
-            //        }
-            //        if (View == true)
-            //        {
-            //            string Permissions = View + "," + Add + "," + Edit + "," + Delete;
-            //            if (Convert.ToString(dr["FormClassName"]).Trim() == "DashBorad")
-            //            {
-            //                UserAccessPermissionvalues.DashBorad = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "DocumentStatusReport")
-            //            {
-            //                UserAccessPermissionvalues.DocumentStatusReport = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "DocumentsReport")
-            //            {
-            //                UserAccessPermissionvalues.DocumentsReport = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "ChangePassword")
-            //            {
-            //                UserAccessPermissionvalues.ChangePassword = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "Log_History")
-            //            {
-            //                UserAccessPermissionvalues.Log_History = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "Backup")
-            //            {
-            //                UserAccessPermissionvalues.Backup = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "UserAccessPermission")
-            //            {
-            //                UserAccessPermissionvalues.UserAccessPermission = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "MoveFiles")
-            //            {
-            //                UserAccessPermissionvalues.MoveFiles = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "ConfigPage")
-            //            {
-            //                UserAccessPermissionvalues.ConfigPage = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "NewFileCabinet")
-            //            {
-            //                UserAccessPermissionvalues.NewFileCabinet = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "OpenFileCabinet")
-            //            {
-            //                UserAccessPermissionvalues.OpenFileCabinet = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "Category")
-            //            {
-            //                UserAccessPermissionvalues.Category = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "Documents")
-            //            {
-            //                UserAccessPermissionvalues.Documents = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "FindFiles")
-            //            {
-            //                UserAccessPermissionvalues.FindFiles = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "Search")
-            //            {
-            //                UserAccessPermissionvalues.Search = Permissions;
-            //            }
-            //            else if (Convert.ToString(dr["FormClassName"]).Trim() == "Import")
-            //            {
-            //                UserAccessPermissionvalues.Import = Permissions;
-            //            }
-            //            //else if (Convert.ToString(dr["FormClassName"]).Trim() == "OpeningStock")
-            //            //{
-            //            //    UserAccessPermissionvalues.OpeningStock = Permissions;
-            //            //}
-            //        }
-            //    }
-            //}
         }
 
         private void btnExit_Click(object sender, EventArgs e)

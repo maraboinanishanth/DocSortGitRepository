@@ -9,14 +9,14 @@ namespace Common
 {
 
 	/// <summary>
-	/// Summary description for NandanaSession.
+	/// Summary description for DocSortSession.
 	/// </summary>
-	public class NandanaResult
+	public class DocSortResult
 	{
 		/// <summary> Status of result</summary>
 		public StatusType status;
 		/// <summary> Error Code </summary>
-		public NandanaError.ErrorType errorCode;
+		public DocSortError.ErrorType errorCode;
 		/// <summary> Error Descripiton </summary>
 		public string errorDescr; 
 		/// <summary> Error Descripiton </summary>
@@ -28,7 +28,7 @@ namespace Common
 		/// </summary>
 		public Object resultObj;
 		/// <summary>OFISession object containing valid User data for Error returning purpose</summary>
-		public NandanaSession session;
+		public DocSortSession session;
 
         public IDataReader resultDR;
 
@@ -50,7 +50,7 @@ namespace Common
 		/// <summary>
 		/// Default Constructor without any arguments
 		/// </summary>
-		public NandanaResult()
+		public DocSortResult()
 		{
 			// default set the Result to SUCCESS
 			status = StatusType.SUCCESS;
@@ -63,7 +63,7 @@ namespace Common
 		///	Overloaded Constructor with session object as argument
 		/// </summary>
 		/// <param name="sess">OFISession Object</param>
-		public NandanaResult(NandanaSession sess)
+		public DocSortResult(DocSortSession sess)
 		{
 			// default set the Result to SUCCESS
 			status = StatusType.SUCCESS;
@@ -78,7 +78,7 @@ namespace Common
 		/// </summary>
 		/// <param name="ds">DataSet Object</param>
 		/// <param name="sess">OFISession Object</param>
-		public NandanaResult(DataSet ds,NandanaSession sess)
+		public DocSortResult(DataSet ds,DocSortSession sess)
 		{
 			// default set the Result to SUCCESS
 			status = StatusType.SUCCESS;
@@ -93,14 +93,14 @@ namespace Common
 		/// </summary>
 		/// <param name="errCode">ErrorCode</param>
 		/// <param name="sess">OFISession Object</param>
-		public NandanaResult(NandanaError.ErrorType errCode, NandanaSession sess)
+		public DocSortResult(DocSortError.ErrorType errCode, DocSortSession sess)
 		{
 			status = StatusType.ERROR;
 			errorCode = errCode;
 			resultDS = null;
 			resultObj = null;
 			session = sess; 
-			NandanaError.PostError(this);
+			DocSortError.PostError(this);
 		}
 		/// <summary>
 		///	Overloaded Constructor with three arguments for setting up Error code, Error Desc and session
@@ -108,7 +108,7 @@ namespace Common
 		/// <param name="errCode">ErrorCode</param>
 		/// <param name="errDesc">Error Description Object</param>
 		/// <param name="sess">OFISession Object</param>
-		public NandanaResult(NandanaError.ErrorType errCode, string errDesc, NandanaSession sess)
+		public DocSortResult(DocSortError.ErrorType errCode, string errDesc, DocSortSession sess)
 		{
 			status = StatusType.ERROR;
 			errorCode = errCode;
@@ -117,7 +117,7 @@ namespace Common
 			session = sess; 
 			// append the description to the existing one
 			errorDescr += (null != errorDescr && 0 < errorDescr.Length && null != errDesc && 0 < errDesc.Length ? " : ":"") + errDesc;
-			NandanaError.PostError(this);
+			DocSortError.PostError(this);
 		}
 		/// <summary>
 		///	Overloaded Constructor with four arguments for setting up Error code, Error Desc, session and exception
@@ -126,7 +126,7 @@ namespace Common
 		/// <param name="errDesc">Error Description Object</param>
 		/// <param name="sess">OFISession Object</param>
 		/// <param name="exp">Exception Object</param>
-		public NandanaResult(NandanaError.ErrorType errCode, string errDesc, NandanaSession sess, Exception exp)
+		public DocSortResult(DocSortError.ErrorType errCode, string errDesc, DocSortSession sess, Exception exp)
 		{
 			status = StatusType.ERROR;
 			errorCode = errCode;
@@ -144,23 +144,23 @@ namespace Common
 				errorDescr += (null != errorDescr && 0 < errorDescr.Length ? " : ":"") + exp.Message;
 #endif
 			}
-			NandanaError.PostError(this);
+			DocSortError.PostError(this);
 		}
 
 		/// <summary>
 		///	Check Condition function to validate a condition and fire the error.
 		/// </summary>
-		public static NandanaResult CheckCondition(bool condition, NandanaError.ErrorType errCode, string errDesc, NandanaSession sess)
+		public static DocSortResult CheckCondition(bool condition, DocSortError.ErrorType errCode, string errDesc, DocSortSession sess)
 		{
 			if (!condition )
 			{
 				if ( (null == errDesc) || (0 == errDesc.Length) )
-					return (new NandanaResult(errCode,sess));
+					return (new DocSortResult(errCode,sess));
 				else
-					return (new NandanaResult(errCode, errDesc,sess, null));
+					return (new DocSortResult(errCode, errDesc,sess, null));
 			}
 			else
-				return (new NandanaResult());
+				return (new DocSortResult());
 		}
 
 		/// <summary>

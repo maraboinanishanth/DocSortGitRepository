@@ -51,7 +51,7 @@ namespace DocSort_CPA.Reports
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -267,8 +267,8 @@ namespace DocSort_CPA.Reports
                 try
                 {
                     DocumentReportManager objDocumentReportManager = new DocumentReportManager();
-                    NandanaResult dsgetNumberOfDocumentResultsdetails = objDocumentReportManager.GetNumberOfDocumentCountDetailsUsingDate(dtpStartDate.Value.ToString("yyyy-MM-dd"), dtpEndDate.Value.ToString("yyyy-MM-dd"));
-                    NandanaResult dsgetNumberOfMatchedDocumentResultsdetails = objDocumentReportManager.GetNumberOfMatchedDocumentCountUsingDate(dtpStartDate.Value.ToString("yyyy-MM-dd"), dtpEndDate.Value.ToString("yyyy-MM-dd"));
+                    DocSortResult dsgetNumberOfDocumentResultsdetails = objDocumentReportManager.GetNumberOfDocumentCountDetailsUsingDate(dtpStartDate.Value.ToString("yyyy-MM-dd"), dtpEndDate.Value.ToString("yyyy-MM-dd"));
+                    DocSortResult dsgetNumberOfMatchedDocumentResultsdetails = objDocumentReportManager.GetNumberOfMatchedDocumentCountUsingDate(dtpStartDate.Value.ToString("yyyy-MM-dd"), dtpEndDate.Value.ToString("yyyy-MM-dd"));
                     DataTable dtFinalResult = new DataTable();
                     if (dsgetNumberOfDocumentResultsdetails.resultDS != null && dsgetNumberOfDocumentResultsdetails.resultDS.Tables[0].Rows.Count > 0)
                     {

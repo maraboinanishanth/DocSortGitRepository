@@ -9,10 +9,10 @@ using MySql.Data.MySqlClient;
 namespace DataAccess
 {
     /// <summary>
-    /// Derived DataReader class from that abstract NandanaDataReader
+    /// Derived DataReader class from that abstract DocSortDataReader
     /// and customized to manange SQL Server
     /// </summary>
-    public class NandanaMySqlDataReader : NandanaDataReader
+    public class DocSortMySqlDataReader : DocSortDataReader
     {
         /// <summary>
         /// IDataReader object which holds return DataReader
@@ -38,7 +38,7 @@ namespace DataAccess
     /// <summary>
     /// Derived SQL class for Dataset
     /// </summary>
-    public class NandanaMySqlDataSet : NandanaDataSet
+    public class DocSortMySqlDataSet : DocSortDataSet
     {
         /// <summary>
         /// Dataset object which will be returned
@@ -49,7 +49,7 @@ namespace DataAccess
         /// Constructor for SqlDataSet class
         /// This initialze the ReturnedDataSet
         /// </summary>		
-        public NandanaMySqlDataSet()
+        public DocSortMySqlDataSet()
         {
             m_oReturnedDataset = new DataSet();
         }
@@ -72,7 +72,7 @@ namespace DataAccess
     /// <summary>
     /// Derived SQL class for Transaction
     /// </summary>
-    public class NandanaMySqlTransaction : NandanaTransaction
+    public class DocSortMySqlTransaction : DocSortTransaction
     {
         /// <summary>
         /// IDbTransaction object which holds return Transaction

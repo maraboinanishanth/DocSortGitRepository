@@ -112,7 +112,7 @@ namespace DocSort_CPA.Forms
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -197,35 +197,6 @@ namespace DocSort_CPA.Forms
                 ((DateTimePicker)ctrl).Enabled = status;
         }
 
-        //public void BindcomboBxFolderType()
-        //{
-        //    try
-        //    {
-        //        string RoleID = UserAccessPermissionvalues.RoleID;
-        //        string UserID = UserAccessPermissionvalues.UserID;
-        //        if (RoleID != null && UserID != null)
-        //        {
-        //            DashBoardManager objFolderTypeManager = new DashBoardManager();
-        //            NandanaResult result = new NandanaResult();
-        //            result = objFolderTypeManager.GetFolderTypes();
-
-        //            if (!result.HasError && result.resultDS.Tables[0].Rows.Count > 0)
-        //            {
-
-        //                comboBxFolderType.Items.Clear();
-        //                comboBxFolderType.DisplayMember = "Folder_Type_Value";
-        //                comboBxFolderType.ValueMember = "Folder_Type_ID";
-        //                comboBxFolderType.DataSource = GetComboBoxedDataTable(result.resultDS.Tables[0], "Folder_Type_ID", "Folder_Type_Value", "0", "Choose a Folder Type");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message, "Error While retriving data from FolderType table");
-        //    }
-
-        //}
-
         private void btnTagSrc_Click(object sender, EventArgs e)
         {
             btnTagSrc.FlatAppearance.BorderColor = System.Drawing.ColorTranslator.FromHtml("#19abaa");
@@ -233,9 +204,6 @@ namespace DocSort_CPA.Forms
             FolderBrowserDialog fd = new FolderBrowserDialog();
             fd.Description = "Select a folder which has files";
             fd.ShowNewFolderButton = true;
-            //fd.RootFolder = System.Environment.SpecialFolder.MyComputer;
-            //fd.SelectedPath = System.Configuration.ConfigurationSettings.AppSettings["SourceFolder"];
-            //fd.SelectedPath = Application.StartupPath;
             string TestSourceFolder = System.Configuration.ConfigurationSettings.AppSettings["RecentFolder"];
             if (TestSourceFolder != "")
             {
@@ -884,7 +852,7 @@ namespace DocSort_CPA.Forms
         private void GetScannedConfigvalues(out  int ScannedReadCountConfigValue, out int LockDocCountConfigValue, out int IsExpiredConfigValue)
         {
             ConfirmLicenseManager objConfirmLicenseManager = new ConfirmLicenseManager();
-            NandanaResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
+            DocSortResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
             ScannedReadCountConfigValue = 0;
             LockDocCountConfigValue = 0;
             IsExpiredConfigValue = 0;
@@ -913,7 +881,7 @@ namespace DocSort_CPA.Forms
         private void UpdateScannedConfigValues(int ScannedReadCountConfigValue, int LockDocCountConfigValue, int IsExpiredConfigValue)
         {
             ConfirmLicenseManager objConfirmLicenseManager = new ConfirmLicenseManager();
-            NandanaResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
+            DocSortResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
             if (getAllConfigValues.resultDS != null && getAllConfigValues.resultDS.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow dr in getAllConfigValues.resultDS.Tables[0].Rows)
@@ -922,17 +890,17 @@ namespace DocSort_CPA.Forms
                     {
 
                         case "SCANRECORDCOUNT":
-                            NandanaResult updateScannedRecordCount = objConfirmLicenseManager.UpdateConfigValues("3", this.Encrypt(ScannedReadCountConfigValue.ToString()));
+                            DocSortResult updateScannedRecordCount = objConfirmLicenseManager.UpdateConfigValues("3", this.Encrypt(ScannedReadCountConfigValue.ToString()));
                             //node["Config_Value"].InnerText = this.Encrypt(ScannedReadCountConfigValue.ToString());
                             break;
 
                         case "LOCKDOCCOUNT":
-                            NandanaResult updateLocdocCount = objConfirmLicenseManager.UpdateConfigValues("4", this.Encrypt(LockDocCountConfigValue.ToString()));
+                            DocSortResult updateLocdocCount = objConfirmLicenseManager.UpdateConfigValues("4", this.Encrypt(LockDocCountConfigValue.ToString()));
                             //node["Config_Value"].InnerText = this.Encrypt(LockDocCountConfigValue.ToString());
                             break;
 
                         case "ISEXPIRED":
-                            NandanaResult updateIsexpired = objConfirmLicenseManager.UpdateConfigValues("1", IsExpiredConfigValue.ToString());
+                            DocSortResult updateIsexpired = objConfirmLicenseManager.UpdateConfigValues("1", IsExpiredConfigValue.ToString());
                             //node["Config_Value"].InnerText = IsExpiredConfigValue.ToString();
                             break;
 
@@ -949,7 +917,7 @@ namespace DocSort_CPA.Forms
             // Checking if same kwyword is exists or not
             string AssignKeywordID = string.Empty;
             MoveMyFilesManager objMoveMyFilesManager = new MoveMyFilesManager();
-            NandanaResult GetKeywordDetails = objMoveMyFilesManager.GetKeywordDetails();
+            DocSortResult GetKeywordDetails = objMoveMyFilesManager.GetKeywordDetails();
             DataTable getKeyword = new DataTable();
             if (GetKeywordDetails.resultDS != null && GetKeywordDetails.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -971,7 +939,7 @@ namespace DocSort_CPA.Forms
 
             if (AssignKeywordID == string.Empty)
             {
-                NandanaResult insertintokeywords = objMoveMyFilesManager.InsertKeywordDetails(keyWord, subSection, startWith, endWith);
+                DocSortResult insertintokeywords = objMoveMyFilesManager.InsertKeywordDetails(keyWord, subSection, startWith, endWith);
                 if (insertintokeywords.resultDS != null && insertintokeywords.resultDS.Tables[0].Rows.Count > 0)
                 {
                     DataRow dr = insertintokeywords.resultDS.Tables[0].Rows[0];
@@ -987,7 +955,7 @@ namespace DocSort_CPA.Forms
             // insert into tbl_scanneddocumentresults table
 
             MoveMyFilesManager objMoveMyFilesManager = new MoveMyFilesManager();
-            NandanaResult insertintoscannedresults = objMoveMyFilesManager.InsertScannedDocumentResults(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), keywordID.Trim(), documentID, documentPath, Status);
+            DocSortResult insertintoscannedresults = objMoveMyFilesManager.InsertScannedDocumentResults(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), keywordID.Trim(), documentID, documentPath, Status);
 
             // End
         }
@@ -1067,11 +1035,6 @@ namespace DocSort_CPA.Forms
                                 if (dtFinal.Rows[i]["ValueCategory"].ToString() != "")
                                 {
                                     updateScannedDocXML(KeywordID.Trim(), dtFinal.Rows[i]["DocumentID"].ToString(), m_sDocCategoryFolderFile + "\\" + dtFinal.Rows[i]["FileName"].ToString(), "Matched");
-
-
-                                    //* End  *//
-
-                                    //NandanaResult objinsertscanneddocumentresults = objMoveFilesManager.InsertScannedDocumentResultsDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), KeywordID.Trim(), dtFinal.Rows[i]["DocumentID"].ToString(), m_sDocCategoryFolderFile + "\\" + dtFinal.Rows[i]["FileName"].ToString(), "True");
                                 }
                                 else
                                 {
@@ -1118,11 +1081,6 @@ namespace DocSort_CPA.Forms
                                 if (dtFinal.Rows[i]["ValueCategory"].ToString() != "")
                                 {
                                     updateScannedDocXML(KeywordID.Trim(), dtFinal.Rows[i]["DocumentID"].ToString(), m_sDocCategoryFolderFile + "\\" + dtFinal.Rows[i]["FileName"].ToString(), "Matched");
-
-
-                                    //* End  *//
-
-                                    //NandanaResult objinsertscanneddocumentresults = objMoveFilesManager.InsertScannedDocumentResultsDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), KeywordID.Trim(), dtFinal.Rows[i]["DocumentID"].ToString(), m_sDocCategoryFolderFile + "\\" + dtFinal.Rows[i]["FileName"].ToString(), "True");
                                 }
                                 else
                                 {
@@ -1321,7 +1279,7 @@ namespace DocSort_CPA.Forms
             #region Insert documents into tbl_documentslist table
 
             MoveMyFilesManager objMoveMyFilesManager = new MoveMyFilesManager();
-            NandanaResult insertdocumentdetails = objMoveMyFilesManager.InsertDocumentlistDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), FileName.Trim(), "Automated");
+            DocSortResult insertdocumentdetails = objMoveMyFilesManager.InsertDocumentlistDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), FileName.Trim(), "Automated");
             if (insertdocumentdetails.resultDS != null && insertdocumentdetails.resultDS.Tables[0].Rows.Count > 0)
             {
                 DataRow dr = insertdocumentdetails.resultDS.Tables[0].Rows[0];
@@ -3106,7 +3064,7 @@ namespace DocSort_CPA.Forms
             try
             {
                 FileCabinetManager objFileCabinetManager = new FileCabinetManager();
-                NandanaResult result = new NandanaResult();
+                DocSortResult result = new DocSortResult();
                 result = objFileCabinetManager.GetFileCabinets();
 
                 if (!result.HasError && result.resultDS.Tables[0].Rows.Count > 0)

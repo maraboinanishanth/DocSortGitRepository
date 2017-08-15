@@ -111,7 +111,7 @@ namespace DocSort_CPA.Forms
             try
             {
                 ConfirmLicenseManager objConfirmLicenseManager = new ConfirmLicenseManager();
-                NandanaResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
+                DocSortResult getAllConfigValues = objConfirmLicenseManager.GetAllConfigValues();
                 if (getAllConfigValues.resultDS != null && getAllConfigValues.resultDS.Tables[0].Rows.Count > 0)
                 {
                     foreach (DataRow dr in getAllConfigValues.resultDS.Tables[0].Rows)

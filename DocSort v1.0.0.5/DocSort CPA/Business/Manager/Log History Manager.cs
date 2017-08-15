@@ -11,92 +11,92 @@ using Common;
 
 namespace Business.Manager 
 {
-    public class Log_History_Manager:NandanaBase 
+    public class Log_History_Manager:DocSortBase 
     {
-        public NandanaResult InsertLogHistoryDetails(string LogDateTime, string LoggedInUser, string Description, string Type, string LogDate)
+        public DocSortResult InsertLogHistoryDetails(string LogDateTime, string LoggedInUser, string Description, string Type, string LogDate)
         {
-            NandanaResult result;
+            DocSortResult result;
             int iVal = -1;
             ArrayList paramArray = new ArrayList();
-            paramArray.Add(new NandanaDBRequest.Parameter("@logdatetme", LogDateTime));
-            paramArray.Add(new NandanaDBRequest.Parameter("@loggeduser", LoggedInUser));
-            paramArray.Add(new NandanaDBRequest.Parameter("@description", Description));
-            paramArray.Add(new NandanaDBRequest.Parameter("@logintype", Type));
-            paramArray.Add(new NandanaDBRequest.Parameter("@LogDate", LogDate));
+            paramArray.Add(new DocSortDBRequest.Parameter("@logdatetme", LogDateTime));
+            paramArray.Add(new DocSortDBRequest.Parameter("@loggeduser", LoggedInUser));
+            paramArray.Add(new DocSortDBRequest.Parameter("@description", Description));
+            paramArray.Add(new DocSortDBRequest.Parameter("@logintype", Type));
+            paramArray.Add(new DocSortDBRequest.Parameter("@LogDate", LogDate));
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_InsertLogHistoryDetails", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_InsertLogHistoryDetails", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 iVal = factory.ExecuteNonQuery(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertLogHistoryDetails sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertLogHistoryDetails sp.", m_oSession, e));
             }
 
             if (iVal < 0)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertLogHistoryDetails sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_INSERTING_RECORD, "Error While inserting data into InsertLogHistoryDetails sp.", m_oSession));
             }
             else
             {
-                result = new NandanaResult(null);
+                result = new DocSortResult(null);
             }
             return result;
         }
       
 
-        public NandanaResult GetLogHistoryDetails()
+        public DocSortResult GetLogHistoryDetails()
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetLogHistoryDetails", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_GetLogHistoryDetails", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetLogHistoryDetails sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetLogHistoryDetails sp.", m_oSession, e));
             }
 
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetLogHistoryDetails sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetLogHistoryDetails sp.", m_oSession));
             }
             return result;
         }
 
 
-        public NandanaResult GetLogHistoryDetailsGO(string LogDate)
+        public DocSortResult GetLogHistoryDetailsGO(string LogDate)
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
-            paramArray.Add(new NandanaDBRequest.Parameter("@LogDate", LogDate));
+            paramArray.Add(new DocSortDBRequest.Parameter("@LogDate", LogDate));
 
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetLogHistoryDetailsGO", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_GetLogHistoryDetailsGO", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetLogHistoryDetailsGO sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetLogHistoryDetailsGO sp.", m_oSession, e));
             }
 
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetLogHistoryDetailsGO sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetLogHistoryDetailsGO sp.", m_oSession));
             }
             return result;
         }

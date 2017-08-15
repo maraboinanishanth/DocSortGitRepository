@@ -636,11 +636,6 @@ namespace DocSort_CPA.Forms
                                 if (dtFinal.Rows[i]["ValueCategory"].ToString() != "")
                                 {
                                     updateScannedDocXML(KeywordID.Trim(), dtFinal.Rows[i]["DocumentID"].ToString(), m_sDocCategoryFolderFile + "\\" + dtFinal.Rows[i]["FileName"].ToString());
-
-
-                                    //* End  *//
-
-                                    //NandanaResult objinsertscanneddocumentresults = objMoveFilesManager.InsertScannedDocumentResultsDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), KeywordID.Trim(), dtFinal.Rows[i]["DocumentID"].ToString(), m_sDocCategoryFolderFile + "\\" + dtFinal.Rows[i]["FileName"].ToString(), "True");
                                 }
                                 else
                                 {
@@ -687,18 +682,11 @@ namespace DocSort_CPA.Forms
                                 if (dtFinal.Rows[i]["ValueCategory"].ToString() != "")
                                 {
                                     updateScannedDocXML(KeywordID.Trim(), dtFinal.Rows[i]["DocumentID"].ToString(), m_sDocCategoryFolderFile + "\\" + dtFinal.Rows[i]["FileName"].ToString());
-
-
-                                    //* End  *//
-
-                                    //NandanaResult objinsertscanneddocumentresults = objMoveFilesManager.InsertScannedDocumentResultsDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), KeywordID.Trim(), dtFinal.Rows[i]["DocumentID"].ToString(), m_sDocCategoryFolderFile + "\\" + dtFinal.Rows[i]["FileName"].ToString(), "True");
                                 }
                                 else
                                 {
                                     updateScannedDocXML(KeywordID.Trim(), dtFinal.Rows[i]["DocumentID"].ToString(), m_sDocFolderFile + "\\" + dtFinal.Rows[i]["FileName"].ToString());
-
                                 }
-
                             }
                         }
                     }

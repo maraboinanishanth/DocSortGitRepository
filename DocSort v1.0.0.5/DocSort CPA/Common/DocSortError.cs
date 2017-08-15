@@ -7,12 +7,12 @@ namespace Common
     /// <summary>
 	/// The Error handler and logging class
 	/// </summary>
-	public class NandanaError
+	public class DocSortError
 	{
 			/// <summary>
 			/// The Error handler default constructor
 			/// </summary>
-			public NandanaError()
+			public DocSortError()
 			{
 				// Do nothing
 			}
@@ -32,7 +32,7 @@ namespace Common
 			/// Post Error or Store error in the file or DB
 			/// </summary>
 			/// <param name="Result">OFIResult object</param>
-			public static void PostError(NandanaResult Result)
+			public static void PostError(DocSortResult Result)
 			{
 				XmlDocument oRoot= OpenLogFile();
 				if(null == Result.errorDescr)
@@ -179,7 +179,7 @@ namespace Common
 				return oException;
 			}
 
-			private static XmlElement CreateSessionElement(XmlDocument oRoot, NandanaSession s)
+			private static XmlElement CreateSessionElement(XmlDocument oRoot, DocSortSession s)
 			{
 				XmlElement oSession;
 				oSession = CreateNode(oRoot,"Session",null,null);

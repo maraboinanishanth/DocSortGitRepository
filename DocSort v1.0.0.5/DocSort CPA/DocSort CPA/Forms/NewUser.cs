@@ -54,7 +54,7 @@ namespace DocSort_CPA.Forms
             {
                 UserManager objUserManager = new UserManager();
 
-                NandanaResult dsUserData = objUserManager.GetRoles();
+                DocSortResult dsUserData = objUserManager.GetRoles();
                 if (!dsUserData.HasError && dsUserData.resultDS.Tables[0].Rows.Count > 0)
                 {
                     cmbRole.Items.Clear();
@@ -127,7 +127,7 @@ namespace DocSort_CPA.Forms
                     UserManager objUserManager = new UserManager();
 
 
-                    NandanaResult dsUserData = objUserManager.GetUserDetailsByCredentials(txtUserName.Text.Trim(), this.Encrypt(txtUserName.Text.Trim()));
+                    DocSortResult dsUserData = objUserManager.GetUserDetailsByCredentials(txtUserName.Text.Trim(), this.Encrypt(txtUserName.Text.Trim()));
                         if (!dsUserData.HasError && dsUserData.resultDS.Tables[0].Rows.Count > 0)
                         {
                             foreach (DataRow dr in dsUserData.resultDS.Tables[0].Rows)
@@ -151,7 +151,7 @@ namespace DocSort_CPA.Forms
 
                     //* inserting User details in Users table *//
 
-                    NandanaResult insertUserValues = objUserManager.InsertUserValues(txtUserName.Text.Trim(), this.Encrypt(txtUserName.Text.Trim()), cmbRole.SelectedValue.ToString());
+                    DocSortResult insertUserValues = objUserManager.InsertUserValues(txtUserName.Text.Trim(), this.Encrypt(txtUserName.Text.Trim()), cmbRole.SelectedValue.ToString());
 
 
                     //* End  *//

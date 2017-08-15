@@ -5,19 +5,19 @@ using System.Collections;
 using System.Diagnostics;
 namespace DataAccess
 {
-    class NandanaMySqlFactory: NandanaAbstractFactory
+    class DocSortMySqlFactory: DocSortAbstractFactory
     {
         /// <summary>
-        /// NandanaMySqlFactory Constructor
+        /// DocSortMySqlFactory Constructor
         /// </summary>
-        public NandanaMySqlFactory()
+        public DocSortMySqlFactory()
         {
         }
 
         /// <summary>
         /// Destructor to close connection
         /// </summary>
-        ~NandanaMySqlFactory()
+        ~DocSortMySqlFactory()
         {
         }
 
@@ -71,9 +71,9 @@ namespace DataAccess
         /// <summary>
         /// Execute DataReader
         /// </summary>
-        /// <param name="Request">NandanaDBRequest with connection details</param>
+        /// <param name="Request">DocSortDBRequest with connection details</param>
         /// <returns>DataReader Object</returns>
-        public override NandanaDataReader ExecuteDataReader(NandanaDBRequest Request)
+        public override DocSortDataReader ExecuteDataReader(DocSortDBRequest Request)
         {
             // implementation code here....
             MySqlConnection conMySql = new MySqlConnection();
@@ -81,7 +81,7 @@ namespace DataAccess
             MySqlDataReader drMySql;
             MySqlTransaction tranMySql = null;
 
-            NandanaMySqlDataReader oDataReaderMySql = new NandanaMySqlDataReader();
+            DocSortMySqlDataReader oDataReaderMySql = new DocSortMySqlDataReader();
             try
             {
                 conMySql.ConnectionString = GetConnectionString();
@@ -110,9 +110,9 @@ namespace DataAccess
         /// <summary>
         /// Implementation of ExecuteNonQuery for MySql specific
         /// </summary>
-        /// <param name="Request">NandanaDBRequest object</param>
+        /// <param name="Request">DocSortDBRequest object</param>
         /// <returns>int value</returns>
-        public override int ExecuteNonQuery(NandanaDBRequest Request)
+        public override int ExecuteNonQuery(DocSortDBRequest Request)
         {
             MySqlConnection conMySql = new MySqlConnection();
             MySqlCommand cmdMySql = new MySqlCommand();
@@ -159,15 +159,15 @@ namespace DataAccess
         /// <summary>
         /// Execute DataSet
         /// </summary>
-        /// <param name="Request">NandanaDBRequest with connection details</param>
+        /// <param name="Request">DocSortDBRequest with connection details</param>
         /// <returns>DataSet Object</returns>
-        public override NandanaDataSet ExecuteDataSet(NandanaDBRequest Request)
+        public override DocSortDataSet ExecuteDataSet(DocSortDBRequest Request)
         {
             // implementation code here...
             MySqlConnection conMySql = new MySqlConnection();
             MySqlCommand cmdMySql = new MySqlCommand();
             MySqlDataAdapter daMySql;
-            NandanaMySqlDataSet oDataSetMySql = new NandanaMySqlDataSet();
+            DocSortMySqlDataSet oDataSetMySql = new DocSortMySqlDataSet();
             MySqlTransaction tranMySql = null;
 
             try
@@ -200,9 +200,9 @@ namespace DataAccess
         /// <summary>
         /// Execute Scalar
         /// </summary>
-        /// <param name="Request">NandanaDBRequest with connection details</param>
+        /// <param name="Request">DocSortDBRequest with connection details</param>
         /// <returns>return 1X1 Object returned by ExecuteScalar</returns>
-        public override Object ExecuteScalar(NandanaDBRequest Request)
+        public override Object ExecuteScalar(DocSortDBRequest Request)
         {
             // implementation code here...
             MySqlConnection conMySql = new MySqlConnection();
@@ -242,7 +242,7 @@ namespace DataAccess
         /// <returns>String containing connection String</returns>
         private string GetConnectionString()
         {
-            NandanaConnStrings oConnString = NandanaConnStrings.GetInstance();
+            DocSortConnStrings oConnString = DocSortConnStrings.GetInstance();
             return oConnString.GetConnectionStringByDBType();
         }
 
@@ -252,8 +252,8 @@ namespace DataAccess
         /// <param name="cmdMySql">MySqlCommand instance</param>
         /// <param name="conMySql">MySqlConnection instance. Transaction is handle internally</param>
         /// <param name="tranMySql">Transaction instance. </param>
-        /// <param name="Request">NandanaDBRequest containing Requests</param>
-        private void PrepareCommand(MySqlCommand cmdMySql, MySqlConnection conMySql, MySqlTransaction tranMySql, NandanaDBRequest Request)
+        /// <param name="Request">DocSortDBRequest containing Requests</param>
+        private void PrepareCommand(MySqlCommand cmdMySql, MySqlConnection conMySql, MySqlTransaction tranMySql, DocSortDBRequest Request)
         {
 
             if (tranMySql != null)
@@ -273,7 +273,7 @@ namespace DataAccess
             // add parameters if they exists.
             if ((Request.Parameters != null) && (Request.Parameters.Count > 0))
             {
-                foreach (NandanaDBRequest.Parameter oParam in Request.Parameters)
+                foreach (DocSortDBRequest.Parameter oParam in Request.Parameters)
                 {
                     //if((oParam.ParamValue.GetType() == typeof(System.String))&& oParam.ParamValue.ToString().Length==0)
                     //	oParam.ParamValue  = DBNull.Value;
@@ -287,16 +287,16 @@ namespace DataAccess
         /// Execute DataSet with query directly passed as parameter
         /// </summary>
         /// <param name="sSelectMySql">Select Query</param>
-        /// <param name="colParameterList">Array of NandanaDBRequest.Parameter containing Name and value pair</param>
+        /// <param name="colParameterList">Array of DocSortDBRequest.Parameter containing Name and value pair</param>
         /// <returns>DataSet Object</returns>
-        public override NandanaDataSet ExecuteDataSet(string sSelectMySql, ArrayList colParameterList)
+        public override DocSortDataSet ExecuteDataSet(string sSelectMySql, ArrayList colParameterList)
         {
             // implementation code here...
             MySqlConnection conMySql = new MySqlConnection();
             MySqlCommand cmdMySql = new MySqlCommand();
             MySqlDataAdapter daMySql;
-            NandanaMySqlDataSet oDataSetMySql = new NandanaMySqlDataSet();
-            NandanaDBRequest oRequest = new NandanaDBRequest(sSelectMySql, CommandType.Text, null, colParameterList);
+            DocSortMySqlDataSet oDataSetMySql = new DocSortMySqlDataSet();
+            DocSortDBRequest oRequest = new DocSortDBRequest(sSelectMySql, CommandType.Text, null, colParameterList);
             try
             {
                 PrepareCommand(cmdMySql, conMySql, null, oRequest);

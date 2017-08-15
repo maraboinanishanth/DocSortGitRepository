@@ -6,7 +6,7 @@ namespace Common
    	/// <summary>
 	/// Summary description for GPSConstant.
 	/// </summary>
-	public class NandanaConstants
+	public class DocSortConstants
 	{
 		#region Constants for System Params
 
@@ -118,18 +118,8 @@ namespace Common
 
 	
 		#endregion
-
+        
 		#region Constants for Session object
-
-	
-
-		/// <summary>Constant for length of keycode.</summary>
-		public const string SESSION_OBJECT_NAME = "NandanaSession";
-
-		/// <summary>Constant for length of keycode.</summary>
-		public const string ADMIN_SESSION_OBJECT_NAME = "NandanaAdminSession";
-
-		
 
 		/// <summary>Constant for Default page Path </summary>
 		public const string DEFAULT_PATH = "~/default.aspx";
@@ -158,22 +148,6 @@ namespace Common
 
 		
 		
-		#endregion
-
-		#region Registration Process Constant
-        /// <summary> File Extension </summary>
-		public const string EXTENSION = ".ascx";						
-		/// <summary> Registration Step Control 1 </summary>
-		public const string  Step1_Title = "Nandana SM :: Licenses";
-		/// <summary> Registration Step Control 2 </summary>
-		public const string  Step2_Title = "Nandana SM :: Company Contact Infromation";
-		/// <summary> Registration Step Control 3 </summary>
-		public const string  Step3_Title = "Nandana SM :: Terms and Conditions";
-		/// <summary> Registration Step Control 4 </summary>
-		public const string  Step4_Title = "Nandana SM :: Credit Card Information";
-		/// <summary> Registration Step Control 5 </summary>
-		public const string  Step5_Title = "Nandana SM :: Administrator Account";
-
 		#endregion
 
 		#region Grid Constant

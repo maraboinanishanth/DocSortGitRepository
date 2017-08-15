@@ -347,7 +347,7 @@ namespace Common
 		/// <param name="FilePath">Absolute File FilePath</param>
 		public static void DownloadDocument(string FilePath)
 		{
-			NandanaResult oResult = new NandanaResult();
+			DocSortResult oResult = new DocSortResult();
 			string name = Path.GetFileName(FilePath);
 			string ext = Path.GetExtension(FilePath);
 			//MyFile.PostedFile.
@@ -390,7 +390,7 @@ namespace Common
 			}
 			catch(Exception e)
 			{
-				NandanaError.PostError(e);
+				DocSortError.PostError(e);
 				System.Web.HttpContext.Current.Response.ContentType = "text/html";
 				System.Web.HttpContext.Current.Response.Write("<Font color='red'>Error while downloading the file.</font>");
 			}		
@@ -406,7 +406,7 @@ namespace Common
 		/// <param name="blAttachment">as Atachment or Not</param>
 		public static void DownloadDocument(string FilePath,bool blAttachment)
 		{
-			NandanaResult oResult = new NandanaResult();
+			DocSortResult oResult = new DocSortResult();
 			string strAttachment="";
 			if(blAttachment)
 				strAttachment = "attachment; ";
@@ -451,7 +451,7 @@ namespace Common
 			}
 			catch(Exception e)
 			{
-				NandanaError.PostError(e);
+				DocSortError.PostError(e);
 				System.Web.HttpContext.Current.Response.ContentType = "text/html";
 				System.Web.HttpContext.Current.Response.Write("<Font color='red'>Error while downloading the file.</font>");
 			}	

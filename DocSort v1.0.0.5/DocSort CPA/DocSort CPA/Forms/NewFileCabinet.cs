@@ -48,7 +48,7 @@ namespace DocSort_CPA.Forms
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -158,7 +158,7 @@ namespace DocSort_CPA.Forms
                     // Checking duplicate cabinet names
 
                     FileCabinetManager objFileCabinetManager = new FileCabinetManager();
-                    NandanaResult result = new NandanaResult();
+                    DocSortResult result = new DocSortResult();
                     result = objFileCabinetManager.GetFileCabinets();
 
                     if (!result.HasError && result.resultDS.Tables[0].Rows.Count > 0)
@@ -186,7 +186,7 @@ namespace DocSort_CPA.Forms
 
                     //* inserting File Cabinet details in FileCabinet table *//
 
-                    NandanaResult insertFileCabinet = objFileCabinetManager.InsertFileCabinetDetails(txtFileCabinet.Text.Trim(),"True");
+                    DocSortResult insertFileCabinet = objFileCabinetManager.InsertFileCabinetDetails(txtFileCabinet.Text.Trim(),"True");
                     if (insertFileCabinet.resultDS != null && insertFileCabinet.resultDS.Tables[0].Rows.Count > 0)
                     {
                         DataRow dr = insertFileCabinet.resultDS.Tables[0].Rows[0];

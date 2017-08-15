@@ -9,30 +9,30 @@ using System.Collections;
 
 namespace Business.Manager 
 {
-    public class DashBoardManager: NandanaBase
+    public class DashBoardManager: DocSortBase
     {
-        public NandanaResult GetServicingAlerts()
+        public DocSortResult GetServicingAlerts()
         {
-            NandanaResult result;
-            NandanaDataSet resultDS;
+            DocSortResult result;
+            DocSortDataSet resultDS;
             ArrayList paramArray = new ArrayList();
           
             try
             {
-                NandanaAbstractFactory factory = NandanaDBInstance.GetDBFactory();
-                NandanaDBRequest request = new NandanaDBRequest("sp_GetServicingAlerts", CommandType.StoredProcedure, m_oTransaction, paramArray);
+                DocSortAbstractFactory factory = DocSortDBInstance.GetDBFactory();
+                DocSortDBRequest request = new DocSortDBRequest("sp_GetServicingAlerts", CommandType.StoredProcedure, m_oTransaction, paramArray);
                 resultDS = factory.ExecuteDataSet(request);
             }
             catch (Exception e)
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetServicingAlerts sp.", m_oSession, e));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "Error while Getting data from GetServicingAlerts sp.", m_oSession, e));
             }
 
-            result = new NandanaResult();
+            result = new DocSortResult();
             result.resultDS = resultDS.ReturnedDataSet;
             if (!(result.resultDS != null && result.resultDS.Tables.Count > 0 && result.resultDS.Tables[0].Rows.Count > 0))
             {
-                return (new NandanaResult(NandanaError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetServicingAlerts sp.", m_oSession));
+                return (new DocSortResult(DocSortError.ErrorType.ERR_RETRIEVING_DATA, "No record found from GetServicingAlerts sp.", m_oSession));
             }
             return result;
         }

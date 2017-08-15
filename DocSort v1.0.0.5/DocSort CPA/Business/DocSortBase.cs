@@ -7,53 +7,53 @@ namespace Business
 {
    
 	/// <summary>
-	/// This is the base class for all Nandana classes.
+	/// This is the base class for all DocSort classes.
 	/// It manages the session that can be use through out the system
 	/// The session object contains the active user information.
 	/// </summary>
-	public class NandanaBase
+	public class DocSortBase
 	{
 		/// <summary>
 		/// The session object that is used as a common resource 
 		/// containing active user information.
 		/// </summary>
-		public NandanaSession m_oSession;
+		public DocSortSession m_oSession;
 
 		/// <summary>
-		///  NandanaTransaction object to maintain transaction between multiple sql statements
+		///  DocSortTransaction object to maintain transaction between multiple sql statements
 		/// </summary>
 		public MySqlTransaction m_oTransaction;
 
 		/// <summary>Abstract Factory Class for Database Connection</summary>
-		protected NandanaAbstractFactory m_oDBFactory;
+		protected DocSortAbstractFactory m_oDBFactory;
 		/// <summary>
 		/// Default constuctor with no arguments.
 		/// </summary>
-		public NandanaBase()
+		public DocSortBase()
 		{
 			m_oSession = null;
 			m_oTransaction = null;
-			m_oDBFactory = NandanaDBInstance.GetDBFactory();
+			m_oDBFactory = DocSortDBInstance.GetDBFactory();
 
 		}
 
 		/// <summary>
-		/// Constuctor with NandanaSession as argument.
+		/// Constuctor with DocSortSession as argument.
 		/// </summary>
-		public NandanaBase(NandanaSession sess)
+		public DocSortBase(DocSortSession sess)
 		{
 			m_oSession = sess;
 			m_oTransaction = null;
-			m_oDBFactory = NandanaDBInstance.GetDBFactory();
+			m_oDBFactory = DocSortDBInstance.GetDBFactory();
 		}
 		
 		/// <summary>
-		/// Constuctor with NandanaSession and NandanaTransaction as argument.
+		/// Constuctor with DocSortSession and DocSortTransaction as argument.
 		/// </summary>
-		public NandanaBase(NandanaSession sess,MySqlTransaction Trans)
+		public DocSortBase(DocSortSession sess,MySqlTransaction Trans)
 		{
 			m_oSession = sess;
-			m_oDBFactory = NandanaDBInstance.GetDBFactory();
+			m_oDBFactory = DocSortDBInstance.GetDBFactory();
 			m_oTransaction = Trans;
 		}
 		/// <summary>
@@ -63,9 +63,9 @@ namespace Business
 		/// <param name="errType">Error type to be used for result object initialization</param>
 		/// <param name="errMessage">Error message to be embedded</param>
 		/// <returns>Result object with status</returns>
-		protected NandanaResult CheckNotNull(string val, NandanaError.ErrorType errType, string errMessage)
+		protected DocSortResult CheckNotNull(string val, DocSortError.ErrorType errType, string errMessage)
 		{
-			return (NandanaResult.CheckCondition( (null != val) && (0 != val.Length),			
+			return (DocSortResult.CheckCondition( (null != val) && (0 != val.Length),			
 				errType, errMessage, m_oSession));
 			
 		}
@@ -79,7 +79,7 @@ namespace Business
 			if(m_oTransaction==null)
 			{
 				if(m_oDBFactory==null)
-					m_oDBFactory = NandanaDBInstance.GetDBFactory();
+					m_oDBFactory = DocSortDBInstance.GetDBFactory();
                 m_oTransaction = m_oDBFactory.GetTransaction();
 			}
 			return m_oTransaction;

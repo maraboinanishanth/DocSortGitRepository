@@ -51,7 +51,7 @@ namespace DocSort_CPA.Forms
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -205,12 +205,12 @@ namespace DocSort_CPA.Forms
                 {
 
                     ChangePasswordManager objChangePasswordManager = new ChangePasswordManager();
-                    NandanaResult ds = objChangePasswordManager.AdminChangePassword(username,this.Encrypt(txtOldPwd.Text.Trim()));
+                    DocSortResult ds = objChangePasswordManager.AdminChangePassword(username,this.Encrypt(txtOldPwd.Text.Trim()));
                     if (!ds.HasError && ds.HasData)
                     {
                         if (ds.resultDS.Tables[0].Rows.Count > 0)
                         {
-                            NandanaResult ival = objChangePasswordManager.UpdateAdminPassword(username,this.Encrypt(txtNewPwd.Text.Trim()));
+                            DocSortResult ival = objChangePasswordManager.UpdateAdminPassword(username,this.Encrypt(txtNewPwd.Text.Trim()));
 
                             pnlError.Visible = true;
                             pnlError.BackColor = System.Drawing.ColorTranslator.FromHtml("#f5b7b7");

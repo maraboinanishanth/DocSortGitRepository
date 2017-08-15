@@ -39,7 +39,7 @@ namespace DocSort_CPA.Forms
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -155,7 +155,7 @@ namespace DocSort_CPA.Forms
                 if (RoleID != null && UserID != null)
                 {
                     FileCabinetManager objFileCabinetManager = new FileCabinetManager();
-                    NandanaResult result = new NandanaResult();
+                    DocSortResult result = new DocSortResult();
                     result = objFileCabinetManager.GetFileCabinets();
 
                     if (!result.HasError && result.resultDS.Tables[0].Rows.Count > 0)
@@ -179,7 +179,7 @@ namespace DocSort_CPA.Forms
         {
             // Taking all all records of Folders into DtFolders table
 
-            NandanaResult objgetFolderdetails = objFolderManager.GetFolderDetails();
+            DocSortResult objgetFolderdetails = objFolderManager.GetFolderDetails();
             if (objgetFolderdetails.resultDS != null && objgetFolderdetails.resultDS.Tables[0].Rows.Count > 0)
             {
                 DtFolders = objgetFolderdetails.resultDS.Tables[0];
@@ -403,7 +403,7 @@ namespace DocSort_CPA.Forms
                         // inserting files into documentslist table //
 
                         MoveMyFilesManager objMoveMyFilesManager = new MoveMyFilesManager();
-                        NandanaResult insertdocumentdetails = objMoveMyFilesManager.InsertDocumentlistDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), splitFileName[i], "Manual");
+                        DocSortResult insertdocumentdetails = objMoveMyFilesManager.InsertDocumentlistDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), splitFileName[i], "Manual");
                         if (insertdocumentdetails.resultDS != null && insertdocumentdetails.resultDS.Tables[0].Rows.Count > 0)
                         {
                             DataRow dr = insertdocumentdetails.resultDS.Tables[0].Rows[0];
@@ -412,7 +412,7 @@ namespace DocSort_CPA.Forms
 
                         // End
 
-                        NandanaResult insertfiledetails = objFilesManager.InsertFileDetails(0,Convert.ToInt32(cmbFileCabinet.SelectedValue.ToString()), splitFileName[i], m_sFileCabinetDocFile + "\\" + splitFileName[i], "True");
+                        DocSortResult insertfiledetails = objFilesManager.InsertFileDetails(0,Convert.ToInt32(cmbFileCabinet.SelectedValue.ToString()), splitFileName[i], m_sFileCabinetDocFile + "\\" + splitFileName[i], "True");
                     }
                     else if (cmbFileCabinet.Text != "Choose a Cabinet" && cmbParentFolder.Text != "Choose a Parent Folder" && (cmbSubFolder.Text == "Choose a Sub-Folder" || cmbSubFolder.Text.Length == 0 || cmbSubFolder.Text == null))
                     {
@@ -428,7 +428,7 @@ namespace DocSort_CPA.Forms
                         // inserting files into documentslist table //
 
                         MoveMyFilesManager objMoveMyFilesManager = new MoveMyFilesManager();
-                        NandanaResult insertdocumentdetails = objMoveMyFilesManager.InsertDocumentlistDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), splitFileName[i], "Manual");
+                        DocSortResult insertdocumentdetails = objMoveMyFilesManager.InsertDocumentlistDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), splitFileName[i], "Manual");
                         if (insertdocumentdetails.resultDS != null && insertdocumentdetails.resultDS.Tables[0].Rows.Count > 0)
                         {
                             DataRow dr = insertdocumentdetails.resultDS.Tables[0].Rows[0];
@@ -437,7 +437,7 @@ namespace DocSort_CPA.Forms
 
                         // End
 
-                        NandanaResult insertfiledetails = objFilesManager.InsertFileDetails(Convert.ToInt32(cmbParentFolder.SelectedValue.ToString()),Convert.ToInt32(cmbFileCabinet.SelectedValue.ToString()), splitFileName[i], m_sMainFolderDocFile + "\\" + splitFileName[i], "True");
+                        DocSortResult insertfiledetails = objFilesManager.InsertFileDetails(Convert.ToInt32(cmbParentFolder.SelectedValue.ToString()),Convert.ToInt32(cmbFileCabinet.SelectedValue.ToString()), splitFileName[i], m_sMainFolderDocFile + "\\" + splitFileName[i], "True");
                     }
                     else if (cmbFileCabinet.Text != "Choose a Cabinet" && cmbParentFolder.Text != "Choose a Parent Folder" && cmbSubFolder.Text != "Choose a Sub-Folder")
                     {
@@ -459,7 +459,7 @@ namespace DocSort_CPA.Forms
                         // inserting files into documentslist table //
 
                         MoveMyFilesManager objMoveMyFilesManager = new MoveMyFilesManager();
-                        NandanaResult insertdocumentdetails = objMoveMyFilesManager.InsertDocumentlistDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), splitFileName[i], "Manual");
+                        DocSortResult insertdocumentdetails = objMoveMyFilesManager.InsertDocumentlistDetails(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"), splitFileName[i], "Manual");
                         if (insertdocumentdetails.resultDS != null && insertdocumentdetails.resultDS.Tables[0].Rows.Count > 0)
                         {
                             DataRow dr = insertdocumentdetails.resultDS.Tables[0].Rows[0];
@@ -468,7 +468,7 @@ namespace DocSort_CPA.Forms
 
                         // End
 
-                        NandanaResult insertfiledetails = objFilesManager.InsertFileDetails(Convert.ToInt32(cmbSubFolder.SelectedValue.ToString()),Convert.ToInt32(cmbFileCabinet.SelectedValue.ToString()), splitFileName[i], m_sSubFolderDocFile + "\\" + splitFileName[i], "True");
+                        DocSortResult insertfiledetails = objFilesManager.InsertFileDetails(Convert.ToInt32(cmbSubFolder.SelectedValue.ToString()),Convert.ToInt32(cmbFileCabinet.SelectedValue.ToString()), splitFileName[i], m_sSubFolderDocFile + "\\" + splitFileName[i], "True");
                     }
                 }
                 //MessageBox.Show("Files are Imported into Selected Filecabinet Successfully");

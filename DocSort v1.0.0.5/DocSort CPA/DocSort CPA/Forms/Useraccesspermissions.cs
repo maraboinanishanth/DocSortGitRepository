@@ -37,7 +37,7 @@ namespace DocSort_CPA.Forms
         public void GetPermissiondetails(int FormID)
         {
             UserManager objUserManager = new UserManager();
-            NandanaResult dsuserPermission = new NandanaResult();
+            DocSortResult dsuserPermission = new DocSortResult();
             dsuserPermission = objUserManager.GetUserPermissions(UserAccessPermissionvalues.RoleID);
             if (dsuserPermission.resultDS != null && dsuserPermission.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -129,7 +129,7 @@ namespace DocSort_CPA.Forms
             {
                 UserManager objUserManager = new UserManager();
 
-                NandanaResult dsUserData = objUserManager.GetRoles();
+                DocSortResult dsUserData = objUserManager.GetRoles();
                 if (!dsUserData.HasError && dsUserData.resultDS.Tables[0].Rows.Count > 0)
                 {
                     //cmbRoles.Items.Clear();
@@ -180,8 +180,8 @@ namespace DocSort_CPA.Forms
         {
             if (cmbRoles.SelectedValue != null)
             {
-                NandanaResult dsResult = new NandanaResult();
-                NandanaResult dsuserPermission = new NandanaResult();
+                DocSortResult dsResult = new DocSortResult();
+                DocSortResult dsuserPermission = new DocSortResult();
                 UserManager objUserManager = new UserManager();
                 dsResult = objUserManager.GetAllForms();
                 DataTable dtUserAccess = new DataTable();
@@ -275,7 +275,7 @@ namespace DocSort_CPA.Forms
         {
             String MenuName = string.Empty;
             UserManager objUserManager = new UserManager();
-            NandanaResult dsResult = new NandanaResult();
+            DocSortResult dsResult = new DocSortResult();
             dsResult = objUserManager.GetMenuNamesByFormID(ID);
             if (!dsResult.HasError && dsResult.resultDS.Tables[0].Rows.Count > 0)
             {
@@ -286,7 +286,7 @@ namespace DocSort_CPA.Forms
         private string FormMenuwithMainMenu(string MenuId)
         {
             string strMenuName = string.Empty;
-            NandanaResult dsResult = new NandanaResult();
+            DocSortResult dsResult = new DocSortResult();
 
             UserManager objUserManager = new UserManager();
             dsResult = objUserManager.GetMenuDetilsByMainMenuId(MenuId);
@@ -319,7 +319,7 @@ namespace DocSort_CPA.Forms
                     {
                         bool View = Convert.ToBoolean(gvrow.Cells[2].Value);
 
-                        NandanaResult dsResult = new NandanaResult();
+                        DocSortResult dsResult = new DocSortResult();
                         try
                         {
                             UserManager objUserManager = new UserManager();
