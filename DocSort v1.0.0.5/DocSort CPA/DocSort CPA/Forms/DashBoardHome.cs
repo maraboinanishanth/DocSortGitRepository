@@ -2149,6 +2149,17 @@ namespace DocSort_CPA.Forms
                     DocSortResult deletefolders = objFolderManager.DeleteFolderDetails(treeView1.SelectedNode.Name, "False");
 
                     treeView1.SelectedNode.Remove();
+                    string m_sConfigFile = null;
+                    if (m_sConfigFile == null)
+                    {
+                        m_sConfigFile = ConfigurationManager.AppSettings["TreeviewFilepath"].ToString();
+                        if (!System.IO.Directory.Exists(m_sConfigFile))
+                        {
+                            System.IO.Directory.CreateDirectory(m_sConfigFile);
+                        }
+                    }
+                    DirectoryInfo info = new DirectoryInfo(m_sConfigFile + "\\" + treeView1.SelectedNode.FullPath);
+                    info.MoveTo(m_sConfigFile + "\\" + treeView1.SelectedNode.FullPath + "_Deleted_ON_" + DateTime.Now.ToString().Replace(":", "-"));
                 }
             }
             else
@@ -2622,7 +2633,19 @@ namespace DocSort_CPA.Forms
                 if (objDeleteConfirmation.DeleteConfirmationRequest == "Yes")
                 {
                     DocSortResult DeleteFiles = objFilesManager.DeleteFileDetails(treeView1.SelectedNode.Name, "False");
-
+                    
+                    if (m_sConfigFile == null)
+                    {
+                        m_sConfigFile = ConfigurationManager.AppSettings["TreeviewFilepath"].ToString();
+                        if (!System.IO.Directory.Exists(m_sConfigFile))
+                        {
+                            System.IO.Directory.CreateDirectory(m_sConfigFile);
+                        }
+                    }
+                    if (File.Exists(m_sConfigFile + "\\" + treeView1.SelectedNode.FullPath))
+                    {
+                        File.Move(m_sConfigFile + "\\" + treeView1.SelectedNode.FullPath, m_sConfigFile + "\\" + treeView1.SelectedNode.FullPath + "_Deleted_ON_" + DateTime.Now.ToString().Replace(":", "-"));
+                    }
                     treeView1.SelectedNode.Remove();
                 }
             }
@@ -2695,6 +2718,8 @@ namespace DocSort_CPA.Forms
                         string NodeFile = m_sFileCabinetDocFile + "\\" + n.Text;
                         
                         Copy(ParentNode, NodeFile);//NISHANTH NEED TO WORK ON THIS Copy folers physically to complete this move option
+
+                        DeletePhysicalFolderFromSource(ParentNode, "MOVED");
                     }
                 }
 
@@ -2760,7 +2785,10 @@ namespace DocSort_CPA.Forms
                         if (File.Exists(ParentNode))
                         {
                             if (!File.Exists(NodeFile))
+                            {
                                 System.IO.File.Copy(ParentNode, NodeFile, true);
+                                File.Move(ParentNode, ParentNode + "_MOVED_ON_" + DateTime.Now.ToString().Replace(":" ,"-"));
+                            }
                         }
                         DocSortResult objinsertfilesdetails = objFilesManager.UpdateFileDetails(FolderID, Convert.ToInt32(n.Name), Cabinet, n.Text.ToUpper(), m_sFileCabinetDocFile + "\\" + n.Text.ToUpper(), "True");
                     }
@@ -4100,14 +4128,22 @@ namespace DocSort_CPA.Forms
                 {
                     DeleteFoldersexistingFileCabinetID(treeView1.SelectedNode.Name);
                     DeleteFilesexistingFileCabinetID(treeView1.SelectedNode.Name);
-
-
                     DocSortResult deletefilecabinet = objFileCabinetManager.DeleteFileCabinetDetails(treeView1.SelectedNode.Name, "False");
-
                     treeView1.SelectedNode.Remove();
+
+                    string m_sConfigFile = null;
+                    if (m_sConfigFile == null)
+                    {
+                        m_sConfigFile = ConfigurationManager.AppSettings["TreeviewFilepath"].ToString();
+                        if (!System.IO.Directory.Exists(m_sConfigFile))
+                        {
+                            System.IO.Directory.CreateDirectory(m_sConfigFile);
+                        }
+                    }
+                    DirectoryInfo info = new DirectoryInfo(m_sConfigFile + "\\" + treeView1.SelectedNode.FullPath);
+                    info.MoveTo(m_sConfigFile + "\\" + treeView1.SelectedNode.FullPath + "_DELETED_ON_" + DateTime.Now.ToString().Replace(":", "-"));
                 }
             }
-
             else {
 
                 MessageBox.Show("You do not access to delete. Please check with your admin to get access.");
@@ -4361,23 +4397,23 @@ namespace DocSort_CPA.Forms
                         System.IO.Directory.CreateDirectory(m_sConfigFile);
                 }
 
-                if (m_sFileCabinetDocFile == null)
-                {
-                    m_sFileCabinetDocFile = m_sConfigFile + "\\" + treeView1.SelectedNode.Text.ToUpper();
-                    if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
-                        System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
-                }
+                //if (m_sFileCabinetDocFile == null)
+                //{
+                //    m_sFileCabinetDocFile = m_sConfigFile + "\\" + treeView1.SelectedNode.Text.ToUpper();
+                //    if (!System.IO.Directory.Exists(m_sFileCabinetDocFile))
+                //        System.IO.Directory.CreateDirectory(m_sFileCabinetDocFile);
+                //}
 
-                if (m_sImportedFolderDocFile == null)
-                {
-                    m_sImportedFolderDocFile = m_sFileCabinetDocFile + "\\";// + TempNodeText.ToUpper();
-                    if (!System.IO.Directory.Exists(m_sImportedFolderDocFile))
-                        System.IO.Directory.CreateDirectory(m_sImportedFolderDocFile);
-                }
+                //if (m_sImportedFolderDocFile == null)
+                //{
+                //    m_sImportedFolderDocFile = m_sFileCabinetDocFile + "\\";// + TempNodeText.ToUpper();
+                //    if (!System.IO.Directory.Exists(m_sImportedFolderDocFile))
+                //        System.IO.Directory.CreateDirectory(m_sImportedFolderDocFile);
+                //}
 
                 string sourceDirectory = m_sConfigFile + "\\" + draggedFilePath;
                 string targetDirectory = m_sConfigFile + "\\" + targetFilePath + "\\" + sourceTreeNode.Text;
-
+               // DeletePhysicalFolderFromSource(sourceDirectory);
 
                 try
                 {
@@ -4387,10 +4423,11 @@ namespace DocSort_CPA.Forms
                         // Ensure that the target does not exist.
                         if (File.Exists(@targetDirectory))
                         {
-                            File.Delete(@targetDirectory);
+                            File.Move(@targetDirectory, @targetDirectory + "_" + "DeletedForDragNDrop" + DateTime.Now.ToString().Replace(":", "-"));
                         }
                         string fileID = string.Empty;
                         File.Copy(@sourceDirectory, @targetDirectory);
+                        
                         if (!draggedNode.Equals(targetNode) && !ContainsNode(draggedNode, targetNode))
                         {
                             // If it is a move operation, remove the node from its current   
@@ -4432,7 +4469,7 @@ namespace DocSort_CPA.Forms
                             string FileCabinet_ID = string.Empty;
                             string File_Name = string.Empty;
                             string File_Path = string.Empty;
-                            string IsDelete = "True";
+                            //string IsDelete = "True";
                             if (sourceTreeNode.Parent != null && sourceTreeNode.Parent.ImageKey != "LockerIcon.png")
                             {
                                 Folder_ID = sourceTreeNode.Parent.Name;
@@ -4468,22 +4505,8 @@ namespace DocSort_CPA.Forms
                                     //FileID = dr["FileId"].ToString();
                                 }
                             }
-                            //Folder_ID,
-                            //FileCabinet_ID,
-                            //File_Name,
-                            //File_Path,
-                            //IsDelete
 
-
-
-                            //WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, ParentFolderID);
-                            //SaveDraggedTreeNode(targetNode, sourceTreeNode);
-                            //DeleteFromSourceTreeNode(draggedTempnode.Name, sourceTreeNode.Name);
-                            //MovePhysicalFoldersFromSourceTarget();
-
-                            // Expand the node at the location   
-                            // to show the dropped node.  
-                            //targetNode.Expand();
+                            File.Move(@sourceDirectory, @sourceDirectory + "_" + "DragAndDropped_ON_" + DateTime.Now.ToString().Replace(":", "-")); //Rename the source file to _Deleted.
                         }
                     }
                     else if (Directory.Exists(sourceDirectory))
@@ -4493,7 +4516,6 @@ namespace DocSort_CPA.Forms
                         Path = targetDirectory;// m_sFileCabinetDocFile + "\\" + sourceTreeNode.Text;
 
                         var rootDirectoryInfo = new DirectoryInfo(Path);
-                        //WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, targetTempnode.Parent == null ? "0" : sourceTreeNode.Name);
 
                         // Confirm that the node at the drop location is not   
                         // the dragged node or a descendant of the dragged node.  
@@ -4526,23 +4548,12 @@ namespace DocSort_CPA.Forms
                             {
                                 ParentFolderID = "0";
                             }
-                            // WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, ParentFolderID);
-
-                            // SaveDraggedTreeNode(targetNode, sourceTreeNode);
-                            //DeleteFromSourceTreeNode(draggedTempnode.Name, sourceTreeNode.Name);
-
-                            //Parallel.Invoke(() => WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, ParentFolderID), () => SaveDraggedTreeNode(targetNode, sourceTreeNode), ()=> DeleteFromSourceTreeNode(draggedTempnode.Name, sourceTreeNode.Name));
 
                             var task1 = Task.Factory.StartNew(() => WalkDirectoryTree(rootDirectoryInfo, targetTempnode.Name, ParentFolderID));
                             var task2 = Task.Factory.StartNew(() => SaveDraggedTreeNode(targetNode, sourceTreeNode));
                             var task3 = Task.Factory.StartNew(() => DeleteFromSourceTreeNode(draggedTempnode.Name, sourceTreeNode.Name));
 
-                            //Task.WaitAny(task1, task2, task3);
-
-                            // Expand the node at the location   
-                            // to show the dropped node.  
-                            //targetNode.Expand();
-
+                            DeletePhysicalFolderFromSource(sourceDirectory, "DragAndDrop");
                         }
                     }
                     else
@@ -4553,7 +4564,6 @@ namespace DocSort_CPA.Forms
                 }
                 catch (Exception ex)
                 {
-
                     throw ex;
                 }
             }
@@ -4563,12 +4573,21 @@ namespace DocSort_CPA.Forms
             }
         }
 
+        private void DeletePhysicalFolderFromSource(string sourceDirectory,string action)
+        {
+            DirectoryInfo dinfo = new DirectoryInfo(sourceDirectory);
+            if (dinfo.Exists)
+            {
+                dinfo.MoveTo(sourceDirectory + "_" + action + "_" + "ON_" + DateTime.Now.ToString().Replace(":", "-"));
+
+            }
+        }
+
         private void DeleteFromSourceTreeNode(string fileCabinetID ,  string folderID)
         {
             DocSortResult deleteFolderAndFIles = objFilesManager.DeleteFolderAndFiles(Convert.ToInt32(fileCabinetID), Convert.ToInt32(folderID));
             if (deleteFolderAndFIles.resultDS != null && deleteFolderAndFIles.resultDS.Tables[0].Rows.Count > 0)
             {
-                
                 
             }
         }
@@ -4592,10 +4611,10 @@ namespace DocSort_CPA.Forms
         private void treeView1_DragOver(object sender, DragEventArgs e)
         {
             // Retrieve the client coordinates of the mouse position.  
-            Point targetPoint = treeView1.PointToClient(new Point(e.X, e.Y));
+           // Point targetPoint = treeView1.PointToClient(new Point(e.X, e.Y));
 
             // Select the node at the mouse position.  
-            treeView1.SelectedNode = treeView1.GetNodeAt(targetPoint);
+            //treeView1.SelectedNode = treeView1.GetNodeAt(targetPoint);
         }
 
         private void treeView1_DragEnter(object sender, DragEventArgs e)

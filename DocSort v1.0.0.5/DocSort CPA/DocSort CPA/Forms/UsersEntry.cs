@@ -537,7 +537,7 @@ namespace DocSort_CPA.Forms
             {
 
 
-                DataRow[] drpermissions = dsuserPermission.resultDS.Tables[0].Select("Form_ID ='" + 18 + "'");//18 is the Form_ID of Delete option in tbl_Useraccesspermission
+                DataRow[] drpermissions = dsuserPermission.resultDS.Tables[0].Select("Form_ID ='" + 17 + "'");//18 is the Form_ID of Delete option in tbl_Useraccesspermission
 
                 if (drpermissions.Length > 0)
                 {

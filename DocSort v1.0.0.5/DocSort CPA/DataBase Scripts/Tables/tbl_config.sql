@@ -11,7 +11,8 @@ create table `tbl_config` (
 	`Config_Value` text 
 ); 
 insert into `tbl_config` (`Config_ID`, `Config_Name`, `Config_Value`) values('1','IsExpired','0');
-insert into `tbl_config` (`Config_ID`, `Config_Name`, `Config_Value`) values('2','SecurityKey','Nandana');
+insert into `tbl_config` (`Config_ID`, `Config_Name`, `Config_Value`) values('2','SecurityKey','
+Nandana');
 insert into `tbl_config` (`Config_ID`, `Config_Name`, `Config_Value`) values('3','ScanRecordCount','231NwfQ0sk8=');
 insert into `tbl_config` (`Config_ID`, `Config_Name`, `Config_Value`) values('4','LockDocCount','8Q4YiugrrEI=');
 insert into `tbl_config` (`Config_ID`, `Config_Name`, `Config_Value`) values('5','LicenseKeys','210916100149PM,19041715800PM');
